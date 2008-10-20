@@ -33,15 +33,15 @@ class FDistController:
         self.tmp_idx = 0
         self.fdist_dir = fdist_dir
         self.os_name = os.name
-        if self.os_name=='nt' or platform=='cygwin':
+        if self.os_name=='nt' or platform=='cygwin':    # does it works on dos/other OS?
             py_ext = '.exe'
         else:
             py_ext = ''
-        if ext == None:
+        if ext is None:
             self.ext = py_ext
         else:
             self.ext = ext
-        exec_counts = 0
+        self.exec_counts = 0        # should be exec_counts?
 
     def _get_path(self, app):
         """Returns the path to an fdist application.
@@ -72,7 +72,7 @@ class FDistController:
         f = open(data_dir + os.sep + in_name, 'w')
         f.write('a\n')
         f.close()
-        curr_dir = os.getcwd()
+        curr_dir = os.getcwd()  # unused var
         os.system('cd ' + data_dir + ' && ' +
                 self._get_path('datacal') + ' < ' + in_name + ' > ' + out_name)
         f = open(data_dir + os.sep + out_name)
@@ -137,14 +137,13 @@ class FDistController:
         f.close()
         self._generate_intfile(data_dir)
 
-        os.system('cd ' + data_dir + ' && ' +
-            self._get_path('fdist2') + ' < ' + in_name + ' > ' + out_name)
+        os.system('cd ' + data_dir + ' && ' + self._get_path('fdist2') + ' < ' + in_name + ' > ' + out_name)
         f = open(data_dir + os.sep + out_name)
         lines = f.readlines()
         f.close()
         for line in lines:
-          if line.startswith('average Fst'):
-            fst = float(line.rstrip().split(' ')[-1])
+            if line.startswith('average Fst'):
+                fst = float(line.rstrip().split(' ')[-1])
         os.remove(data_dir + os.sep + in_name)
         os.remove(data_dir + os.sep + out_name)
         return fst
@@ -162,7 +161,7 @@ class FDistController:
         max_run_fst = 1
         min_run_fst = 0
         current_run_fst = fst
-        old_fst = fst
+        old_fst = fst   # unused variable
         while True:
             #debug('testing fst ' +  str(current_run_fst))
             real_fst = self.run_fdist(npops, nsamples, current_run_fst, sample_size,
@@ -201,7 +200,7 @@ class FDistController:
         f = open(data_dir + os.sep + in_name, 'w')
         f.write('out.dat out.cpl\n' + str(ci) + '\n')
         f.close()
-        curr_dir = os.getcwd()
+        curr_dir = os.getcwd()  # unused var
         self._generate_intfile(data_dir)
         os.system('cd ' + data_dir + ' && '  +
             self._get_path('cplot') + ' < ' + in_name + ' > ' + out_name)
@@ -211,7 +210,7 @@ class FDistController:
         conf_lines = []
         l = f.readline()
         try:
-            while l<>'':
+            while l != '':
                 conf_lines.append(
                     tuple(map(lambda x : float(x), l.rstrip().split(' ')))
                 )
