@@ -38,6 +38,8 @@ def read_ped(ped_path):
       alleles per individual. If you only have allele counts
       then use add_pop_counts
       
+      
+    Note 2: this should actually be moved to a PopGen.Ped module. Reference PopGen.GenePop.__init__ as a sample biopython parser.
     """
     print "parsing ped file" + ped_path
     print
