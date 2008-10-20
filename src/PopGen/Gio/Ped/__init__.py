@@ -36,8 +36,77 @@ from copy import deepcopy
 from types import *
 
 from Bio import File
-from Bio.ParserSupport import *
+from Bio.ParserSupport import *     # overwriting previous import?
 
 class Record:
     pass
+
+class RecordParser(AbstractParser):
+    """Parses GenePop data into a Record object.
+
+    """
+    def __init__(self):
+        self._scanner = _Scanner()
+        self._consumer = _RecordConsumer()
+
+    def parse(self, handle):
+        self._scanner.feed(handle, self._consumer)
+        return self._consumer.data
+    
+def parse(handle):
+    """Parses a handle containing a PED file.
+    """
+    parser = RecordParser()
+    return parser.parse(handle)
+
+class _Scanner:
+    """Scans a GenePop record.
+    
+    There is only one record per file.    # no there are multiple records per file?????
+    
+    """
+
+    def feed(self, handle, consumer):
+        """feed(self, handle, consumer)
+
+        Feed in a PED unit record for scanning.  handle is a file-like
+        object that contains a Genepop record.  consumer is a
+        Consumer object that will receive events as the report is scanned.
+
+        """
+        if isinstance(handle, File.UndoHandle):
+            uhandle = handle
+        else:
+            uhandle = File.UndoHandle(handle)
+            
+            
+        consumer.start_record()
+        
+        comment_line = uhandle.readline().rstrip()
+        consumer.comment(comment_line)
+        
+        # Here it goes the code to parse the single PED line
+        pass
+
+
+class _RecordConsumer(AbstractConsumer):
+    """Consumer that converts a GenePop record to a Record object.
+
+    Members:
+    data    Record with GenePop data.
+
+    """
+    def __init__(self):
+        self.data = None
+
+    def start_record(self):
+        self.data = Record()
+
+    def end_record(self):
+        # Here it goes the code to create a Population object and return it to the Record handler????
+        pass
+    
+    def comment(self, comment_line):
+        self.data.comment_line = comment_line       # what if there are 2 comment lines or more?
+
 
