@@ -4,6 +4,10 @@
 from Individual import Individual
 from Population import Population
 
+class FileDoesntExists(Exception):
+    def __str__(self):
+        print "File doesn't exists"
+    
 def read_tped(tped_path):
     """
     Parse a TPED file and returns a dictionary of population objects.
@@ -24,14 +28,29 @@ def read_ped(ped_path):
     Yoruba HGDP00937 0 0 1 2 C C A A A G C C T C A A G A
 
     Example of output:
-    populations = {Mandenka: [HGDP00912, HGDP01283], Yoruba: [HGDP00928, HGDP00937]}
+    populations = {Mandenka: [HGDP00912, HGDP01283], Yoruba: [HGDP00928, HGDP00937]} where 'HGDP00912' are Individual objects
+    
+    Note: I have to make this code compatible with Stats.Structure.add_pop:
+    
+        add_pop(pop_name, indiv_data) - Adds a population,
+      indiv_data is a list of pairs
+      [('a','a'), ('a','b'), ('b','a'), ...], with the two
+      alleles per individual. If you only have allele counts
+      then use add_pop_counts
+      
     """
     print "parsing ped file" + ped_path
     print
+    
+    # check if file exists
+    try:
+        pedfile = file(ped_path, 'r')
+    except OSError:
+        raise FileDoesntExists
 
     populations = {}
 
-    for line in file(ped_path, 'r'):
+    for line in pedfile:
         if not line.startswith('#'):
             # skip line if it is a comment (starts with '#'). Should be replaced with python 2.5 'with' syntax.
             
