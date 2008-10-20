@@ -15,20 +15,22 @@ def get_parent_info():
         f = urlopen(httpDir + '/' + 'pedinfo2sample_YRI.txt.gz')
         file(HapMap.directory + os.sep + 'pedYRI.gz', 'wb').write(f.read())
         f.close()
+        
         f = urlopen(httpDir + '/' + 'pedinfo2sample_CEU.txt.gz')
         file(HapMap.directory + os.sep + 'pedCEU.gz', 'wb').write(f.read())
         f.close()
+        
         parentf = open(file_location, "wb")
         gf = gzip.open(HapMap.directory + os.sep + 'pedYRI.gz')
         parentf.write("YRI\n")
         parentf.write(gf.read())
         gf.close()
+        
         gf = gzip.open(HapMap.directory + os.sep + 'pedCEU.gz')
         parentf.write("CEU\n")
         parentf.write(gf.read())
         gf.close()
         parentf.close()
-        
 
     reader = csv.reader(open(file_location, "rb"), delimiter='\t')
     hasFamily = 0

@@ -21,7 +21,7 @@ class SimCoalController:
         """
         self.simcoal_dir = simcoal_dir
         self.os_name = os.name
-        if self.os_name=='nt' or sys.platform=='cygwin':
+        if self.os_name == 'nt' or sys.platform == 'cygwin':    # does this work in dos or other OS?
             self.bin_name = 'simcoal2.exe'
             #this is wrong (the exe name), most probably
         else:
@@ -38,7 +38,7 @@ class SimCoalController:
     def run_simcoal(self, par_file, num_sims, ploydi = '1', par_dir = '.'):
         """Executes SimCoal.
         """
-        if par_dir == None:
+        if par_dir is None:
             par_dir = os.sep.join([Config.dataDir, 'SimCoal', 'runs'])
         curr_dir = os.getcwd()
         os.chdir(par_dir)

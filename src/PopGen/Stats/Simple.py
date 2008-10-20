@@ -8,7 +8,7 @@
 population and have no notion of substructure.
 
 If you need statistics to work with population structure please
-have a look at Strutural.py .
+have a look at Structural.py .
 
 Both simple and structural statistics are single locus (a sequence
 can be seen as a single locus, or split on several SNPs, it all
@@ -46,13 +46,13 @@ class Simple:
         self.indiv_data = {}
 
     def set_data(self, indiv_data):
-        if self.counts_acceptable == True: #We convert to counts
+        if self.counts_acceptable is True: #We convert to counts
             self.counts = self._convert_to_counts(indiv_data)
         else:
             self.indiv_data = indiv_data
 
     def set_counts(self, counts):
-        if self.counts_acceptable == False:
+        if self.counts_acceptable is False:
             raise RequiresGenotypeException
         else:
             self.counts = counts

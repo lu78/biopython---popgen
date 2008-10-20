@@ -26,14 +26,14 @@ class SimCoalCache:
           and it will probably stay like that.
         """
         self.cacheDir = os.sep.join([Config.dataDir, 'SimCoal', 'cache'])
-        if simcoalDir == None:
+        if simcoalDir is None:
             self.simcoalDir = Config.simcoalDir
         else:
             self.simcoalDir = simcoalDir
 
 
     def run_simcoal(self, par_file, num_sims, ploydi = '1', parDir = None):
-        if parDir == None:
+        if parDir is None:
             parDir = os.sep.join([Config.dataDir, 'SimCoal', 'runs'])
         par_file_root = par_file[:-4]
         tar_name = os.sep.join([self.cacheDir, ploydi, par_file_root + 
@@ -77,7 +77,7 @@ class SimCoalCache:
 
            This mainly means untaring a file.
         '''
-        if parDir == None:
+        if parDir is None:
             parDir = os.sep.join([Config.dataDir, 'SimCoal', 'runs'])
         tar_name = os.sep.join([self.cacheDir, ploidy, sim_name + 
             '.tar.bz2'])

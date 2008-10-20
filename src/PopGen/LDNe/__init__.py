@@ -122,24 +122,24 @@ class _Scanner:
         consumer.start_record()
         l = uhandle.readline()
         match = None
-        while (match == None):
-            if l=='':
+        while (match is None):
+            if l == '':
                 raise ValueError('Mating mode not found')
             match = re.search('Mating Model is ([^ \n]+)', l)
-            if (match == None):
+            if (match is None):
                 l = uhandle.readline()
         consumer.mating(match.group(1))
         match = None
-        while (match == None):
-            if l=='':
+        while (match is None):
+            if l == '':
                 raise ValueError('Cutoffs not found')
             match = re.search('Lowest Allele Fr', l)
-            if (match == None):
+            if (match is None):
                 l = uhandle.readline()
         consumer.cutoff(filter(lambda x : x<>'',
                 l.rstrip().split('=')[1].split(' ')))
-        while l<>'':
-            match =re.search('Population ([0-9])+',l)
+        while l <> '':
+            match = re.search('Population ([0-9])+',l)
             if (match <> None):
                 consumer.start_pop(int(match.group(1)))
             self.fetch_values('Harmonic Mean', l, consumer.harmonic_mean)

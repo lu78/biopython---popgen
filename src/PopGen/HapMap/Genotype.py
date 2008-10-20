@@ -16,7 +16,7 @@ def init(hapmap_dir = '.'):
     HapMap.init(hapmap_dir)
     prepare_geno_dir()
 
-def getPopsForChr(self, chr):
+def getPopsForChr(self, chrom):
     '''Check if database has a certain chromosome. Returns list of pops.
     '''
     pops = []
@@ -24,9 +24,9 @@ def getPopsForChr(self, chr):
     c.execute('''
 	SELECT DISTINCT population
 	  FROM freq_snp
-	  WHERE chromosome = ?''', chr)
+	  WHERE chromosome = ?''', chrom)
     for pop in c:
-	pops.append(pop)
+        pops.append(pop)
     return pops
 
 def getChrsForPop(self, pop):
@@ -38,14 +38,14 @@ def getChrsForPop(self, pop):
 	SELECT chromosome 
 	  FROM freq_snp
 	  WHERE population = ?''', pop)
-    for chr in c:
-	chrs.append(chr)
+    for chrom in c:
+	       chrs.append(chrom)
     return chrs
 
-def has_chr_pop(chr, pop):
+def has_chr_pop(chrom, pop):
     '''Check if database has a certain chromosome and population.
     '''
-    return os.path.exists(geno_dir + os.sep + pop + "-" + str(chr))
+    return os.path.exists(geno_dir + os.sep + pop + "-" + str(chrom))
 
 def infer_from_list(lst):
     for f in lst:
@@ -112,7 +112,7 @@ def require_chr(chrom, pop_list):
     Load might fail, repeating might be a possibility.
     '''
     for pop in pop_list:
-	require_chr_pop(chrom, pop)
+        require_chr_pop(chrom, pop)
 
 def cleanDB(self):
     '''Cleans the database. Caution...
@@ -131,7 +131,7 @@ def getRSsForInterval(self, chrom, begin, end):
 	  AND position <= ?''', (chrom, begin, end))
     rs_list = []
     for rs in c:
-	rs_list.append(rs[0])
+        rs_list.append(rs[0])
     return rs_list
 
 def report_dups(chrom, pop):
@@ -187,9 +187,9 @@ def get_indiv(handle, record, indiv, dup = False, dup_constraint = True):
     if dup_constraint and handle[2].has_key(indiv+'.dup'):
         dup = record[handle[2][indiv+'.dup']]
         orig = record[handle[2][indiv]]
-        if dup=='NN': return orig
-        elif orig=='NN': return dup
-        elif dup<>orig:
+        if dup == 'NN': return orig
+        elif orig == 'NN': return dup
+        elif dup <> orig:
             return None
         else:
             return orig # == dup
@@ -200,9 +200,9 @@ def get_indiv(handle, record, indiv, dup = False, dup_constraint = True):
 
 def has_same_dup(handle, record, indiv):
     if record[handle[2][indiv+'.dup']] == record[handle[2][indiv]]:
-      return True
+        return True
     if record[handle[2][indiv+'.dup']] == (
         record[handle[2][indiv]][1] + record[handle[2][indiv]][0]):
-      return True
+        return True
 
     return False
