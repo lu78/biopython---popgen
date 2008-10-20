@@ -46,6 +46,7 @@ class Cache:
             str(mut), cache_fst]) + '.bz2'
         full_cache_name = self.cache_dir + os.sep + cache_name
         full_final_name = data_dir + os.sep + 'out.dat'
+        
         if os.access(full_cache_name, os.R_OK):
             bzf = BZ2File(full_cache_name, 'r')
             of = open(full_final_name, 'w')
@@ -73,7 +74,7 @@ class Cache:
             else:
                 begin = fst
                 end   = real_fst
-            while begin<=end + (self.limit/2):
+            while begin <= end + (self.limit/2):
                 interval_full_cache_name = self.cache_dir + os.sep + \
                     '_'.join([str(npops), str(nsamples), str(sample_size),
                     str(mut), str(round(begin, -int(log10(self.limit))))]) \

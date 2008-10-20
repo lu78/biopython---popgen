@@ -33,11 +33,11 @@ class GenePopController:
         self.tmp_idx = 0
         self.genepop_dir = genepop_dir
         self.os_name = os.name
-        if self.os_name=='nt':
+        if self.os_name == 'nt':
             py_ext = '.exe'
         else:
             py_ext = ''
-        if ext == None:
+        if ext is None:
             self.ext = py_ext
         else:
             self.ext = ext
@@ -70,7 +70,7 @@ class GenePopController:
         f = open(fname+'.FST')
         fsts = []
         l = f.readline()
-        while l<>'':
+        while l <> '':
             l = l.rstrip()
             if l.startswith('  Locus:'):
                 locus = l.split(':')[1].lstrip()
@@ -108,10 +108,12 @@ class GenePopController:
         doneLocus = []
         counts = []
         allPopCounts = []
-        while l<>'':
+        
+        while l <> '':
             l = l.rstrip()
             match = re.match(".*Pop: .* Locus: (.+)", l)
-            if match<>None:
+            
+            if match <> None:
                 locus = match.group(1)
                 if locus in doneLocus:
                     doneLocus=[locus]
@@ -120,12 +122,13 @@ class GenePopController:
                 else:
                     doneLocus.append(locus)
                 genoCounts = []
-            if locus<>None:
+                
+            if locus <> None:
                 if l.find("Genotypes  Obs.")>-1:
                     onInfo = True
                 elif onInfo:
                     m2 = re.match(" +([0-9]+) , ([0-9]+) * ([0-9]+)",l)
-                    if m2<>None:
+                    if m2 <> None:
                         genoCounts.append((m2.group(1), m2.group(2), m2.group(3)))
                     else:
                       onInfo = False

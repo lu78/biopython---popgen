@@ -50,7 +50,7 @@ def has_chr_pop(chr, pop):
 def infer_from_list(lst):
     for f in lst:
         f = f.split('/')[-1]
-        if (f.find('17')>-1 and f.find('YRI')>-1):
+        if (f.find('17') > -1 and f.find('YRI') > -1):
             return f.replace('17', 'CHRNUM').replace('YRI','PNAME')
 
 def infer_file_names():
@@ -66,29 +66,29 @@ def infer_file_names():
 
 
 
-def require_chr_pop(chr, pop):
+def require_chr_pop(chrom, pop):
     '''Requires a chromosome and population.
 
     This will retrieve data from HapMap and load it on the database.
     Hogs network and takes time and disk space!
     Load might fail, repeating might be a possibility.
     '''
-    if not has_chr_pop(chr, pop):
+    if not has_chr_pop(chrom, pop):
         tempHMFile = geno_dir + os.sep + 'tmp_hp.gz'
         try:
             os.remove(tempHMFile)
         except OSError:
             pass #Doesn't exist -> OK
-        print 'Will load', chr, pop, 'NOTE: This will take a lot of time'
+        print 'Will load', chrom, pop, 'NOTE: This will take a lot of time'
         #tpl_name = infer_file_names()
-        #name = tpl_name.replace('PNAME', pop).replace('CRHNUM', str(chr))
+        #name = tpl_name.replace('PNAME', pop).replace('CRHNUM', str(chrom))
         #ftp = FTP('www.hapmap.org')
         #ftpDir = 'frequencies/latest/fwd_strand/non-redundant'
         #ftp.login()
         #ftp.retrbinary('RETR ' + ftpDir + '/' + name,
         #    open(tempHMFile, 'wb').write)
         #ftp.close()
-        #os.rename(geno_dir + os.sep + 'tmp_hp.gz', geno_dir + os.sep + pop + "-" + str(chr))
+        #os.rename(geno_dir + os.sep + 'tmp_hp.gz', geno_dir + os.sep + pop + "-" + str(chrom))
 
 def require_pop(pop):
     '''Requires a population, all chromosomes.
@@ -97,12 +97,12 @@ def require_pop(pop):
     Hogs network and takes time and disk space!
     Load might fail, repeating might be a possibility.
     '''
-    for chr in range(1, 23):
-        require_chr_pop(str(chr), pop)
+    for chrom in range(1, 23):
+        require_chr_pop(str(chrom), pop)
     require_chr_pop('X', pop)
     require_chr_pop('Y', pop)
 
-def require_chr(chr, pop_list):
+def require_chr(chrom, pop_list):
     '''Requires a chromosome for specified populations.
 
     This will retrieve data from HapMap and load it on the database.
@@ -112,14 +112,14 @@ def require_chr(chr, pop_list):
     Load might fail, repeating might be a possibility.
     '''
     for pop in pop_list:
-	require_chr_pop(chr, pop)
+	require_chr_pop(chrom, pop)
 
 def cleanDB(self):
     '''Cleans the database. Caution...
     '''
     self.dbConn.execute('DELETE FROM freq_snp')
 
-def getRSsForInterval(self, chr, begin, end):
+def getRSsForInterval(self, chrom, begin, end):
     '''Gets a list of rs_ids for an interval (limits included)
     '''
     c = self.dbConn.cursor()
@@ -128,30 +128,30 @@ def getRSsForInterval(self, chr, begin, end):
 	  FROM freq_snp
 	WHERE chromosome = ?
 	  AND position >= ?
-	  AND position <= ?''', (chr, begin, end))
+	  AND position <= ?''', (chrom, begin, end))
     rs_list = []
     for rs in c:
 	rs_list.append(rs[0])
     return rs_list
 
-def report_dups(chr, pop):
+def report_dups(chrom, pop):
     '''Reports indivuduals with duplicates.'''
     dups = []
-    require_chr_pop(chr, pop)
-    gf = gzip.open(geno_dir + os.sep + pop + "-" + str(chr))
+    require_chr_pop(chrom, pop)
+    gf = gzip.open(geno_dir + os.sep + pop + "-" + str(chrom))
     for name in gf.readline().split(' ')[11:]:
         if name.endswith('.dup'): dups.append(name[:-4])
     gf.close()
     return dups
 
-def start_chr_pop(chr, pop):
-    '''Starts the processing of a chr/pop case.
+def start_chr_pop(chrom, pop):
+    '''Starts the processing of a chrom/pop case.
 
        Returns an handle.
     '''
-    require_chr_pop(chr, pop)
-    dups = report_dups(chr, pop)
-    gf = gzip.open(geno_dir + os.sep + pop + "-" + str(chr))
+    require_chr_pop(chrom, pop)
+    dups = report_dups(chrom, pop)
+    gf = gzip.open(geno_dir + os.sep + pop + "-" + str(chrom))
     indivs = gf.readline().rstrip().split(' ')[11:]
     indivPos = {}
     for i in range(len(indivs)):
