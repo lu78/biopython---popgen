@@ -70,7 +70,7 @@ class GenePopController:
         f = open(fname+'.FST')
         fsts = []
         l = f.readline()
-        while l <> '':
+        while l != '':
             l = l.rstrip()
             if l.startswith('  Locus:'):
                 locus = l.split(':')[1].lstrip()
@@ -109,11 +109,11 @@ class GenePopController:
         counts = []
         allPopCounts = []
         
-        while l <> '':
+        while l != '':
             l = l.rstrip()
             match = re.match(".*Pop: .* Locus: (.+)", l)
             
-            if match <> None:
+            if match is not None:
                 locus = match.group(1)
                 if locus in doneLocus:
                     doneLocus=[locus]
@@ -123,12 +123,12 @@ class GenePopController:
                     doneLocus.append(locus)
                 genoCounts = []
                 
-            if locus <> None:
+            if locus is not None:
                 if l.find("Genotypes  Obs.")>-1:
                     onInfo = True
                 elif onInfo:
                     m2 = re.match(" +([0-9]+) , ([0-9]+) * ([0-9]+)",l)
-                    if m2 <> None:
+                    if m2 is not None:
                         genoCounts.append((m2.group(1), m2.group(2), m2.group(3)))
                     else:
                       onInfo = False

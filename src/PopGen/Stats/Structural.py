@@ -133,13 +133,13 @@ class FstBeaumont(Structural):
             sample_size = 0
             for allele in alleles:
                 sample_size += alleles[allele]
-            if sample_size <> 0:
+            if sample_size != 0:
                 for k in range(j+1, len(pops)):
                     alleles2 = self.pop_counts[pops[k]]
                     sample_size2 = 0
                     for allele2 in alleles2:
                         sample_size2 += alleles2[allele2]
-                    if sample_size2 <> 0:
+                    if sample_size2 != 0:
                         y1 = 0.0
                         for all in alleles.keys():
                             if alleles2.has_key(all):
@@ -197,7 +197,7 @@ def _get_het_allele_freq(indivs, allele):
     het_count = 0
     for indiv in indivs:
         if indiv[0] == allele or indiv[1] == allele:
-            if indiv[0] <> indiv[1]:
+            if indiv[0] != indiv[1]:
                 het_count += 1
     return 1.0 * het_count / len(indivs)
 

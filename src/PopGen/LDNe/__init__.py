@@ -136,11 +136,11 @@ class _Scanner:
             match = re.search('Lowest Allele Fr', l)
             if (match is None):
                 l = uhandle.readline()
-        consumer.cutoff(filter(lambda x : x<>'',
+        consumer.cutoff(filter(lambda x : x != '',
                 l.rstrip().split('=')[1].split(' ')))
-        while l <> '':
+        while l != '':
             match = re.search('Population ([0-9])+',l)
-            if (match <> None):
+            if (match is not None):
                 consumer.start_pop(int(match.group(1)))
             self.fetch_values('Harmonic Mean', l, consumer.harmonic_mean)
             self.fetch_values('Independent Comparisons', l, consumer.independent_comparison)
@@ -150,7 +150,7 @@ class _Scanner:
             if l.startswith('95% CI'):
                 l = uhandle.readline().rstrip()
                 consumer.parametric_bottom(
-                        filter(lambda x: x<>'' and x<>'*' and not x.startswith('P'),
+                        filter(lambda x: x!='' and x!='*' and not x.startswith('P'),
                             [l[30:40], l[40:50], l[50:60]]
                         )
                 )
@@ -159,13 +159,13 @@ class _Scanner:
                 l = uhandle.readline().rstrip()
                 l = uhandle.readline().rstrip()
                 consumer.jacknife_bottom(
-                        filter(lambda x: x<>'' and x<>'*' and not x.startswith('J') and not x.startswith('o') and not x.startswith('L'),
+                        filter(lambda x: x!='' and x!='*' and not x.startswith('J') and not x.startswith('o') and not x.startswith('L'),
                             [l[30:40], l[40:50], l[50:60]]
                         )
                 )
                 l = uhandle.readline().rstrip()
                 consumer.jacknife_top(
-                        filter(lambda x: x<>'',
+                        filter(lambda x: x!='',
                             [l[30:40], l[40:50], l[50:60]]
                         )
                 )
@@ -174,8 +174,8 @@ class _Scanner:
 
     def fetch_values(self, hook, l, fun):
         l = l.rstrip()
-        if (re.search(hook, l) <> None):
-            fun(filter(lambda x: x<>'',
+        if (re.search(hook, l) is not None):
+            fun(filter(lambda x: x != '',
                 [l[30:40], l[40:50], l[50:60]]))
         
 
@@ -207,7 +207,7 @@ class _RecordConsumer(AbstractConsumer):
         self.data.populations.append((self.pop_id, self.pop))
 
     def end_record(self):
-        if self.pop <> None: self.attach_pop()
+        if self.pop is not None: self.attach_pop()
 
     def mating(self, mating):
         self.data.mating = mating
@@ -216,7 +216,7 @@ class _RecordConsumer(AbstractConsumer):
         self.data.freqs_used = max(lambda x: float(x) ,cutoff)
 
     def start_pop(self, id):
-        if self.pop <> None: self.attach_pop()
+        if self.pop if not None: self.attach_pop()
         self.pop    = []
         self.pop_id = id
 

@@ -97,7 +97,7 @@ class _Scanner:
         else:
             rexp = re.compile('^[^#]*' + name + '= *([^# ]+)')
         m = rexp.search(line)
-        if m <> None:
+        if m is not None:
             rep_fun(prep_fun(m.group(1)))
 
     def report_allele(self, token, consumer):
@@ -126,17 +126,17 @@ class _Scanner:
         on_profile = False
         on_data = False
         on_structure = False
-        while l<>'':
+        while l != '':
             l = l.rstrip()
-            if l.find('[Profile]') <> -1: #Should control for comment
+            if l.find('[Profile]') != -1: #Should control for comment
                 on_profile   = True
                 on_data      = False
                 on_structure = False
-            if l.find('[Data]') <> -1: #Should control for comment
+            if l.find('[Data]') != -1: #Should control for comment
                 on_profile   = False
                 on_data      = True
                 on_structure = False
-            if l.find('[Structure]') <> -1: #Should control for comment
+            if l.find('[Structure]') != -1: #Should control for comment
                 on_profile   = False
                 on_data      = False
                 on_structure = True
@@ -152,7 +152,7 @@ class _Scanner:
                 self.report_param('SampleName',l, consumer.pop_name,str,True)
                 self.report_param('SampleSize',l, consumer.pop_size,int,False)
                 tokens = l.split('\t')
-                if tokens[0].find('_') <> -1:
+                if tokens[0].find('_') != -1:
                     pop_i, indiv_name = tokens[0].split('_')
                     consumer.new_indiv(indiv_name)
                     consumer.new_chromatid()
@@ -168,7 +168,7 @@ class _Scanner:
                             self.report_allele(tok, consumer) 
                         consumer.end_chromatid()
                     consumer.end_indiv()
-                elif l.find('}') <> -1:
+                elif l.find('}') != -1:
                     consumer.end_pop()
             l = handle.readline()
         consumer.end_record()

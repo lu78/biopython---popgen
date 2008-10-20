@@ -152,7 +152,7 @@ class _Scanner:
             consumer.loci_name(loci_name)
 
         line = uhandle.readline()
-        while line<>'':
+        while line != '':
             line = line.rstrip()
             toks = line.split(' ')
             consumer.individual(toks[0], toks[1:])

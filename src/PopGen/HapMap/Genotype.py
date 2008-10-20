@@ -189,7 +189,7 @@ def get_indiv(handle, record, indiv, dup = False, dup_constraint = True):
         orig = record[handle[2][indiv]]
         if dup == 'NN': return orig
         elif orig == 'NN': return dup
-        elif dup <> orig:
+        elif dup != orig:
             return None
         else:
             return orig # == dup
