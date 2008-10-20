@@ -30,7 +30,7 @@ def island(demes, mig, size, *args, **kwargs):
     for i in range(demes):
         migLine = []
         for j in range(demes):
-            if i==j: migLine.append(0.0)
+            if i == j: migLine.append(0.0)
             else: migLine.append(mig)
         migMat.append(migLine)
     op = migrator(rate = migMat)

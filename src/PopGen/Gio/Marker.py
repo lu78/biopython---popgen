@@ -8,6 +8,7 @@ class wrong_add_individual_input(Exception):
 class Marker:
     '''
     A Marker object(like a SNP, a gene, etc...)
+    # Note: would it be better to use 'Marker' or 'Locus'?
     
     >>> C10G = Marker('A130G')
     >>> C10G.add_individual(1, 1, 0) # heterozygote individual
@@ -29,8 +30,10 @@ class Marker:
     missing_data_count = 0
     total_population = 0 # people with missing data are excluded from this count
       
-    def __init__(self, name = "un-named marker"):
+    def __init__(self, name = None):
         # should add a check for parameters type (e.g. missing -> should be integer)
+        if name is None:
+            name = 'Un-named Marker'
         self.name = name
         
     def add_individual(self, Pur_count, Pyr_count, missing_data_count):
