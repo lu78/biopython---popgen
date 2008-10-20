@@ -13,6 +13,8 @@ class Individual:
     father = ''
     mother = ''
     sex = '0'
+    phenotype = '0'
+    markers = []
     
     def __init__(self):
         pass
