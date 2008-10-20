@@ -1,0 +1,7 @@
+PopGen module for biopython.
+
+It is recommended to use this module by taking a biopython release and replace the PopGen directory
+with the contents of this one.
+
+Reference this discussion on the biopython mailing list:
+- http://lists.open-bio.org/pipermail/biopython/2008-October/004584.html
