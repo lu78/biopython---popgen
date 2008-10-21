@@ -45,6 +45,9 @@ from PopGen.GenePop import Record       # Use the same Record object from GenePo
 class RecordParser(AbstractParser):
     """Parses GenePop data into a Record object.
 
+    >>> r = RecordParser()
+    >>> dir(r)
+    
     """
     def __init__(self):
         self._scanner = _Scanner()
@@ -110,4 +113,9 @@ class _RecordConsumer(AbstractConsumer):
     def comment(self, comment_line):
         self.data.comment_line = comment_line       # what if there are 2 comment lines or more?
 
-
+def _test():
+    import doctest
+    doctest.testmod()
+    
+if __name__ == '__main__':
+    _test()

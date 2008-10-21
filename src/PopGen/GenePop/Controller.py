@@ -19,6 +19,10 @@ import re
 #from time import strftime, clock
 #from logging import debug
 
+class GenepopDoesntExists(Exception):
+    def __str__(self):
+        print "Genepop is not installed or could not find it in PATH"
+
 class GenePopController:
     def __init__(self, genepop_dir = '', ext = None):
         """Initializes the controller.
