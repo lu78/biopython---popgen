@@ -45,8 +45,18 @@ from PopGen.GenePop import Record       # Use the same Record object from GenePo
 class RecordParser(AbstractParser):
     """Parses GenePop data into a Record object.
 
-    >>> r = RecordParser()
-    >>> dir(r)
+    >>> import tempfile
+    >>> sample_PED_file = tempfile.TemporaryFile()
+    >>> sample_PED_file.write('''
+    ... # population id father mother char1 phenotype locus1_allele1 locus1_allele2 locus2_allele1 .....
+    ... Mandenka HGDP00912 0 0 1 2 C C G A G G T T T T A A G G
+    ... Mandenka HGDP01283 0 0 1 2 T C G A G G C T C C G G G A
+    ... Yoruba HGDP00928 0 0 2 2 C C G G G G C T T T G A G G
+    ... Yoruba HGDP00937 0 0 1 2 C C A A A G C C T C A A G A
+    ... ''')
+    >>> sample_PED_file.seek(0)
+    >>> rp = RecordParser()
+    >>> rp.parse(sample_PED_file)
     
     """
     def __init__(self):
@@ -90,7 +100,9 @@ class _Scanner:
         consumer.comment(comment_line)
         
         # Here it goes the code to parse the single PED line
-        pass
+        ped_fields = uhandle.readline().rstrip()
+        print ped_fields
+        
 
 
 class _RecordConsumer(AbstractConsumer):

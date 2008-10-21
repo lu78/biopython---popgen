@@ -40,7 +40,7 @@ from Bio.ParserSupport import *
 
 
 class Record(object):
-    """Holds information from a GenePop record.
+    """Holds information from a GenePop/PED record.  
 
     Members:
     marker_len         The marker length (2 or 3 digit code per allele).    
@@ -50,6 +50,8 @@ class Record(object):
     loci_list          List of loci names.
     
     populations        List of population data.
+    
+    Note: str(Record) will return Record in Popgen format 
     
     populations has one element per population. Each element is itself
     a list of individuals, each individual is a pair composed by individual
