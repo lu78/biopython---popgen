@@ -79,10 +79,10 @@ class AbstractPopRecord(object):
         """
         gp_pops = {}
         for i in range(len(self.populations)):
-            gp_pop = GenePop.Record()
+            gp_pop = GenePop.Record()                  # should import GenePop.Record??
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
-            gp_pop.loci_list = deepcopy(self.loci_list)
+            gp_pop.loci_list = deepcopy(self.loci_list)     # where is this? Bio.File/ParserSupport?
             gp_pop.populations = [deepcopy(self.populations[i])]
             gp_pops[pop_names[i]] = gp_pop
         return gp_pops
@@ -96,7 +96,7 @@ class AbstractPopRecord(object):
         """
         gp_loci = {}
         for i in range(len(self.loci_list)):
-            gp_pop = GenePop.Record()
+            gp_pop = GenePop.Record()                   # should import GenePop.Record?
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
             gp_pop.loci_list = [self.loci_list[i]]
