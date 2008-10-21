@@ -161,10 +161,10 @@ class RecordParser(AbstractParser):
         return self._consumer.data
 
 def parse(handle):
-   """Parses a handle containing a GenePop file.
-   """
-   parser = RecordParser()
-   return parser.parse(handle)
+    """Parses a handle containing a GenePop file.
+    """
+    parser = RecordParser()
+    return parser.parse(handle)
 
 class _Scanner:
     """Scans a GenePop record.
