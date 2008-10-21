@@ -37,8 +37,11 @@ from types import *
 
 from Bio import File
 from Bio.ParserSupport import *     # overwriting previous import?
+from PopGen.AbstractPopRecord import AbstractPopRecord 
+        
 
-class Record(object):
+
+class Record(AbstractPopRecord):
     """Holds information from a PEP record.
 
     Members:
