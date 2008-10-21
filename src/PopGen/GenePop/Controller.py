@@ -100,7 +100,7 @@ class GenePopController:
         """
         os.system(
             self._get_path() + ' Mode=Batch MenuOptions=5.1 InputFile='+fname +
-            '> /dev/null 2> /dev/null')
+            '> /dev/null 2> /dev/null') # this would only work on Unix?
         locus = None
         onInfo = False
         f = open(fname+'.INF')

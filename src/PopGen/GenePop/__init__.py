@@ -63,6 +63,8 @@ class Record:
             ('Other1', [(1,1),  (4,3), (200,200)],
         ]
     ]
+    
+    >>> pops = Record()
 
     
     """
@@ -105,7 +107,7 @@ class Record:
         """
         gp_pops = {}
         for i in range(len(self.populations)):
-            gp_pop = GenePop.Record()
+            gp_pop = GenePop.Record()       # Bio.PopGen.GenePop.Record? Record?
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
             gp_pop.loci_list = deepcopy(self.loci_list)
@@ -122,7 +124,7 @@ class Record:
         """
         gp_loci = {}
         for i in range(len(self.loci_list)):
-            gp_pop = GenePop.Record()
+            gp_pop = GenePop.Record()       # Bio.PopGen.GenePop.Record? Record?
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
             gp_pop.loci_list = [self.loci_list[i]]
