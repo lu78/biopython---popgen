@@ -63,7 +63,7 @@ def parse(handle):
 class _Scanner:
     """Scans a GenePop record.
     
-    There is only one record per file.    # no there are multiple records per file?????
+    There is only one record per file.
     
     """
 

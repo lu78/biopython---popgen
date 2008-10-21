@@ -53,20 +53,22 @@ class Record:
     
     populations has one element per population. Each element is itself
     a list of individuals, each individual is a pair composed by individual
-    name and a list of alleles (2 per marker): Example
-    [
-        [
-            ('Ind1', [(1,2),    (3,3), (200,201)],
-            ('Ind2', [(2,None), (3,3), (None,None)],
-        ],
-        [
-            ('Other1', [(1,1),  (4,3), (200,200)],
-        ]
-    ]
+    name and a list of alleles (2 per marker).
     
     >>> pops = Record()
+    >>> pops.populations = [
+    ...    [
+    ...        ('Ind1', [(1,2),    (3,3), (200,201)]),
+    ...        ('Ind2', [(2,None), (3,3), (None,None)]),
+    ...    ],
+    ...    [
+    ...        ('Other1', [(1,1),  (4,3), (200,200)]),
+    ...    ]
+    ... ]
+    ...
+    >>> pops #doctest: +ELLIPSIS
+    <__main__.Record instance at 0x...>
 
-    
     """
     def __init__(self):
         self.marker_len      = 0
@@ -107,7 +109,7 @@ class Record:
         """
         gp_pops = {}
         for i in range(len(self.populations)):
-            gp_pop = GenePop.Record()       # Bio.PopGen.GenePop.Record? Record?
+            gp_pop = Record()       # Bio.PopGen.GenePop.Record? Record?
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
             gp_pop.loci_list = deepcopy(self.loci_list)
@@ -124,7 +126,7 @@ class Record:
         """
         gp_loci = {}
         for i in range(len(self.loci_list)):
-            gp_pop = GenePop.Record()       # Bio.PopGen.GenePop.Record? Record?
+            gp_pop = Record()       # Bio.PopGen.GenePop.Record? Record?
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
             gp_pop.loci_list = [self.loci_list[i]]
@@ -210,7 +212,7 @@ class _Scanner:
         #We can now have one loci per line or all loci in a single line
         #seperated by either space or comma+space...
         #We will remove all commas on loci... that should not be a problem
-        sample_loci_line = uhandle.readline().rstrip().replace(',', '')
+        sample_loci_line = uhandle.readline().rstrip().replace(',', '') 
         all_loci = sample_loci_line.split(' ')
         if len(all_loci)>1: #This is all loci in one line
             for locus in all_loci:
@@ -297,3 +299,10 @@ class _RecordConsumer(AbstractConsumer):
         self.current_pop.append((indiv_name, allele_list))
     
 
+def _test():
+    import doctest
+    doctest.testmod()
+    
+if __name__ == '__main__':
+    _test()
+    
