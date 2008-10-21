@@ -78,6 +78,7 @@ class Record(object):
     Other1, 11 43 200200
     <BLANKLINE>
     
+    >>> pops.add_population([ ('Ind3', [(1,1), (3,3), (None, None)]), ])     # a Population object would be useful
     """
     def __init__(self):
         self.marker_len      = 0
@@ -85,10 +86,12 @@ class Record(object):
         self.loci_list       = []
         self.populations     = []
         
-    def add_population(self):
-        pass        # to implement
+    def add_population(self, pop):
+        # should check pop
+        self.populations.append(pop)
 
     def __str__(self):
+        # Basically, str(Record) will return Genepop format for the record. 
         rep  = [self.comment_line + '\n']
         rep.append('\n'.join(self.loci_list) + '\n')
         for pop in self.populations:
@@ -103,7 +106,7 @@ class Record(object):
                         if al == None:
                             al = '0'
                         aStr = str(al)
-                        while len(aStr)<self.marker_len:
+                        while len(aStr) < self.marker_len:
                             aStr = "".join(['0', aStr])
                         rep.append(aStr)
                 rep.append('\n')
