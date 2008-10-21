@@ -74,11 +74,11 @@ class _Scanner:
         Consumer object that will receive events as the report is scanned.
 
         """
+        # Check whetherfile exists????
         if isinstance(handle, File.UndoHandle):
             uhandle = handle
         else:
             uhandle = File.UndoHandle(handle)
-            
             
         consumer.start_record()
         

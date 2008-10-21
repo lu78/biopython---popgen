@@ -47,8 +47,8 @@ class GenePopController:
 
            Includes path where GenePop can be found plus executable extension.
         """
-        if self.genepop_dir == '':
-            return app + self.ext
+        if self.genepop_dir == '':      # if genepop_dir is not defined, return what?
+            return app + self.ext       # undefined variable app
         else:
             return os.sep.join([self.genepop_dir, 'Genepop']) + self.ext
 
