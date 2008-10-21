@@ -37,47 +37,9 @@ from types import *
 
 from Bio import File
 from Bio.ParserSupport import *     # overwriting previous import?
-from PopGen.AbstractPopRecord import AbstractPopRecord 
-        
 
-
-class Record(AbstractPopRecord):
-    """Holds information from a PEP record.
-
-    Members:
-    marker_len         The marker length (2 or 3 digit code per allele).    
-    
-    comment_line       Comment line.
-
-    loci_list          List of loci names.
-    
-    populations        List of population data.
-    
-    populations has one element per population. Each element is itself
-    a list of individuals, each individual is a pair composed by individual
-    name and a list of alleles (2 per marker): Example
-    [
-        [
-            ('Ind1', [(1,2),    (3,3), (200,201)],
-            ('Ind2', [(2,None), (3,3), (None,None)],
-        ],
-        [
-            ('Other1', [(1,1),  (4,3), (200,200)],
-        ]
-    ]
-
-    
-    """
-    
-    def __init__(self):
-        self.marker_len      = 0
-        self.comment_line    = ""
-        self.loci_list       = []
-        self.populations     = []
-        
-#    def __str__(self):
-#        return 
-
+#from PopGen.AbstractPopRecord import AbstractPopRecord 
+from PopGen.GenePop import Record       # Use the same Record object from GenePop.
 
 
 class RecordParser(AbstractParser):

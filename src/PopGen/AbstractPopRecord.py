@@ -88,12 +88,12 @@ class AbstractPopRecord(object):
             gp_pop = GenePop.Record()                  # should import GenePop.Record??
             gp_pop.marker_len = self.marker_len
             gp_pop.comment_line = self.comment_line
-            gp_pop.loci_list = deepcopy(self.loci_list)     # where is this? Bio.File/ParserSupport?
+            gp_pop.loci_list = deepcopy(self.loci_list)
             gp_pop.populations = [deepcopy(self.populations[i])]
             gp_pops[pop_names[i]] = gp_pop
         return gp_pops
 
-    def split_in_loci(self, gp):
+    def split_in_loci(self, gp):        # unused var gp
         """Splits a GP record in a dictionary with 1 locus per entry.
 
             Given a record with n pops and m loci returns a dictionary
@@ -139,3 +139,4 @@ class AbstractPopRecord(object):
                 return
         #If here than locus not existent... Maybe raise exception?
         #   Although it should be Ok... Just a boolean return, maybe?
+        
