@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # Population object
 
-class Population:
+class Population(object):
     """
     Describe a Population objects.    
     

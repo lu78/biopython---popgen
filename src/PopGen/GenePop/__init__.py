@@ -275,7 +275,7 @@ class _RecordConsumer(AbstractConsumer):
         self.data.marker_len = marker_len
 
     def start_pop(self):
-        self.current_pop = []
+        self.current_pop = []   # should this be current_pop instead of self.current_pop?
         self.data.populations.append(self.current_pop)
 
     def individual(self, indiv_name, allele_list):

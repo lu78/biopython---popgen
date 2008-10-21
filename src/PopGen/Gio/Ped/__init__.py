@@ -38,7 +38,7 @@ from types import *
 from Bio import File
 from Bio.ParserSupport import *     # overwriting previous import?
 
-class Record:
+class Record(object):
     """Holds information from a PEP record.
 
     Members:
@@ -74,6 +74,8 @@ class Record:
         
 #    def __str__(self):
 #        return 
+
+
 
 class RecordParser(AbstractParser):
     """Parses GenePop data into a Record object.

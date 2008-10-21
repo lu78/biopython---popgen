@@ -1,4 +1,4 @@
-class Individual:
+class Individual(object):
     """
     Represents an Individual
     It is suggested to instantiate Individuals with the .from_ped_line method.
