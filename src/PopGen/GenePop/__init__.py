@@ -285,6 +285,7 @@ class _RecordConsumer(AbstractConsumer):
         self.data = Record()
 
     def end_record(self):
+        # data is written in Record only after the whole file has been read.
         pops = self.data.populations
         loci = self.data.loci_list
         for pop_i in range(len(pops)):
