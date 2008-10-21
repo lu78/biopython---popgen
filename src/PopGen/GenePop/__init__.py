@@ -39,7 +39,7 @@ from Bio import File
 from Bio.ParserSupport import *
 
 
-class Record:
+class Record(object):
     """Holds information from a GenePop record.
 
     Members:
@@ -66,15 +66,27 @@ class Record:
     ...    ]
     ... ]
     ...
-    >>> pops #doctest: +ELLIPSIS
-    <__main__.Record instance at 0x...>
-
+    >>> pops #(shouldn't print __str__?) #doctest: +ELLIPSIS 
+    <__main__.Record object at 0x...>
+    >>> print pops
+    <BLANKLINE>
+    <BLANKLINE>
+    Pop
+    Ind1, 12 33 200201
+    Ind2, 20 33 00
+    Pop
+    Other1, 11 43 200200
+    <BLANKLINE>
+    
     """
     def __init__(self):
         self.marker_len      = 0
         self.comment_line    = ""
         self.loci_list       = []
         self.populations     = []
+        
+    def add_population(self):
+        pass        # to implement
 
     def __str__(self):
         rep  = [self.comment_line + '\n']
