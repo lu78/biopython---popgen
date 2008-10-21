@@ -9,7 +9,7 @@ from types import *
 
 from Bio import File
 from Bio.ParserSupport import *
-from GenePop import Record              # cyclic import?
+import GenePop
 
 class AbstractPopRecord(object):
     """Abstract class for GenePop/PEP/etc parsers
