@@ -4,6 +4,12 @@
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
 
+from copy import deepcopy
+from types import *
+
+from Bio import File
+from Bio.ParserSupport import *
+from GenePop import Record              # cyclic import?
 
 class AbstractPopRecord(object):
     """Abstract class for GenePop/PEP/etc parsers
