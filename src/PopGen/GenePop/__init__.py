@@ -7,7 +7,20 @@
 This module provides code to work with GenePop.
 
 See http://wbiomed.curtin.edu.au/genepop/ , the format is documented
-here: http://wbiomed.curtin.edu.au/genepop/help_input.html .
+here: http://genepop.curtin.edu.au/help_input.html.
+
+Example of GenePop file:
+Microsat on Chiracus radioactivus, a pest species 
+     Loc1, Loc2, Loc3, Y-linked, Loc4 
+POP 
+AA8, 0405 0711 0304 0000      0505 
+AA9, 0405 0609 0208 0000      0505 
+A10, 0205 0609 0101 0000      0305 
+Pop
+AF, 0000 0000 0000 0000      0505 
+AF, 0205 0307 0102 0000      0505 
+AF, 0202 0609 0202 0000      0505 
+
 
 Classes:
 Record           Holds GenePop data.
