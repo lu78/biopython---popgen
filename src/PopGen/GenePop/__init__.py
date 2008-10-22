@@ -156,7 +156,6 @@ class Record(object):
             gp_loci[gp_pop.loci_list[0]] = gp_pop
         return gp_loci
 
-
     def remove_population(self, pos):
         """Removes a population (by position).
         """
@@ -219,7 +218,6 @@ class _Scanner:
             uhandle = handle
         else:
             uhandle = File.UndoHandle(handle)
-
 
         consumer.start_record()
         

@@ -34,7 +34,7 @@ _RecordConsumer  Consumes PED data to a Record object.
 
 from copy import deepcopy
 from types import *
-from logging import debug
+import logging
 
 from Bio import File
 from Bio.ParserSupport import *     # overwriting previous import?
@@ -60,7 +60,8 @@ class RecordParser(AbstractParser):
     >>> rp = RecordParser()
     >>> pops = rp.parse(sample_PED_file)
     
-    # >>> pops
+    >>> pops    # should implement a Population object and define a good __repr__
+    {'Mandenka': [('HGDP00912', [('C', 'C'), ('G', 'A'), ('G', 'G'), ('T', 'T'), ('T', 'T'), ('A', 'A'), ('G', 'G')]), ('HGDP01283', [('T', 'C'), ('G', 'A'), ('G', 'G'), ('C', 'T'), ('C', 'C'), ('G', 'G'), ('G', 'A')])], 'Yoruba': [('HGDP00928', [('C', 'C'), ('G', 'G'), ('G', 'G'), ('C', 'T'), ('T', 'T'), ('G', 'A'), ('G', 'G')]), ('HGDP00937', [('C', 'C'), ('A', 'A'), ('A', 'G'), ('C', 'C'), ('T', 'C'), ('A', 'A'), ('G', 'A')])]}
     
     """
     def __init__(self):
@@ -99,6 +100,7 @@ class _Scanner:
             uhandle = File.UndoHandle(handle)
             
         consumer.start_record()
+        consumer.marker_len(2)         # Assuming that marker length is always 2 for PED files!
         
         current_pops = {}   # contains current populations
         
@@ -108,7 +110,7 @@ class _Scanner:
             if line.startswith('#'):
                 # line starting with # are comments
                 consumer.comment(line)  # what if there are >= 2 comments? 
-#               debug("comment ", line)
+#               logging.debug("comment ", line)
             elif line != '':
                 # parse a valid PED line and put its content in Record.
                 ped_fields = line.strip().split()       # not sure strip is needed
@@ -124,12 +126,12 @@ class _Scanner:
                 
                 alleles = [(markers[i], markers[i+1]) for i in xrange(0, len(markers), 2)]
                 
-                debug(alleles)
+                logging.debug(alleles)
                 
                 current_pops.setdefault(pop, [])
                 current_pops[pop].append((individual, alleles))
                 
-        print current_pops  # now shold send back this variable to consumer
+        logging.debug(current_pops)  # now shold send back this variable to consumer
         
 
 
@@ -147,11 +149,21 @@ class _RecordConsumer(AbstractConsumer):
         self.data = Record()
 
     def end_record(self):
-        # Here it goes the code to create a Population object and return it to the Record handler????
+        # Here it goes the code to take data returned by scanner.feed and put it in Record object.
         pass
     
     def comment(self, comment_line):
         self.data.comment_line = comment_line       # what if there are 2 comment lines or more?
+        
+    def marker_len(self, marker_len):
+        self.data.marker_len = marker_len
+
+    def start_pop(self):
+        self.current_pop = []   # should this be current_pop instead of self.current_pop?
+        self.data.populations.append(self.current_pop)
+
+    def individual(self, indiv_name, allele_list):
+        self.current_pop.append((indiv_name, allele_list))
 
 def _test():
     import doctest
