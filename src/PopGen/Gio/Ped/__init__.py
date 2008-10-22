@@ -122,17 +122,14 @@ class _Scanner:
                 phenotype = ped_fields[5]       # this variable is not saved in Record, for the moment
                 markers = ped_fields[6:]
                 
-#                alleles = []
-#                print markers
-#                for marker_i in xrange(0, len(markers), 2):
-#                    alleles.append((markers[marker_i], markers[marker_i + 1]))      # there are better ways to do this
                 alleles = [(markers[i], markers[i+1]) for i in xrange(0, len(markers), 2)]
                 
-                print alleles
+                debug(alleles)
+                
                 current_pops.setdefault(pop, [])
                 current_pops[pop].append((individual, alleles))
                 
-        print current_pops
+        print current_pops  # now shold send back this variable to consumer
         
 
 
@@ -161,4 +158,6 @@ def _test():
     doctest.testmod()
     
 if __name__ == '__main__':
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
     _test()
