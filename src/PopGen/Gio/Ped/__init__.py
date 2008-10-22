@@ -100,18 +100,39 @@ class _Scanner:
             
         consumer.start_record()
         
+        current_pops = {}   # contains current populations
         
         for line in uhandle.readlines():
             # Start parsing the PED file, line per line!
             line = line.strip()    
             if line.startswith('#'):
                 # line starting with # are comments
-                consumer.comment(line)
+                consumer.comment(line)  # what if there are >= 2 comments? 
 #               debug("comment ", line)
             elif line != '':
                 # parse a valid PED line and put its content in Record.
                 ped_fields = line.strip().split()       # not sure strip is needed
-                print consumer.data.populations # ops! I need to change Record object and transfomr populations in a dictionary
+#                print consumer.data.populations # ops! I need to change Record object and transfomr populations in a dictionary
+                
+                pop = ped_fields[0]
+                individual = ped_fields[1]
+                father = ped_fields[2]          # this variable is not saved in Record, for the moment 
+                mother = ped_fields[3]          # this variable is not saved in Record, for the moment
+                sex = ped_fields[4]             # this variable is not saved in Record, for the moment
+                phenotype = ped_fields[5]       # this variable is not saved in Record, for the moment
+                markers = ped_fields[6:]
+                
+#                alleles = []
+#                print markers
+#                for marker_i in xrange(0, len(markers), 2):
+#                    alleles.append((markers[marker_i], markers[marker_i + 1]))      # there are better ways to do this
+                alleles = [(markers[i], markers[i+1]) for i in xrange(0, len(markers), 2)]
+                
+                print alleles
+                current_pops.setdefault(pop, [])
+                current_pops[pop].append((individual, alleles))
+                
+        print current_pops
         
 
 

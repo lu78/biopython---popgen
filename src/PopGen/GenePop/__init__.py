@@ -251,7 +251,7 @@ class _Scanner:
             else:
                 (indiv_name, marker_line) = line.split(',')
                 markers = marker_line.replace('\t', ' ').split(' ')
-                for i in range(len(markers), 0, -1):
+                for i in range(len(markers), 0, -1):    # not clear what does this do!
                     if markers[i-1] == '':
                         del(markers[i-1])
                 if first_individual:
