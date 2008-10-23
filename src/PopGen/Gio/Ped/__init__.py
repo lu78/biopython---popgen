@@ -132,6 +132,7 @@ class _Scanner:
                 current_pops[pop].append((individual, alleles))
                 
         logging.debug(current_pops)  # now shold send back this variable to consumer
+        consumer.add_pops(current_pops)     # this must be implemented better
         
 
 
@@ -153,23 +154,18 @@ class _RecordConsumer(AbstractConsumer):
         pass
     
     def comment(self, comment_line):
-        self.data.comment_line = comment_line       # what if there are 2 comment lines or more?
+        self.data.comment_line += comment_line       # what if there are 2 comment lines or more?
         
     def marker_len(self, marker_len):
         self.data.marker_len = marker_len
 
-    def start_pop(self):
-        self.current_pop = []   # should this be current_pop instead of self.current_pop?
-        self.data.populations.append(self.current_pop)
-
-    def individual(self, indiv_name, allele_list):
-        self.current_pop.append((indiv_name, allele_list))
+    def add_pops(self, populations):
+        self.data.populations = populations
 
 def _test():
     import doctest
     doctest.testmod()
     
 if __name__ == '__main__':
-    import logging
     logging.basicConfig(level=logging.DEBUG)
     _test()
