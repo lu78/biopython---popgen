@@ -13,7 +13,7 @@ The format is described here:
 Every line in the PED file corresponds to an individual. 
 
 Example of PED file:
- # population id father mother char1 phenotype locus1_allele1 locus1_allele2 locus2_allele1 .....
+ # population id father mother char1 phenotype locus1_allele1 locus1_allele2 locus2_allele1 ..
  Mandenka HGDP00912 0 0 1 2 C C G A G G T T T T A A G G
  Mandenka HGDP01283 0 0 1 2 T C G A G G C T C C G G G A
  Yoruba HGDP00928 0 0 2 2 C C G G G G C T T T G A G G
@@ -40,7 +40,7 @@ from Bio import File
 from Bio.ParserSupport import *     # overwriting previous import?
 
 #from PopGen.AbstractPopRecord import AbstractPopRecord 
-from PopGen.GenePop import Record       # Use the same Record object from GenePop.
+from PopGen.GenePop import Record   # Use the same Record object from GenePop.
 
 
 class RecordParser(AbstractParser):
@@ -100,7 +100,7 @@ class _Scanner:
             uhandle = File.UndoHandle(handle)
             
         consumer.start_record()
-        consumer.marker_len(2)         # Assuming that marker length is always 2 for PED files!
+        consumer.marker_len(2)   # Assuming that marker length is always 2 for PED files!
         
         current_pops = {}   # contains current populations
         
@@ -114,14 +114,14 @@ class _Scanner:
             elif line != '':
                 # parse a valid PED line and put its content in Record.
                 ped_fields = line.strip().split()       # not sure strip is needed
-#                print consumer.data.populations # ops! I need to change Record object and transfomr populations in a dictionary
+#                print consumer.data.populations # ops! I need to change Record object and transform populations in a dictionary
                 
                 pop = ped_fields[0]
                 individual = ped_fields[1]
-                father = ped_fields[2]          # this variable is not saved in Record, for the moment 
-                mother = ped_fields[3]          # this variable is not saved in Record, for the moment
-                sex = ped_fields[4]             # this variable is not saved in Record, for the moment
-                phenotype = ped_fields[5]       # this variable is not saved in Record, for the moment
+#                father = ped_fields[2]          # this variable is not saved in Record, for the moment 
+#                mother = ped_fields[3]          # this variable is not saved in Record, for the moment
+#                sex = ped_fields[4]             # this variable is not saved in Record, for the moment
+#                phenotype = ped_fields[5]       # this variable is not saved in Record, for the moment
                 markers = ped_fields[6:]
                 
                 alleles = [(markers[i], markers[i+1]) for i in xrange(0, len(markers), 2)]
@@ -134,7 +134,6 @@ class _Scanner:
         logging.debug(current_pops)  # now shold send back this variable to consumer
         consumer.add_pops(current_pops)     # this must be implemented better
         
-
 
 class _RecordConsumer(AbstractConsumer):
     """Consumer that converts a GenePop record to a Record object.
@@ -163,6 +162,7 @@ class _RecordConsumer(AbstractConsumer):
         self.data.populations = populations
 
 def _test():
+    """test this module"""
     import doctest
     doctest.testmod()
     

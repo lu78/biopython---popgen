@@ -119,7 +119,7 @@ class FstBeaumont(Structural):
             sample_size = 0
             for allele in alleles:
                 sample_size += alleles[allele]
-            if sample_size ==0:
+            if sample_size == 0:
                 skip += 1
             else:
                 x2 = 0.0
