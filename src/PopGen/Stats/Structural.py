@@ -19,7 +19,10 @@
 
 from copy import deepcopy
 
-class PopulationExistsException(Exception):
+class GenePopException(Exception):
+    pass
+
+class PopulationExistsException(GenePopException):
     """A certain population already exists.
     """
 
@@ -28,6 +31,9 @@ class PopulationExistsException(Exception):
 
     def __str__(self):
         return self.pop_name + ' already exists'
+
+class RequiresGenotypeException(GenePopException):
+    pass
 
 class Structural:
     """'Abstract' Structural class.
@@ -65,6 +71,9 @@ class Structural:
     >>> Other1 = ('Other1', [(1,1),  (4,3), (200,200)])
     >>> s.add_pop('Vulcanians', [Ind1, Ind2])
     >>> s.add_pop('Martians', [Other1])
+    >>> s.pop_names
+    ['Vulcanians', 'Martians']
+    >>> s.pop_indivs
 """
 
     def __init__(self):
