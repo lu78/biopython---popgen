@@ -6,7 +6,15 @@ from PopGen.Gio.PopGenExceptions import InvalidGenotype
 class Marker(object):
     '''
     A Marker object(like a SNP, a gene, etc...)
-    # Note: would it be better to use 'Marker' or 'Locus'?
+    
+    Attributes:
+    - name                    -> name/id of the marker (e.g. sn1334)
+    - position                -> a description of the position, e.g. 'chromosome 11 pos. 12331'
+    - genotypes               -> list of genotypes (e.g.: (('A', 'A'), ('None', 'None')))
+    - reference_allele_freq
+    - derived_allele_freq  
+    - minor_allele_freq
+    - total_individual_count
     
     >>> C10G = Marker('A130G')
     >>> C10G.genotypes = (('A', 'A'), ('G', 'A'))    # should be done via add_genotype
@@ -23,8 +31,12 @@ class Marker(object):
         self.name = name
         self.position = ""  # should be a 'position' object. For now, just a description (e.g. chromosome 11 pos 23131)
         self.genotypes = () # list of genotypes object (e.g.: [('A', 'A'), ('G', 'A')]) Should be an object
-        self.original_strand = ''    # should be '+' or '-'
-        self.references = ''         # gene name, associated diseases, etc..
+        self.individual_count = 0        # Individuals for which the Marker is genotyped
+        self.missing_data_count = 0      # Individuals for which data is not available
+        self.reference_allele_freq = 0.0 # frequency of the reference allele (the first!)
+        self.derived_allele_freq = 0.0   # frequency of the derived allele (the second!)
+        self.original_strand = ''        # should be '+' or '-'
+        self.references = ''             # gene name, associated diseases, etc..
         
     def _check_genotype_input(self, genotype):
         """
