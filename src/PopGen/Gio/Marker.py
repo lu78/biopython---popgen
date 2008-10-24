@@ -34,7 +34,7 @@ class Marker(object):
         >>> m._check_genotype_input(['A', 'C'])
         Traceback (most recent call last):
             ... 
-        InvalidGenotype: input is not a tuple
+        InvalidGenotype: not a tuple of two elements
         >>> m._check_genotype_input(('A'))
         Traceback (most recent call last):
             ... 
@@ -42,8 +42,8 @@ class Marker(object):
         >>> m._check_genotype_input(('A', 'C'))
         """
         if not isinstance(genotype, tuple):
-            raise InvalidGenotype('input is not a tuple')
-        if len(genotype) != 2:
+            raise InvalidGenotype('not a tuple of two elements')
+        elif len(genotype) != 2:
             raise InvalidGenotype('not a tuple of two elements') 
         
     def add_multiple_genotypes(self, genotypes):
