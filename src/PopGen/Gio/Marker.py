@@ -3,6 +3,27 @@
 
 from PopGen.Gio.PopGenExceptions import InvalidGenotype
 
+        
+def _check_genotype_input(genotype):
+    """
+    check if a genotype input is correct (a tuple with two elements)
+    
+    >>> m = Marker()
+    >>> _check_genotype_input(['A', 'C'])
+    Traceback (most recent call last):
+        ... 
+    InvalidGenotype: not a tuple of two elements
+    >>> _check_genotype_input(('A'))
+    Traceback (most recent call last):
+        ... 
+    InvalidGenotype: not a tuple of two elements
+    >>> _check_genotype_input(('A', 'C'))
+    """
+    if not isinstance(genotype, tuple):
+        raise InvalidGenotype('not a tuple of two elements')
+    elif len(genotype) != 2:
+        raise InvalidGenotype('not a tuple of two elements') 
+
 class Marker(object):
     '''
     A Marker object(like a SNP, a gene, etc...)
@@ -22,6 +43,7 @@ class Marker(object):
     Traceback (most recent call last):
         ... 
     AttributeError: 'tuple' object has no attribute 'append'
+    >>> C10G.populations = {'Vesuvians': (0, 1), 'Martians': (2)}
     '''      
           
     def __init__(self, name = None):
@@ -30,7 +52,8 @@ class Marker(object):
             name = 'Un-named Marker'
         self.name = name
         self.position = ""  # should be a 'position' object. For now, just a description (e.g. chromosome 11 pos 23131)
-        self.genotypes = () # list of genotypes object (e.g.: [('A', 'A'), ('G', 'A')]) Should be an object
+        self.genotypes = () # list of genotypes object (e.g.: (('A', 'A'), ('G', 'A'))) Should be an object
+        self.populations = {}       # should define populations. which are the positions in self.genotypes which correspond to populations. 
         self.individual_count = 0        # Individuals for which the Marker is genotyped
         self.missing_data_count = 0      # Individuals for which data is not available
         self.reference_allele_freq = 0.0 # frequency of the reference allele (the first!)
@@ -39,27 +62,8 @@ class Marker(object):
         self.references = ''             # gene name, associated diseases, etc..
     
     def __repr__(self):
-        return "Marker %s, %s individuals" %(self.name, self.individual_count)
-        
-    def _check_genotype_input(self, genotype):
-        """
-        check if a genotype input is correct (a tuple with two elements)
-        
-        >>> m = Marker()
-        >>> m._check_genotype_input(['A', 'C'])
-        Traceback (most recent call last):
-            ... 
-        InvalidGenotype: not a tuple of two elements
-        >>> m._check_genotype_input(('A'))
-        Traceback (most recent call last):
-            ... 
-        InvalidGenotype: not a tuple of two elements
-        >>> m._check_genotype_input(('A', 'C'))
-        """
-        if not isinstance(genotype, tuple):
-            raise InvalidGenotype('not a tuple of two elements')
-        elif len(genotype) != 2:
-            raise InvalidGenotype('not a tuple of two elements') 
+        return "Marker %s, %s individuals" % (self.name, self.individual_count)
+
         
     def add_multiple_genotypes(self, genotypes):
         """
@@ -67,7 +71,7 @@ class Marker(object):
         instead of overwriting Marker.genotypes
         """
         for genotype in genotypes:
-            self._check_genotype_input(genotype)
+            _check_genotype_input(genotype)
         self.genotypes = genotypes  # avoid calling self.genotype multiple times        
         self._recalculate_freqs()
         

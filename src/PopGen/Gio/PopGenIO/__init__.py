@@ -9,7 +9,21 @@ PopGenIO parser
 
 Generic parser for population genetics, especially SNP data, like GenePop, Ped and Tped formats.
 
+The right way to do this is to read a tfam file first, then a tped one.
+
 >>> from PopGen.Gio import PopGenIO
+>>> import tempfile
+>>> sample_tfam_file = tempfile.TemporaryFile()
+>>> sample_tfam_file.write('''
+... BiakaPygmies HGDP00479 0 0 1 2
+... BiakaPygmies HGDP00985 0 0 1 2
+... BiakaPygmies HGDP01094 0 0 1 2
+... MbutiPygmies HGDP00982 0 0 1 2
+... Mandenka HGDP00911 0 0 1 2
+... Mandenka HGDP01202 0 0 1 2''')
+>>> sample_tfam_file.seek(0)
+>>> pop_mapping = PopGen.parse_by_Individual().to_pops()
+
 >>> import tempfile
 >>> sample_tped_file = tempfile.TemporaryFile()
 >>> sample_tped_file.write('''
@@ -23,7 +37,7 @@ Generic parser for population genetics, especially SNP data, like GenePop, Ped a
 ... 4 rs10000918 0 186505570 G A G G G G G G A A A A G G G A 0 0 G G G G G A
 ... ''')
 >>> sample_tped_file.seek(0)
->>> pi = PopGenIO.parse(sample_tped_file)
+>>> pi = PopGenIO.parse_by_marker(sample_tped_file)
 >>> for marker in pi:
 ...    print marker
 Marker rs10000543, 12 individuals
@@ -42,28 +56,25 @@ from PopGen.Gio import TpedIO
 from PopGen.Gio import PedIO
 import logging
 
+# for every format, define which iterator should be used to parse files, and which kind of object is returned
 _FormatToIterator = {
-                     # for every format, define which iterator should be used, and which kind of object is returned
                      'tped' : (TpedIO.TpedIterator, 'Marker'),
                      'ped'  : (PedIO.PedIterator, 'Individual')
                      }        
 _FormatToWriter = {}
 
-def parse(handle, format = 'tped') :
+def parse_by_marker(handle, format = 'tped', population_mapping = None) :
     """Turns a TPED file into an iterator returning Marker objects.
 
     handle   - handle to the file.
 #    format   - lower case string describing the file format.
+    population_mapping     - a dictionary of the positions corresponding to populations. 
+        e.g. for a tped file: pops = {'Vulcanian': (0, 1), 'Martians': (2, 3)} etc..  
     
-    If you have the file name in a string 'filename', use:
-
 #    >>> from PopGen.Gio import Tped
-#    >>> my_iterator = Tped.parse(open(filename,"rU"))
-
-    Note that file will be parsed with default settings. For more control, you
-    must use the format specific iterator directly... (no)
-    """
+#    >>> my_iterator = Tped.parse(open(filename,"rU"), 'tped', {'Vulcanian': (0, 1), 'Martians': (2, 3)})
     
+    """
     #Try and give helpful error messages:
     if isinstance(handle, basestring) :
         raise TypeError("Need a file handle, not a string (i.e. not a filename)")
