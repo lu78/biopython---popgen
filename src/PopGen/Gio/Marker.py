@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Marker Object (a SNP, a gene, etc..)
 
+from PopGen.Gio.PopGenExceptions import InvalidGenotype
 
 class Marker(object):
     '''
@@ -25,6 +26,35 @@ class Marker(object):
         self.original_strand = ''    # should be '+' or '-'
         self.references = ''         # gene name, associated diseases, etc..
         
+    def _check_genotype_input(self, genotype):
+        """
+        check if a genotype input is correct (a tuple with two elements)
+        
+        >>> m = Marker()
+        >>> m._check_genotype_input(['A', 'C'])
+        Traceback (most recent call last):
+            ... 
+        InvalidGenotype: input is not a tuple
+        >>> m._check_genotype_input(('A'))
+        Traceback (most recent call last):
+            ... 
+        InvalidGenotype: not a tuple of two elements
+        >>> m._check_genotype_input(('A', 'C'))
+        """
+        if not isinstance(genotype, tuple):
+            raise InvalidGenotype('input is not a tuple')
+        if len(genotype) != 2:
+            raise InvalidGenotype('not a tuple of two elements') 
+        
+    def add_multiple_genotypes(self, genotypes):
+        """
+        Please use this method when adding multiple genotypes (e.g. when parsing a file), 
+        instead of overwriting Marker.genotypes
+        """
+        for genotype in genotypes:
+            self._check_genotype_input(genotype)
+        self.genotypes = genotypes  # avoid calling self.genotype multiple times        
+        self._recalculate_freqs()
         
     def add_genotype(self, genotype):
         """

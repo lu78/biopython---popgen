@@ -13,4 +13,7 @@ class GenericPopGenException(Exception):
 
 class InvalidInputFile(GenericPopGenException):
     pass
+
+class InvalidGenotype(GenericPopGenException):
+    pass
         
