@@ -27,7 +27,7 @@ class PopulationExistsException(Exception):
         self.pop_name = pop_name
 
     def __str__(self):
-        return pop_name + ' already exists'
+        return self.pop_name + ' already exists'
 
 class Structural:
     """'Abstract' Structural class.
@@ -57,7 +57,14 @@ class Structural:
     
     __str__
     
-    acronym
+    acronym        # short name for the test type (Fst, FstB...)
+    
+    >>> s = Structural()
+    >>> Ind1 = ('Ind1', [(1,2),    (3,3), (200,201)])
+    >>> Ind2 = ('Ind2', [(2,None), (3,3), (None,None)])
+    >>> Other1 = ('Other1', [(1,1),  (4,3), (200,200)])
+    >>> s.add_pop('Vulcanians', [Ind1, Ind2])
+    >>> s.add_pop('Martians', [Other1])
 """
 
     def __init__(self):
@@ -299,3 +306,12 @@ class Fk(Structural):
         for a in alleles:
             sum += 1.0*(p1.get(a, 0)-p2.get(b, 0))**2 / (
                     (p1.get(a,0)+p2.get(a,0))/2.0)
+
+
+def _test():
+    """Test the module using doctest"""
+    import doctest
+    doctest.testmod()
+    
+if __name__ == '__main__':
+    _test()
