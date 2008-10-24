@@ -5,7 +5,7 @@ class wrong_add_individual_input(Exception):
     def __string__(self): "Wrong individual input"
     
 
-class Marker(object):
+class Marker():
     '''
     A Marker object(like a SNP, a gene, etc...)
     # Note: would it be better to use 'Marker' or 'Locus'?

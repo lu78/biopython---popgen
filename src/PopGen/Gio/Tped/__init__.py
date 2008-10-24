@@ -19,9 +19,11 @@ Parses a Tped file.
 
 """
 
-from PopGen.Gio import Marker
+from PopGen.Gio.Marker import Marker
 import logging
 
+class InvalidInputFile(Exception):
+    pass
 
 def TpedIterator(handle):
     """
@@ -40,28 +42,30 @@ def TpedIterator(handle):
     >>> for marker in ti:
     ...     print marker
     """
-    while True:
-        line = handle.readline()
-        if line.strip() == "":
-            return # premature end of file?
+    for line in handle:
+#        if line.strip() == "":
+#            debug('premature end of file?')
+#            return
         if line.startswith('#'):
             comment = line
+        else:
+            # should add a check for line length and syntax here.
+            tped_fields = line.split()
+            if len(tped_fields) < 4:
+                raise InvalidInputFile('line too short - check input file\n(%s)' % line)
             
-    while True:
-        tped_fields = line.split()
-        chromosome = tped_fields[0]
-        marker_name = tped_fields[1]
-        unknown = tped_fields[2]
-        position = tped_fields[3]
-        current_marker = Marker(marker_name)
-        current_marker.position = "%s - chrom %s" % (position, chromosome)
-        logging.debug(current_marker)
-        
-        genotypes = [(tped_fields[i], tped_fields[i+2]) for i in xrange(4, len(tped_fields), 2)]
-        logging.debug(genotypes)
-        
-        
-        yield current_marker
+            chromosome = tped_fields[0]
+            marker_name = tped_fields[1]
+            unknown = tped_fields[2]
+            position = tped_fields[3]
+            current_marker = Marker(marker_name)
+            current_marker.position = "%s - chrom %s" % (position, chromosome)
+            logging.debug(current_marker)
+            
+            genotypes = [(tped_fields[i], tped_fields[i+2]) for i in xrange(4, len(tped_fields), 2)]
+            current_marker.genotypes = genotypes
+            
+            yield current_marker
             
 def _test():
     """Test using doctest"""
