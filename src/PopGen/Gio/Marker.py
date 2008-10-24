@@ -11,6 +11,8 @@ class Marker(object):
     # Note: would it be better to use 'Marker' or 'Locus'?
     
     >>> C10G = Marker('A130G')
+    >>> C10G.genotypes = [('A', 'A'), ('G', 'A')])
+    >>> C10G.genotypes.append(('A', 'A'))
 
     '''      
           
@@ -20,9 +22,7 @@ class Marker(object):
             name = 'Un-named Marker'
         self.name = name
         self.position = ""  # should be a 'position' object. For now, just a description (e.g. chromosome 11 pos 23131)
-        self.reference_allele_freq = 0.0
-        self.derived_allele_freq = 0.0
-        self.minor_allele_freq = 0.0
+        self.genotypes = [] # list of genotypes object (e.g.: [('A', 'A'), ('G', 'A')])
         self.original_strand = ''    # should be '+' or '-'
         self.references = ''         # gene name, associated diseases, etc..
         
