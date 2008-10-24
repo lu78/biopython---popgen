@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 # Marker Object (a SNP, a gene, etc..)
 
-class wrong_add_individual_input(Exception): 
-    def __string__(self): "Wrong individual input"
-    
 
-class Marker():
+class Marker(object):
     '''
     A Marker object(like a SNP, a gene, etc...)
     # Note: would it be better to use 'Marker' or 'Locus'?
@@ -13,6 +10,8 @@ class Marker():
     >>> C10G = Marker('A130G')
     >>> C10G.genotypes = (('A', 'A'), ('G', 'A'))    # should be done via add_genotype
     >>> C10G.genotypes.append(('A', 'A'))
+    Traceback (most recent call last):
+        ... 
     AttributeError: 'tuple' object has no attribute 'append'
     '''      
           
