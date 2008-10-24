@@ -11,17 +11,7 @@ class Marker(object):
     # Note: would it be better to use 'Marker' or 'Locus'?
     
     >>> C10G = Marker('A130G')
-    >>> C10G.add_individual(1, 1, 0) # heterozygote individual
-    >>> C10G.add_individual(2, 0, 0) # individual with two G or A
-    >>> C10G.add_individual(0, 0, 2) # individual with missing data
-    >>> C10G.heterozygotes
-    1
-    >>> C10G.Pur_count
-    3
-    >>> C10G.missing_data_count
-    2
-    >>> C10G.total_population
-    2
+
     '''      
           
     def __init__(self, name = None):
