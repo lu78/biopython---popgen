@@ -26,6 +26,13 @@ Generic parser for population genetics, especially SNP data, like GenePop, Ped a
 >>> pi = PopGenIO.parse(sample_tped_file)
 >>> for marker in pi:
 ...    print marker
+Marker rs10000543, 12 individuals
+Marker rs10000929, 12 individuals
+Marker rs10002472, 12 individuals
+Marker rs10001548, 12 individuals
+Marker rs10001378, 12 individuals
+Marker rs10004399, 12 individuals
+Marker rs10000918, 12 individuals
 
 
 """

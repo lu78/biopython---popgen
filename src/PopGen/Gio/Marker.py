@@ -37,6 +37,9 @@ class Marker(object):
         self.derived_allele_freq = 0.0   # frequency of the derived allele (the second!)
         self.original_strand = ''        # should be '+' or '-'
         self.references = ''             # gene name, associated diseases, etc..
+    
+    def __repr__(self):
+        return "Marker %s, %s individuals" %(self.name, self.individual_count)
         
     def _check_genotype_input(self, genotype):
         """

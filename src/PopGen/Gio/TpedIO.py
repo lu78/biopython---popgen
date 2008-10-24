@@ -41,6 +41,9 @@ def TpedIterator(handle):
     >>> ti = TpedIterator(sample_Tped_file)
     >>> for marker in ti:
     ...     print marker
+    Marker rs10000543, 2 individuals
+    Marker rs10000929, 2 individuals
+    Marker rs10002472, 2 individuals
     """
     for line in handle:
 #        if line.strip() == "":
