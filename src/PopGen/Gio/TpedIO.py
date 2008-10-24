@@ -31,7 +31,8 @@ def TpedIterator(handle):
     
     >>> import tempfile
     >>> sample_Tped_file = tempfile.TemporaryFile()
-    >>> sample_Tped_file.write('''# Chromosome Marker_Id ??? position locus1_allele1 locus1_allele2 locus2_allele1
+    >>> sample_Tped_file.write('''
+    ... # Chromosome Marker_Id ??? position locus1_allele1 locus1_allele2 locus2_allele1
     ... 4 rs10000543 0 30979886 C C T C 
     ... 4 rs10000929 0 131516474 A A A A
     ... 4 rs10002472 0 159087423 A G G G
@@ -47,11 +48,13 @@ def TpedIterator(handle):
 #            return
         if line.startswith('#'):
             comment = line
-        else:
-            # should add a check for line length and syntax here.
+        elif line.strip() == '':
+            # empy line, ignore
+            pass
+        else:            
             tped_fields = line.split()
             if len(tped_fields) < 4:
-                raise InvalidInputFile('line too short - check input file\n(%s)' % line)
+                raise InvalidInputFile('line too short - check input file\n("%s")' % line.strip())
             # should check that current line has the same length than the previous
             # should check that characters after [4] are rigth
             

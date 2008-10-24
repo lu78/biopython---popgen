@@ -42,6 +42,11 @@ from Bio.ParserSupport import *     # overwriting previous import?
 #from PopGen.AbstractPopRecord import AbstractPopRecord 
 from PopGen.GenePop import Record   # Use the same Record object from GenePop.
 
+def PedIterator():
+    """
+    Iterates over a ped file and return Individual objects.
+    """
+    pass
 
 class RecordParser(AbstractParser):
     """Parses GenePop data into a Record object.
