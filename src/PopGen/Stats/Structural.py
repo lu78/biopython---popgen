@@ -300,11 +300,11 @@ class Fk(Structural):
         return "Fk"
 
     def calc_stat(self):
-        p1, p2 = pop_counts.keys()
+        p1, p2 = self.pop_counts.keys()
         alleles = list(set(p1.keys() + p2.keys()))
         sum = 0.0
         for a in alleles:
-            sum += 1.0*(p1.get(a, 0)-p2.get(b, 0))**2 / (
+            sum += 1.0*(p1.get(a, 0)-p2.get(b, 0))**2 / (       # undefined var b
                     (p1.get(a,0)+p2.get(a,0))/2.0)
 
 
