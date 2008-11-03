@@ -53,7 +53,7 @@ from Bio.Seq import Seq
 def PhaseOutputIterator(handle):
     """
     Iterates over a Phase file output handler
-    Returns two SeqRecord objects
+    Returns a SeqRecord objects
     """
     while True:
         line = handle.readline()
@@ -63,6 +63,7 @@ def PhaseOutputIterator(handle):
     
     while True:
         line = handle.readline()
+        if not line: return
         descr = line.strip().split('#')
         id1 = descr[0].strip() + '_all1'
         id2 = descr[0].strip() + '_all2'
@@ -72,13 +73,10 @@ def PhaseOutputIterator(handle):
         seq2 = handle.readline().replace(" ", "").replace("\r", "").strip()
         yield SeqRecord(Seq(seq1), id = id1, name = name1, description = descr) 
         yield SeqRecord(Seq(seq2), id = id2, name = name2, description = descr)
-
-
-        if not line: return # stop iteration
-                                                        
+#        print "line", line
         
-
-
+    assert False, "should not reach this line"
+                                            
 
 def _test():
     """tests current module"""
