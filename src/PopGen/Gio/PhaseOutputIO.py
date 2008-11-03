@@ -39,7 +39,45 @@ Example of PHASE output file:
 ... C T T T T G C C C T C A A A A G T G C T G T G C C A G T C T A C G G C C T G C A T T A A G A T T C G
 ... T T T T T G A A A C C A A A G A C G C T T C G T C A G T A T A C G A T C T A T G C T A A T G C T T G
 ... ''')  
+>>> for seq1 in PhaseOutputIterator(phasefile):
+...     print seq1.seq
+TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTGTGTTAAGACTCG
+TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTATGCTAAGGCTTG
+CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTGCATTAAGATTCG
+TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTATGCTAATGCTTG
 """
+
+from Bio.SeqRecord import SeqRecord
+from Bio.Seq import Seq
+
+def PhaseOutputIterator(handle):
+    """
+    Iterates over a Phase file output handler
+    Returns two SeqRecord objects
+    """
+    while True:
+        line = handle.readline()
+        if line == "": return   # premature end of file or just empty
+        if line.startswith('BEGIN GENOTYPES'):
+            break
+    
+    while True:
+        line = handle.readline()
+        descr = line.strip().split('#')
+        id1 = descr[0].strip() + '_all1'
+        id2 = descr[0].strip() + '_all2'
+        name1 = id1
+        name2 = id2
+        seq1 = handle.readline().replace(" ", "").replace("\r", "").strip()
+        seq2 = handle.readline().replace(" ", "").replace("\r", "").strip()
+        yield SeqRecord(Seq(seq1), id = id1, name = name1, description = descr) 
+        yield SeqRecord(Seq(seq2), id = id2, name = name2, description = descr)
+
+
+        if not line: return # stop iteration
+                                                        
+        
+
 
 
 def _test():
