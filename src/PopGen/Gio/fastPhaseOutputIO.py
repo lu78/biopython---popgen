@@ -5,7 +5,8 @@
 # as part of this package.
 
 """
-PHASE output file parser.
+fastPHASE output file parser.
+This module contains only a 'fastPhaseOutputIterator', because you are not supposed to write PHASE output files  
 
 The format is described here:
 
@@ -19,11 +20,11 @@ Example of PHASE output file:
 ... *                                          *
 ... ********************************************
 ... BEGIN COMMAND_LINE
-... /aplic/fastphase/fastPHASE -T10 -K20 -p -usamplefile-fastphase.popinfo -osamplefile samplefile.inp 
+... /usr/bin/fastPHASE -T10 -K2 -p -usamplefile-fastphase.popinfo -osamplefile samplefile.inp 
 ... END COMMAND_LINE
 ... 
 ... BEGIN COMMAND_EXPLAIN
-...  K no. clusters (chosen or supplied): 20
+...  K no. clusters (chosen or supplied): 2
 ...  S seed for random numbers (chosen or supplied): 1224252023
 ... END COMMAND_EXPLAIN
 ... 
@@ -38,8 +39,9 @@ Example of PHASE output file:
 ... Ind2  # subpop. label: 6  (internally 1)
 ... C T T T T G C C C T C A A A A G T G C T G T G C C A G T C T A C G G C C T G C A T T A A G A T T C G
 ... T T T T T G A A A C C A A A G A C G C T T C G T C A G T A T A C G A T C T A T G C T A A T G C T T G
+... END GENOTYPES
 ... ''')  
->>> for seq1 in PhaseOutputIterator(phasefile):
+>>> for seq1 in fastPhaseOutputIterator(phasefile):
 ...     print seq1.seq
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTGTGTTAAGACTCG
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTATGCTAAGGCTTG
@@ -50,10 +52,10 @@ TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTATGCTAATGCTTG
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 
-def PhaseOutputIterator(handle):
+def fastPhaseOutputIterator(handle):
     """
     Iterates over a Phase file output handler
-    Returns a SeqRecord objects
+    Returns a SeqRecord object.
     """
     while True:
         line = handle.readline()
@@ -62,8 +64,9 @@ def PhaseOutputIterator(handle):
             break
     
     while True:
-        line = handle.readline()
-        if not line: return
+        line = handle.readline().strip()
+        if not line: break
+        if line == "END GENOTYPES": return
         descr = line.strip().split('#')
         id1 = descr[0].strip() + '_all1'
         id2 = descr[0].strip() + '_all2'
