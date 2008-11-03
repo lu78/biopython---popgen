@@ -20,11 +20,11 @@ Example of PHASE output file:
 ... *                                          *
 ... ********************************************
 ... BEGIN COMMAND_LINE
-... /usr/bin/fastPHASE -T10 -K2 -p -usamplefile-fastphase.popinfo -osamplefile samplefile.inp 
+... /usr/bin/fastPHASE -T10 -K20 -p -usamplefile-fastphase.popinfo -osamplefile samplefile.inp 
 ... END COMMAND_LINE
 ... 
 ... BEGIN COMMAND_EXPLAIN
-...  K no. clusters (chosen or supplied): 2
+...  K no. clusters (chosen or supplied): 20
 ...  S seed for random numbers (chosen or supplied): 1224252023
 ... END COMMAND_EXPLAIN
 ... 
@@ -65,15 +65,21 @@ def fastPhaseOutputIterator(handle):
     
     while True:
         line = handle.readline().strip()
-        if not line: break
-        if line == "END GENOTYPES": return
-        descr = line.strip().split('#')
+        if line == "END GENOTYPES": return      # exit cycle, file has been parsed
+        if line.strip() == "": break
+        
+        descr = line.split('#')
         id1 = descr[0].strip() + '_all1'
         id2 = descr[0].strip() + '_all2'
         name1 = id1
         name2 = id2
+        
+        # TO FIX: if there are blank lines in the file (there shouldn't), an error exception should be thrown.
         seq1 = handle.readline().replace(" ", "").replace("\r", "").strip()
         seq2 = handle.readline().replace(" ", "").replace("\r", "").strip()
+        
+        # to fix: could check that len(seq1) == len(seq2)
+                    
         yield SeqRecord(Seq(seq1), id = id1, name = name1, description = descr) 
         yield SeqRecord(Seq(seq2), id = id2, name = name2, description = descr)
 #        print "line", line
