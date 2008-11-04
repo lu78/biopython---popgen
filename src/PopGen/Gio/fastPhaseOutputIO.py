@@ -6,7 +6,8 @@
 
 """
 fastPHASE output file parser.
-This module contains only a 'fastPhaseOutputIterator', because you are not supposed to write PHASE output files  
+This module contains only a 'fastPhaseOutputIterator', because you are not 
+supposed to write PHASE output files  
 
 The format is described here:
 
@@ -20,7 +21,7 @@ Example of PHASE output file:
 ... *                                          *
 ... ********************************************
 ... BEGIN COMMAND_LINE
-... /usr/bin/fastPHASE -T10 -K20 -p -usamplefile-fastphase.popinfo -osamplefile samplefile.inp 
+... /usr/bin/fastPHASE -T10 -K20 -p -u sample.popinfo -o sample sample.inp 
 ... END COMMAND_LINE
 ... 
 ... BEGIN COMMAND_EXPLAIN
@@ -34,19 +35,19 @@ Example of PHASE output file:
 ... 
 ... BEGIN GENOTYPES
 ... Ind1  # subpop. label: 6  (internally 1)
-... T T T T T G A A A C C A A A G A C G C T G C G T C A G C C T G C A A T C T G T G T T A A G A C T C G
-... T T T T T G C C C C C A A A A G C G C G T C G T C A G T C T A A G A C C T A T G C T A A G G C T T G
+... T T T T T G A A A C C A A A G A C G C T G C G T C A G C C T G C A A T C T G
+... T T T T T G C C C C C A A A A G C G C G T C G T C A G T C T A A G A C C T A
 ... Ind2  # subpop. label: 6  (internally 1)
-... C T T T T G C C C T C A A A A G T G C T G T G C C A G T C T A C G G C C T G C A T T A A G A T T C G
-... T T T T T G A A A C C A A A G A C G C T T C G T C A G T A T A C G A T C T A T G C T A A T G C T T G
+... C T T T T G C C C T C A A A A G T G C T G T G C C A G T C T A C G G C C T G
+... T T T T T G A A A C C A A A G A C G C T T C G T C A G T A T A C G A T C T A
 ... END GENOTYPES
 ... ''')  
 >>> for seq1 in fastPhaseOutputIterator(phasefile):
 ...     print seq1.seq
-TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTGTGTTAAGACTCG
-TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTATGCTAAGGCTTG
-CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTGCATTAAGATTCG
-TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTATGCTAATGCTTG
+TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
+TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
+CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
+TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 """
 
 from Bio.SeqRecord import SeqRecord
@@ -59,14 +60,17 @@ def fastPhaseOutputIterator(handle):
     """
     while True:
         line = handle.readline()
-        if line == "": return   # premature end of file or just empty
-        if line.startswith('BEGIN GENOTYPES'):
+        if line == "": 
+            return   # premature end of file or just empty
+        if line.startswith("BEGIN GENOTYPES"):
             break
     
     while True:
         line = handle.readline().strip()
-        if line == "END GENOTYPES": return      # exit cycle, file has been parsed
-        if line.strip() == "": break
+        if line == "END GENOTYPES": 
+            return      # exit cycle, file has been parsed
+        if line.strip() == "": 
+            break
         
         descr = line.split('#')
         id1 = descr[0].strip() + '_all1'
@@ -74,7 +78,8 @@ def fastPhaseOutputIterator(handle):
         name1 = id1
         name2 = id2
         
-        # TO FIX: if there are blank lines in the file (there shouldn't), an error exception should be thrown.
+        # TO FIX: if there are blank lines in the file (there shouldn't), 
+        # an error exception should be thrown.
         seq1 = handle.readline().replace(" ", "").replace("\r", "").strip()
         seq2 = handle.readline().replace(" ", "").replace("\r", "").strip()
         
