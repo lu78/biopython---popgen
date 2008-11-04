@@ -52,7 +52,9 @@ TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
-from PopGenExceptions import *
+from PopGenExceptions import InvalidInputFile
+import re 
+import logging
 
 def fastPhaseOutputIterator(handle):
     """
@@ -81,15 +83,29 @@ def fastPhaseOutputIterator(handle):
         
         # TO FIX: if there are blank lines in the file (there shouldn't), 
         # an error exception should be thrown.
-        seq1 = handle.readline().replace(" ", "").replace("\r", "").strip()
-        seq2 = handle.readline().replace(" ", "").replace("\r", "").strip()
+        seqs = []
+        while True:
+            line = handle.readline()    # re-defining line var, but it doesn't matter               
+            
+            if re.match('^(\w\s)+', line):  
+                seq = line.replace(" ", "").replace("\r", "").strip()
+                
+                seqs.append(seq)
+                if len(seqs) == 2:
+                    break
+                
+            elif not line or re.match('^\w+', line):
+                # the file has been parsed, but no other sequence has been found.
+                raise InvalidInputFile("Missing sequence in input file")
+            
+#        logging.debug(seqs)
         
-        # to fix: could check that len(seq1) == len(seq2)
-        if len(seq1) != len(seq2):
+        # check that len(seq1) == len(seq2)
+        if len(seqs[0]) != len(seqs[1]):
             raise InvalidInputFile("Two chromosomes with different length")
                     
-        yield SeqRecord(Seq(seq1), id = id1, name = name1, description = descr[1]) 
-        yield SeqRecord(Seq(seq2), id = id2, name = name2, description = descr[1])
+        yield SeqRecord(Seq(seqs[0]), id = id1, name = name1, description = descr[1]) 
+        yield SeqRecord(Seq(seqs[1]), id = id2, name = name2, description = descr[1])
 #        print "line", line
         
     assert False, "should not reach this line"
@@ -98,6 +114,7 @@ def fastPhaseOutputIterator(handle):
 def _test():
     """tests current module"""
     import doctest
+    logging.basicConfig(level=logging.DEBUG)
     doctest.testmod()
     doctest.testfile('../../../test/code/doctests/test_fastPhaseOutputIO.py')
     
