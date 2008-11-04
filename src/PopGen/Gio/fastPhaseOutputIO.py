@@ -42,8 +42,8 @@ Example of PHASE output file:
 ... T T T T T G A A A C C A A A G A C G C T T C G T C A G T A T A C G A T C T A
 ... END GENOTYPES
 ... ''')  
->>> for seq1 in fastPhaseOutputIterator(phasefile):
-...     print seq1.seq
+>>> for record in fastPhaseOutputIterator(phasefile):
+...    print record.seq
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
 CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
@@ -52,6 +52,7 @@ TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
+from PopGenExceptions import *
 
 def fastPhaseOutputIterator(handle):
     """
@@ -84,9 +85,11 @@ def fastPhaseOutputIterator(handle):
         seq2 = handle.readline().replace(" ", "").replace("\r", "").strip()
         
         # to fix: could check that len(seq1) == len(seq2)
+        if len(seq1) != len(seq2):
+            raise InvalidInputFile("Two chromosomes with different length")
                     
-        yield SeqRecord(Seq(seq1), id = id1, name = name1, description = descr) 
-        yield SeqRecord(Seq(seq2), id = id2, name = name2, description = descr)
+        yield SeqRecord(Seq(seq1), id = id1, name = name1, description = descr[1]) 
+        yield SeqRecord(Seq(seq2), id = id2, name = name2, description = descr[1])
 #        print "line", line
         
     assert False, "should not reach this line"
@@ -96,6 +99,7 @@ def _test():
     """tests current module"""
     import doctest
     doctest.testmod()
+    doctest.testfile('../../../test/code/doctests/test_fastPhaseOutputIO.py')
     
 if __name__ == '__main__':
     _test()
