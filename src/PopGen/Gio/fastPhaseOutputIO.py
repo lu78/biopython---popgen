@@ -116,7 +116,9 @@ def _test():
     import doctest
     logging.basicConfig(level=logging.DEBUG)
     doctest.testmod()
-    doctest.testfile('../../../test/code/doctests/test_fastPhaseOutputIO.py')
+    testfilesdir = '../../Tests/SeqIO/'
+    testfilesdir = '.'
+    doctest.testfile(testfilesdir + 'test_fastPhaseOutputIO.py')
     
 if __name__ == '__main__':
     _test()
