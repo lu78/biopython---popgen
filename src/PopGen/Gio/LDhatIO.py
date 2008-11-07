@@ -33,12 +33,13 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     ...        )
     >>> print ldhat
     3 4 1
-    >seq1
+    >seq1 
     ACGG
-    >seq2
+    >seq2 
     ACGG
-    >seq3
+    >seq3 
     ACGG
+    <BLANKLINE>
     
     >>> ldhat = LdHatGenerator(nseq = 10, seqlen = 4,
     ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4],
@@ -52,8 +53,11 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     
     
     seqs = [SeqRecord(Seq(''))] * nseq
+    seqs = []
     
-    for seqrecord in seqs:
+    for n in xrange(nseq):
+        seqrecord = SeqRecord(Seq(''), id = 'seq%d' % (n+1), description = '')
+        seqs.append(seqrecord)
         
         for pos in xrange(seqlen):
 #        logging.debug((pos, alleles_per_site[pos]))          
@@ -62,11 +66,19 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
                 nt = alleles_per_site[pos][0]
             else:
                 nt = alleles_per_site[pos][1]
-            logging.debug(nt)
+                
             seqrecord.seq += nt
-        print seqrecord.seq.tostring()
+        logging.debug(seqrecord.seq.tostring())
             
     logging.debug([seqrecord.seq.tostring() for seqrecord in seqs])
+    
+    
+    # write output. This could be refactored to avoid to repeat the cycle.
+    output = '%s %s 1\n' %(nseq, seqlen)
+    for seq in seqs:
+        output += seq.format('fasta')
+    
+    return output
     
     
         
