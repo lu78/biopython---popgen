@@ -40,30 +40,35 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     >seq3
     ACGG
     
-#    >>> ldhat = LdHatGenerator(nseq = 3, seqlen = 4,
-#    ...        freqs_per_site = [0.2, 0.5, 1.0, 1.0],
-#    ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT'])
-#    >>> print ldhat
-#    
+    >>> ldhat = LdHatGenerator(nseq = 10, seqlen = 4,
+    ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4],
+    ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT'])
+    >>> print ldhat
+    
     """
     if seed is None:
         random.seed()
     # Add a check for arguments here
     
-    seqs = [SeqRecord('')] * seqlen
     
-    for seq in seqs:
+    seqs = [SeqRecord(Seq(''))] * nseq
+    
+    for seqrecord in seqs:
+        
         for pos in xrange(seqlen):
 #        logging.debug((pos, alleles_per_site[pos]))          
             
-            if random.random() <= freqs_per_site:
+            if random.random() <= freqs_per_site[pos]:
                 nt = alleles_per_site[pos][0]
             else:
                 nt = alleles_per_site[pos][1]
             logging.debug(nt)
-            seq.seq += nt
+            seqrecord.seq += nt
+        print seqrecord.seq.tostring()
             
-    logging.debug([seq.seq.tostring() for seq in seqs])
+    logging.debug([seqrecord.seq.tostring() for seqrecord in seqs])
+    
+    
         
             
     
