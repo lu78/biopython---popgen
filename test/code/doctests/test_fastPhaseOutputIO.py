@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+
 """
 >>> import fastPhaseOutputIO
 >>> from StringIO import StringIO
@@ -218,6 +221,8 @@ Traceback (most recent call last):
 InvalidInputFile: Missing sequence in input file
 
 """
+def main():
+    pass
 
 if __name__ == '__main__':
     import doctest
