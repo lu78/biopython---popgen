@@ -17,6 +17,7 @@ fastPhase output
 	a fastPhase output contains information about the inferred haplotypes comprised in the tags 'BEGIN GENOTYPES' and
 	'END GENOTYPES'. 
 	For every individual, you will have two sequences, corresponding to the two different chromosomes.
+	Every sequence should have the same lenght as the others.
 
 Parsing a fastPhase output and converting it to a fasta file
 	Typically, the results of fastPhase are meant to be used for further analysis by other tools or scripts.

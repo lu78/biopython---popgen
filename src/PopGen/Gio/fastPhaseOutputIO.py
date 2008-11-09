@@ -5,11 +5,20 @@
 # as part of this package.
 
 """
-fastPHASE output file parser.
+fastPHASE is software for haplotype reconstruction and missing genotype
+estimation from population genetic SNP data.
+
+Scheet, P and Stephens, M (2006) "A fast and flexible statistical model for
+large-scale population genotype data: applications to inferring missing
+genotypes and haplotypic phase." Am J Hum Genet 78(4):629-44.
+
+
 This module contains only a 'fastphaseoutputIterator', because you are not 
 supposed to write PHASE output files  
 
 The format is described here:
+- http://stephenslab.uchicago.edu/software.html
+
 
 Example of PHASE output file:
 >>> from StringIO import StringIO
