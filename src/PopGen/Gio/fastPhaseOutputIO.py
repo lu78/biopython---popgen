@@ -43,11 +43,12 @@ Example of PHASE output file:
 ... END GENOTYPES
 ... ''')  
 >>> for record in fastphaseoutputIterator(phasefile):
-...    print record.seq
-TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
-TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
-CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
-TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
+...    print record
+IUPACUnambiguousDNA() alignment with 4 rows and 38 columns
+TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG Ind1_all1
+TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA Ind1_all2
+CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG Ind2_all1
+TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA Ind2_all2
 """
 
 from Bio.SeqRecord import SeqRecord
@@ -89,7 +90,7 @@ def fastphaseoutputIterator(handle, alphabet = None, ret = 'Alignment'):
         line = handle.readline().strip()
         if line == "END GENOTYPES": 
             yield align
-#            return      # exit cycle, file has been parsed
+            return      # exit cycle, file has been parsed
         if line.strip() == "": 
             break
         
@@ -123,11 +124,12 @@ def fastphaseoutputIterator(handle, alphabet = None, ret = 'Alignment'):
             raise InvalidInputFile("Two chromosomes with different length")
                    
          
-        align.add_sequence(id1, seqs[0])
-        align.add_sequence(id2, seqs[1])
         if ret == 'SeqRecord':
             yield SeqRecord(Seq(seqs[0]), id = id1, name = name1, description = descr[1]) 
             yield SeqRecord(Seq(seqs[1]), id = id2, name = name2, description = descr[1])
+        else:
+            align.add_sequence(id1, seqs[0])
+            align.add_sequence(id2, seqs[1])
 #        print "line", line
         
     assert False, "should not reach this line"

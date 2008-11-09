@@ -7,7 +7,7 @@
 
 # define a short function to convert fastPhase files into fasta:
 >>> def convert2fasta(inputfile):
-...     for seqrecord in fastPhaseOutputIO.fastPhaseOutputIterator(inputfile):
+...     for seqrecord in fastPhaseOutputIO.fastphaseoutputIterator(inputfile):
 ...         print seqrecord.format("fasta")
 
 ##### Short fastPhase output file
@@ -42,21 +42,17 @@
 ... ''')  
 
 >>> convert2fasta(phasefile)
->Ind1_all1  subpop. label: 6 (internally 1)
+>Ind1_all1
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
-<BLANKLINE>
->Ind1_all2  subpop. label: 6 (internally 1)
+>Ind1_all2
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
-<BLANKLINE>
->Ind2_all1  subpop. label: 6 (internally 1)
+>Ind2_all1
 CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
-<BLANKLINE>
->Ind2_all2  subpop. label: 6 (internally 1)
+>Ind2_all2
 TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 <BLANKLINE>
 
-
-##### fastPhase file with a single marker and with 2 individuals
+##### fastPhase file with a single marker and 2 individuals
 >>> phasefile = StringIO('''
 ... ********************************************
 ... *                                          *
@@ -88,16 +84,13 @@ TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 ... ''')  
 >>> outputfile = StringIO()
 >>> convert2fasta(phasefile)
->Ind1_all1  subpop. label: 6 (internally 1)
+>Ind1_all1
 T
-<BLANKLINE>
->Ind1_all2  subpop. label: 6 (internally 1)
+>Ind1_all2
 T
-<BLANKLINE>
->Ind2_all1  subpop. label: 6 (internally 1)
+>Ind2_all1
 C
-<BLANKLINE>
->Ind2_all2  subpop. label: 6 (internally 1)
+>Ind2_all2
 T
 <BLANKLINE>
 
@@ -172,16 +165,13 @@ InvalidInputFile: Two chromosomes with different length
 ... ''')  
 
 >>> convert2fasta(phasefile)
->Ind1_all1  subpop. label: 6 (internally 1)
+>Ind1_all1
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
-<BLANKLINE>
->Ind1_all2  subpop. label: 6 (internally 1)
+>Ind1_all2
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
-<BLANKLINE>
->Ind2_all1  subpop. label: 6 (internally 1)
+>Ind2_all1
 CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
-<BLANKLINE>
->Ind2_all2  subpop. label: 6 (internally 1)
+>Ind2_all2
 TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 <BLANKLINE>
 
