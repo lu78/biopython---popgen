@@ -6,7 +6,7 @@
 
 """
 fastPHASE output file parser.
-This module contains only a 'fastPhaseOutputIterator', because you are not 
+This module contains only a 'fastphaseoutputIterator', because you are not 
 supposed to write PHASE output files  
 
 The format is described here:
@@ -42,7 +42,7 @@ Example of PHASE output file:
 ... T T T T T G A A A C C A A A G A C G C T T C G T C A G T A T A C G A T C T A
 ... END GENOTYPES
 ... ''')  
->>> for record in fastPhaseOutputIterator(phasefile):
+>>> for record in fastphaseoutputIterator(phasefile):
 ...    print record.seq
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
@@ -55,12 +55,29 @@ from Bio.Seq import Seq
 from PopGenExceptions import InvalidInputFile
 import re 
 import logging
+from Bio.Align.Generic import Alignment
+from Bio.Alphabet import IUPAC
 
-def fastPhaseOutputIterator(handle):
+def fastphaseoutputIterator(handle, alphabet = None, ret = 'Alignment'):
     """
     Iterates over a Phase file output handler
-    Returns a SeqRecord object.
+    Can return a SeqRecord or an Alignment object, 
+    depending on the value of 'ret' parameter (by default, it returns 
+    Alignment objects)
+    
+    inputs:
+    o handle:     a file handler for a fastPhase output file
+    o alphabet:   a biopython alphabet object(if None, UnambiguousDNa is used)
+    o ret:        return an Alignment or a SeqRecord object (transitory parameter)
+      
     """
+    if alphabet is None:
+        alphabet = IUPAC.IUPACUnambiguousDNA()
+    if ret in ['SeqRecord', 'seqrecord', 's']:
+        ret = 'SeqRecord'
+        
+    align = Alignment(alphabet)
+    
     while True:
         line = handle.readline()
         if line == "": 
@@ -71,7 +88,8 @@ def fastPhaseOutputIterator(handle):
     while True:
         line = handle.readline().strip()
         if line == "END GENOTYPES": 
-            return      # exit cycle, file has been parsed
+            yield align
+#            return      # exit cycle, file has been parsed
         if line.strip() == "": 
             break
         
@@ -103,9 +121,13 @@ def fastPhaseOutputIterator(handle):
         # check that len(seq1) == len(seq2)
         if len(seqs[0]) != len(seqs[1]):
             raise InvalidInputFile("Two chromosomes with different length")
-                    
-        yield SeqRecord(Seq(seqs[0]), id = id1, name = name1, description = descr[1]) 
-        yield SeqRecord(Seq(seqs[1]), id = id2, name = name2, description = descr[1])
+                   
+         
+        align.add_sequence(id1, seqs[0])
+        align.add_sequence(id2, seqs[1])
+        if ret == 'SeqRecord':
+            yield SeqRecord(Seq(seqs[0]), id = id1, name = name1, description = descr[1]) 
+            yield SeqRecord(Seq(seqs[1]), id = id2, name = name2, description = descr[1])
 #        print "line", line
         
     assert False, "should not reach this line"
@@ -117,7 +139,7 @@ def _test():
     logging.basicConfig(level=logging.DEBUG)
     doctest.testmod()
     testfilesdir = '../../Tests/SeqIO/'
-    testfilesdir = '.'
+    testfilesdir = './'
     doctest.testfile(testfilesdir + 'test_fastPhaseOutputIO.py')
     
 if __name__ == '__main__':

@@ -41,9 +41,9 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     ACGG
     <BLANKLINE>
     
-    >>> ldhat = LdHatGenerator(nseq = 10, seqlen = 4,
-    ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4],
-    ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT'])
+    >>> ldhat = LdHatGenerator(nseq = 100, seqlen = 10,
+    ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
+    ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
     >>> print ldhat
     
     """
@@ -51,8 +51,9 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
         random.seed()
     # Add a check for arguments here
     
-    
-    seqs = [SeqRecord(Seq(''))] * nseq
+    if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):
+        raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen) ")
+
     seqs = []
     
     for n in xrange(nseq):
