@@ -53,7 +53,7 @@ Example of PHASE output file:
 ... ''')  
 >>> for record in fastphaseoutputIterator(phasefile):
 ...    print record
-IUPACUnambiguousDNA() alignment with 4 rows and 38 columns
+SingleLetterAlphabet() alignment with 4 rows and 38 columns
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG Ind1_all1
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA Ind1_all2
 CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG Ind2_all1
@@ -66,7 +66,7 @@ from PopGenExceptions import InvalidInputFile
 import re 
 import logging
 from Bio.Align.Generic import Alignment
-from Bio.Alphabet import IUPAC
+from Bio.Alphabet import single_letter_alphabet
 
 def fastphaseoutputIterator(handle, alphabet = None):
     """
@@ -79,7 +79,7 @@ def fastphaseoutputIterator(handle, alphabet = None):
       
     """
     if alphabet is None:
-        alphabet = IUPAC.IUPACUnambiguousDNA()
+        alphabet = single_letter_alphabet
         
     align = Alignment(alphabet)
     records = align._records    # hack to append SeqRecord objects to Alignment

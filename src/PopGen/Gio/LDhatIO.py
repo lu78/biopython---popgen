@@ -42,13 +42,16 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     >seq3 
     ACGG
     <BLANKLINE>
+
     
-    >>> (output, ldhatAlign) = LdHatGenerator(nseq = 10, seqlen = 10,
+    >>> (output, ldhatAlign) = LdHatGenerator(nseq = 2, seqlen = 10,
     ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
     ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
     >>> print output
-    # this test will always fail
-    >>> 
+    this test will always fail
+    >>> print ldhatAlign.format('fasta')
+    this test will always fail
+    
     
     """
     
@@ -99,6 +102,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     Possible values for mode:
     o equals
     o onehotspot
+    o example1
     
     Note: 
         sometimes the parameters seqlen, nseq are ignored.
@@ -130,6 +134,10 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     elif mode == 'onehotspot':  # to implement
         freqs = []
         alleles = []
+    elif mode == 'example1':
+        freqs = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42]
+        alleles = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT']
+        
         
         
     output = [nseq, seqlen, freqs, alleles] 
