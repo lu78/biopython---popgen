@@ -21,6 +21,8 @@ import random
 import logging
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from Bio.Align.Generic import Alignment
+from Bio.Alphabet import IUPAC
 
 def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     """
@@ -44,9 +46,13 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     >>> ldhat = LdHatGenerator(nseq = 100, seqlen = 10,
     ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
     ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
-    >>> print ldhat
+    >>> print ldhat # this test will always fail, until I'll fix it
+    >>> 
     
     """
+    
+    align = Alignment(IUPAC.IUPACUnambiguousDNA())
+                      
     if seed is None:
         random.seed()
     # Add a check for arguments here
@@ -54,11 +60,10 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):
         raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen) ")
 
-    seqs = []
     
     for n in xrange(nseq):
         seqrecord = SeqRecord(Seq(''), id = 'seq%d' % (n+1), description = '')
-        seqs.append(seqrecord)
+        align._records.append(seqrecord)
         
         for pos in xrange(seqlen):
 #        logging.debug((pos, alleles_per_site[pos]))          
@@ -71,12 +76,12 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
             seqrecord.seq += nt
         logging.debug(seqrecord.seq.tostring())
             
-    logging.debug([seqrecord.seq.tostring() for seqrecord in seqs])
+    logging.debug([seqrecord.align._records.tostring() for seqrecord in align._records])
     
     
     # write output. This could be refactored to avoid to repeat the cycle.
     output = '%s %s 1\n' %(nseq, seqlen)
-    for seq in seqs:
+    for seq in align._records:
         output += seq.format('fasta')
     
     return output
