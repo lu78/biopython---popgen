@@ -42,13 +42,13 @@
 ... ''')  
 
 >>> convert2fasta(phasefile)
->Ind1_all1
+>Ind1_all1  subpop. label: 6 (internally 1)
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
->Ind1_all2
+>Ind1_all2  subpop. label: 6 (internally 1)
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
->Ind2_all1
+>Ind2_all1  subpop. label: 6 (internally 1)
 CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
->Ind2_all2
+>Ind2_all2  subpop. label: 6 (internally 1)
 TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 <BLANKLINE>
 
@@ -84,13 +84,13 @@ TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 ... ''')  
 >>> outputfile = StringIO()
 >>> convert2fasta(phasefile)
->Ind1_all1
+>Ind1_all1  subpop. label: 6 (internally 1)
 T
->Ind1_all2
+>Ind1_all2  subpop. label: 6 (internally 1)
 T
->Ind2_all1
+>Ind2_all1  subpop. label: 6 (internally 1)
 C
->Ind2_all2
+>Ind2_all2  subpop. label: 6 (internally 1)
 T
 <BLANKLINE>
 
@@ -165,13 +165,13 @@ InvalidInputFile: Two chromosomes with different length
 ... ''')  
 
 >>> convert2fasta(phasefile)
->Ind1_all1
+>Ind1_all1  subpop. label: 6 (internally 1)
 TTTTTGAAACCAAAGACGCTGCGTCAGCCTGCAATCTG
->Ind1_all2
+>Ind1_all2  subpop. label: 6 (internally 1)
 TTTTTGCCCCCAAAAGCGCGTCGTCAGTCTAAGACCTA
->Ind2_all1
+>Ind2_all1  subpop. label: 6 (internally 1)
 CTTTTGCCCTCAAAAGTGCTGTGCCAGTCTACGGCCTG
->Ind2_all2
+>Ind2_all2  subpop. label: 6 (internally 1)
 TTTTTGAAACCAAAGACGCTTCGTCAGTATACGATCTA
 <BLANKLINE>
 

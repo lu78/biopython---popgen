@@ -26,14 +26,14 @@ from Bio.Alphabet import IUPAC
 
 def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     """
-    generates a random ldhat input file (sites.txt)
+    generates a random ldhat alignment, to be used to generate sites.txt for ldhat
     
 #    >>> import LdHatGenerator
-    >>> ldhat = LdHatGenerator(nseq = 3, seqlen = 4, 
+    >>> (output, ldhatAlign) = LdHatGenerator(nseq = 3, seqlen = 4, 
     ...        freqs_per_site = [1.0, 1.0, 1.0, 1.0], 
     ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT']    
     ...        )
-    >>> print ldhat
+    >>> print output
     3 4 1
     >seq1 
     ACGG
@@ -43,15 +43,17 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     ACGG
     <BLANKLINE>
     
-    >>> ldhat = LdHatGenerator(nseq = 100, seqlen = 10,
+    >>> (output, ldhatAlign) = LdHatGenerator(nseq = 10, seqlen = 10,
     ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
     ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
-    >>> print ldhat # this test will always fail, until I'll fix it
+    >>> print output
+    # this test will always fail
     >>> 
     
     """
     
     align = Alignment(IUPAC.IUPACUnambiguousDNA())
+    records = align._records    # hack to add SeqRecord objects to Alignment until # fixed
                       
     if seed is None:
         random.seed()
@@ -63,7 +65,7 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     
     for n in xrange(nseq):
         seqrecord = SeqRecord(Seq(''), id = 'seq%d' % (n+1), description = '')
-        align._records.append(seqrecord)
+        records.append(seqrecord)
         
         for pos in xrange(seqlen):
 #        logging.debug((pos, alleles_per_site[pos]))          
@@ -76,15 +78,16 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
             seqrecord.seq += nt
         logging.debug(seqrecord.seq.tostring())
             
-    logging.debug([seqrecord.align._records.tostring() for seqrecord in align._records])
+    logging.debug([seqrecord.seq.tostring() for seqrecord in records])
     
     
-    # write output. This could be refactored to avoid to repeat the cycle.
+    # write output. It could use the alignment._format function when it will
+    # support ldhat files.
     output = '%s %s 1\n' %(nseq, seqlen)
-    for seq in align._records:
+    for seq in records:
         output += seq.format('fasta')
     
-    return output
+    return output, align
     
     
         
@@ -97,7 +100,8 @@ def _test():
     doctest.testmod()
     
 if __name__ == '__main__':
-    logging.basicConfig(level = logging.DEBUG)
+#    logging.basicConfig(level = logging.DEBUG)
+    logging.basicConfig(level = None)
     _test()
     
     

@@ -87,6 +87,8 @@ def fastphaseoutputIterator(handle, alphabet = None, ret = 'Alignment'):
         ret = 'SeqRecord'
         
     align = Alignment(alphabet)
+    records = align._records    # hack to append SeqRecord objects to Alignment
+                                # see bugs 2553/2554
     
     while True:
         line = handle.readline()
@@ -132,13 +134,10 @@ def fastphaseoutputIterator(handle, alphabet = None, ret = 'Alignment'):
         if len(seqs[0]) != len(seqs[1]):
             raise InvalidInputFile("Two chromosomes with different length")
                    
-         
-        if ret == 'SeqRecord':
-            yield SeqRecord(Seq(seqs[0]), id = id1, name = name1, description = descr[1]) 
-            yield SeqRecord(Seq(seqs[1]), id = id2, name = name2, description = descr[1])
-        else:
-            align.add_sequence(id1, seqs[0])
-            align.add_sequence(id2, seqs[1])
+        seq1 = SeqRecord(Seq(seqs[0]), id = id1, name = name1, description = descr[1])
+        seq2 = SeqRecord(Seq(seqs[1]), id = id2, name = name2, description = descr[1])
+        records.append(seq1)
+        records.append(seq2)
 #        print "line", line
         
     assert False, "should not reach this line"
