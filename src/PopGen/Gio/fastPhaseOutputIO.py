@@ -68,23 +68,18 @@ import logging
 from Bio.Align.Generic import Alignment
 from Bio.Alphabet import IUPAC
 
-def fastphaseoutputIterator(handle, alphabet = None, ret = 'Alignment'):
+def fastphaseoutputIterator(handle, alphabet = None):
     """
-    Iterates over a Phase file output handler
-    Can return a SeqRecord or an Alignment object, 
-    depending on the value of 'ret' parameter (by default, it returns 
-    Alignment objects)
+    Iterates over a fastPhase file output handler
+    Returns an Alignment object.
     
     inputs:
     o handle:     a file handler for a fastPhase output file
     o alphabet:   a biopython alphabet object(if None, UnambiguousDNa is used)
-    o ret:        return an Alignment or a SeqRecord object (transitory parameter)
       
     """
     if alphabet is None:
         alphabet = IUPAC.IUPACUnambiguousDNA()
-    if ret in ['SeqRecord', 'seqrecord', 's']:
-        ret = 'SeqRecord'
         
     align = Alignment(alphabet)
     records = align._records    # hack to append SeqRecord objects to Alignment
