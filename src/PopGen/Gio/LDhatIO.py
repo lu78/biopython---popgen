@@ -89,7 +89,34 @@ def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     
     return output, align
     
+
+def valuesGenerator(mode = None, seqlen = 20, nseq = 10):
+    """Create values to be used with LDHAT Generator
+    For example, if you want a set in which all the nucleotides have a 
+    frequency of '1.0', you can use this function with the parameter
+    mode = 'equals'.
     
+    examples:
+    >>> params = valuesGenerator('equals', 3, 4)
+    >>> print params
+    [3, 4, [1.0, 1.0, 1.0], ['AG', 'AG', 'AG']]
+    
+    # these parameters could be used as inputs to LdHatGenerator:
+    >>> LdHatGenerator(params)
+    
+    
+    """
+    if mode == 'equals':
+        freqs = [1.0] * seqlen
+        alleles = ['AG'] * seqlen
+        
+    elif mode == 'onehotspot':  # to implement
+        freqs = []
+        alleles = []
+        
+        
+    output = [seqlen, nseq, freqs, alleles] 
+    return output
         
             
     
