@@ -3,7 +3,6 @@
 # This code is part of the Biopython distribution and governed by its
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
-
 """
 fastPHASE is software for haplotype reconstruction and missing genotype
 estimation from population genetic SNP data.
