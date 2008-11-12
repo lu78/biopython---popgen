@@ -110,7 +110,7 @@ def fastphaseoutputIterator(handle, alphabet = None):
         # an error exception should be thrown.
         seqs = []
         while True:
-            line = handle.readline()    # re-defining line var, but it doesn't matter               
+            line = handle.readline()    # re-defining line, but it doesn't matter               
             
             if re.match('^(\w\s)+', line):  
                 seq = line.replace(" ", "").replace("\r", "").strip()
@@ -120,7 +120,7 @@ def fastphaseoutputIterator(handle, alphabet = None):
                     break
                 
             elif not line or re.match('^\w+', line):
-                # the file has been parsed, but no other sequence has been found.
+                # end of file, but no sequence has been found.
                 raise InvalidInputFile("Missing sequence in input file")
             
 #        logging.debug(seqs)

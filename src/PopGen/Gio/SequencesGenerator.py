@@ -24,6 +24,8 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Align.Generic import Alignment
 from Bio.Alphabet import IUPAC
 
+class NotImplementedException(Exception): pass
+
 def LdHatGenerator(nseq, seqlen, freqs_per_site, alleles_per_site, seed = None):
     """
     generates a random ldhat alignment, to be used to generate sites.txt for ldhat
@@ -130,14 +132,22 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     if mode == 'equals':
         freqs = [1.0] * seqlen
         alleles = ['AG'] * seqlen
-        
     elif mode == 'onehotspot':  # to implement
-        freqs = []
-        alleles = []
+#        raise NotImplementedException
+        freqs = [0.5, 0.5, 0.5, 0.5, 0.8, 0.8, 0.5, 0.5, 0.5, 0.5]
+        alleles = ['AG'] * len(freqs)
     elif mode == 'example1':
         freqs = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42]
         alleles = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT']
-        
+    elif mode == 'example2':
+        freqs = [0.4, 0.1, 0.1, 0.1, 0.4, 0.2, 0.5, 0.7, 0.4, 0.3]
+        alleles = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT']
+    elif mode == 'all0.5':
+        freqs = [0.5] * seqlen
+        alleles = ['AT'] * seqlen
+    elif mode == 'all0.3':
+        freqs = [0.3] * seqlen
+        alleles = ['AT'] * seqlen
         
         
     output = [nseq, seqlen, freqs, alleles] 
