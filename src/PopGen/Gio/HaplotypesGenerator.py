@@ -22,16 +22,22 @@ import logging
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Align.Generic import Alignment
-from Bio.Alphabet import IUPAC
 
 class NotImplementedException(Exception): pass
 
-class AlignmentGenerator:
+class HaplotypesGenerator(object):
     """
-    generates a random ldhat alignment, to be used to generate sites.txt for ldhat
+    generates a random biopython Alignment object.
     
-#    >>> import AlignmentGenerator 
-    >>> ag = AlignmentGenerator(nseq = 3, seqlen = 10, 
+    parameters:
+    o nseq              -> number of sequences
+    o seqlen            -> lenght of sequences
+    o freqs_per_site    -> a list indicating the frequency in every position.
+    o alleles_per_site  -> a list with the two possible alleles for every site. 
+                           only biallelic alleles are supported.
+    
+#    >>> import HaplotypesGenerator 
+    >>> ag = HaplotypesGenerator(nseq = 3, seqlen = 10, 
     ...        freqs_per_site = [1.0] * 10, 
     ...        alleles_per_site = ['AT'] * 10,    
     ...        )
@@ -46,7 +52,7 @@ class AlignmentGenerator:
     AAAAAAAAAA
     <BLANKLINE>
     
-    >>> ag = AlignmentGenerator(nseq = 2, seqlen = 10,
+    >>> ag = HaplotypesGenerator(nseq = 2, seqlen = 10,
     ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
     ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
     >>> (ldhat, alignment) = ag.generate(seed=10)      # be careful with this test
@@ -66,6 +72,12 @@ class AlignmentGenerator:
     """
     
     def __init__(self, nseq, seqlen, freqs_per_site, alleles_per_site, alphabet = None):
+        """
+        Initialize an AlignmentGenerator object.
+    
+        defaults:
+        alphabet -> IUPACUnambiguousDNA
+        """
                           
         # Check for arguments
         if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):
@@ -77,6 +89,7 @@ class AlignmentGenerator:
         self.alleles_per_site = alleles_per_site
         
         if alphabet is None:
+            from Bio.Alphabet import IUPAC
             self.alphabet = IUPAC.IUPACUnambiguousDNA()
         
         
@@ -141,7 +154,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     [4, 3, [1.0, 1.0, 1.0], ['AG', 'AG', 'AG']]
     
     # these parameters could be used as inputs to LdHatGenerator: 
-    >>> ag = AlignmentGenerator(params[0], params[1], params[2], params[3])
+    >>> ag = HaplotypesGenerator(params[0], params[1], params[2], params[3])
     >>> print ag.generate()[0]
     4 3 1
     >seq1 
