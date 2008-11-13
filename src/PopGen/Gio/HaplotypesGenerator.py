@@ -43,8 +43,7 @@ class HaplotypesGenerator(object):
     ...        alleles_per_site = ['AT'] * 10,    
     ...        )
     >>> (ldhat, alignment) = ag.generate()
-    >>> print ldhat
-    3 10 1
+    >>> print alignment.format('fasta')
     >seq1 
     AAAAAAAAAA
     >seq2 
@@ -176,6 +175,8 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     True
     
     """
+    choices = ['AT', 'AC', 'AG', 'CT', 'CG', 'GT'] 
+    
     if mode == 'equals':
         freqs = [1.0] * seqlen
         alleles = ['AG'] * seqlen
@@ -195,6 +196,9 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     elif mode == 'all0.3':
         freqs = [0.3] * seqlen
         alleles = ['AT'] * seqlen
+    elif mode == 'random':
+        freqs = [random.random() for i in range(seqlen)]
+        alleles = [random.choice(choices) for i in range(seqlen)]
     else:
         raise NotImplementedException
         
