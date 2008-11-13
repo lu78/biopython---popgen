@@ -6,15 +6,15 @@
 """
 Parse, writes, and generates ldhat files.
 
-LdHatGenerator:
-    generates a random ldhat imput file, given:
+HaplotypesGenerator:
+    generates a random haplotypes seq, given:
         - number of sequences
         - lenght of sequences
         - random seed (optional)
         - list of frequencies per site
         - list of alleles per site
-    the output sets are supposed to be used for testing purposes.
-    e.g.: you want an input ldhat file in which  
+        
+    this script is meant to produce sets to be used for testing purposes.
 
 """
 import random
