@@ -205,8 +205,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     output = [nseq, seqlen, freqs, alleles] 
     return output
         
-            
-    
+
     
     
 def _test():
