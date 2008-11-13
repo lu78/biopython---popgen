@@ -55,20 +55,23 @@ class HaplotypesGenerator(object):
     >>> ag = HaplotypesGenerator(nseq = 2, seqlen = 10,
     ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
     ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
+    
     >>> (ldhat, alignment) = ag.generate(seed=10)      # be careful with this test
-    >>> print ldhat
-    2 10 1
-    >seq1 
-    TCAGGTTATG
-    >seq2 
-    TTAGGTTATT
-    <BLANKLINE>
     >>> print alignment.format('fasta')
     >seq1 
     TCAGGTTATG
     >seq2 
     TTAGGTTATT
     <BLANKLINE>
+    
+    >>> (ldhat, alignment) = ag.generate(seed=20)
+    >>> print alignment.format('fasta')
+    >seq1 
+    TTATTTCATG
+    >seq2 
+    TTAGGGTATG
+    <BLANKLINE>
+    
     """
     
     def __init__(self, nseq, seqlen, freqs_per_site, alleles_per_site, alphabet = None):
@@ -155,8 +158,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     
     # these parameters could be used as inputs to LdHatGenerator: 
     >>> ag = HaplotypesGenerator(params[0], params[1], params[2], params[3])
-    >>> print ag.generate()[0]
-    4 3 1
+    >>> print ag.generate()[1]
     >seq1 
     AAA
     >seq2 
