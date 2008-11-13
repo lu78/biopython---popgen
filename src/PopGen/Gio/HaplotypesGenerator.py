@@ -27,7 +27,8 @@ class NotImplementedException(Exception): pass
 
 class HaplotypesGenerator(object):
     """
-    generates a random biopython Alignment object.
+    generates a random biopython Alignment object, 
+     containing a set of haplotypes generated randomly.
     
     parameters:
     o nseq              -> number of sequences
