@@ -1,0 +1,27 @@
+********************************************
+*                                          *
+*      Output from fastPHASE 1.2.3         *
+*      Code by P Scheet                    *
+*                                          *
+********************************************
+BEGIN COMMAND_LINE
+/usr/bin/fastPHASE -T10 -K20 -p -u sample.popinfo -o sample sample.inp 
+END COMMAND_LINE
+
+BEGIN COMMAND_EXPLAIN
+ K no. clusters (chosen or supplied): 20
+ S seed for random numbers (chosen or supplied): 1224252023
+END COMMAND_EXPLAIN
+
+BEGIN DESCRIBE_TASKS
+minimize switch error
+END DESCRIBE_TASKS
+
+BEGIN GENOTYPES
+Ind1  # subpop. label: 6  (internally 1)
+T
+T C
+Ind2  # subpop. label: 6  (internally 1)
+C
+T
+END GENOTYPES
