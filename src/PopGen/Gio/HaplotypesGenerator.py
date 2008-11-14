@@ -23,7 +23,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Align.Generic import Alignment
 
-class NotImplementedException(Exception): pass
+class NotImplementedError(Exception): pass
 
 class Freqs_per_site(object):
     """represents a list of frequencies per site
@@ -115,7 +115,7 @@ class HaplotypesGenerator(object):  # TODO: find a better name
             
         # Check freqs_per_site and alleles_per_site to be list-like objects with same length
         if isinstance(freqs_per_site, Freqs_per_site):
-            raise NotImplementedException 
+            raise NotImplementedError
         elif hasattr(freqs_per_site, '__getitem__') and hasattr(freqs_per_site, '__len__'):
             # TODO: should check freqs for being 0<x<1
             self.freqs_per_site = freqs_per_site
@@ -123,7 +123,7 @@ class HaplotypesGenerator(object):  # TODO: find a better name
             raise ValueError("freqs_per_site parameter is invalid")
             
         if isinstance(alleles_per_site, Alleles_per_site):
-            raise NotImplementedException 
+            raise NotImplementedError 
         elif hasattr(alleles_per_site, '__getitem__') and hasattr(alleles_per_site, '__len__'):
             self.alleles_per_site = alleles_per_site
         else:
@@ -242,7 +242,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
         freqs = [random.random() for i in range(seqlen)]
         alleles = [random.choice(choices) for i in range(seqlen)]
     else:
-        raise NotImplementedException
+        raise NotImplementedError
         
     output = [nseq, seqlen, freqs, alleles] 
     return output
