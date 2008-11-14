@@ -95,7 +95,7 @@ class HaplotypesGenerator(object):  # TODO: find a better name
     
     """
     
-    def __init__(self, nseq, seqlen, freqs_per_site, alleles_per_site, alphabet = None):
+    def __init__(self, nseq = None, seqlen = None, freqs_per_site = None, alleles_per_site = None, alphabet = None):
         """
         Initialize an AlignmentGenerator object.
     
@@ -103,22 +103,35 @@ class HaplotypesGenerator(object):  # TODO: find a better name
         alphabet -> IUPACUnambiguousDNA
         """
                           
-        # Check for arguments
-        if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):
-            raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen) ")
-    
-        self.nseq = nseq
-        self.seqlen = seqlen
+        # Check for arguments    
+        if nseq is None:
+            raise ValueError('must enter the number of sequences needed')
+        else:
+            self.nseq = nseq
+        if seqlen is None:
+            raise ValueError('must enter the sequences length')
+        else:
+            self.seqlen = seqlen
+            
+        # Check freqs_per_site and alleles_per_site to be list-like objects with same length
         if isinstance(freqs_per_site, Freqs_per_site):
             raise NotImplementedException 
         elif hasattr(freqs_per_site, '__getitem__') and hasattr(freqs_per_site, '__len__'):
             # TODO: should check freqs for being 0<x<1
             self.freqs_per_site = freqs_per_site
+        else:
+            raise ValueError("freqs_per_site parameter is invalid")
             
         if isinstance(alleles_per_site, Alleles_per_site):
             raise NotImplementedException 
         elif hasattr(alleles_per_site, '__getitem__') and hasattr(alleles_per_site, '__len__'):
             self.alleles_per_site = alleles_per_site
+        else:
+            raise ValueError("alleles_per_site parameter is invalid")
+        
+        if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):    #TODO: make error message clearer
+            raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen) ")
+
         
         if alphabet is None:
             from Bio.Alphabet import IUPAC
