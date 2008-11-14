@@ -25,7 +25,28 @@ from Bio.Align.Generic import Alignment
 
 class NotImplementedException(Exception): pass
 
-class HaplotypesGenerator(object):
+class Freqs_per_site(object):
+    """represents a list of frequencies per site
+    """
+    def __init__(self):
+        raise NotImplementedError
+    def __getitem__(self):
+        pass
+    def __len__(self):
+        pass
+
+class Alleles_per_site(object):
+    """represents a list of alleles per site
+    """
+    def __init__(self):
+        raise NotImplementedError
+    def __getitem__(self):
+        pass
+    def __len__(self):
+        pass
+    
+
+class HaplotypesGenerator(object):  # TODO: find a better name
     """
     generates a random biopython Alignment object, 
      containing a set of haplotypes generated randomly.
@@ -53,8 +74,8 @@ class HaplotypesGenerator(object):
     <BLANKLINE>
     
     >>> ag = HaplotypesGenerator(nseq = 2, seqlen = 10,
-    ...        freqs_per_site = [0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42],
-    ...        alleles_per_site = ['AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'])
+    ...        freqs_per_site = (0.2, 0.5, 0.1, 0.4, 0.3, 0.6, 0.8, 0.1, 1.0, 0.42),
+    ...        alleles_per_site = ('AT', 'CT', 'GA', 'GT', 'TG', 'GT', 'TC', 'CA', 'TA', 'GT'))
     
     >>> (ldhat, alignment) = ag.generate(seed=10)      # be careful with this test
     >>> print alignment.format('fasta')
@@ -88,8 +109,16 @@ class HaplotypesGenerator(object):
     
         self.nseq = nseq
         self.seqlen = seqlen
-        self.freqs_per_site = freqs_per_site
-        self.alleles_per_site = alleles_per_site
+        if isinstance(freqs_per_site, Freqs_per_site):
+            raise NotImplementedException 
+        elif hasattr(freqs_per_site, '__getitem__') and hasattr(freqs_per_site, '__len__'):
+            # TODO: should check freqs for being 0<x<1
+            self.freqs_per_site = freqs_per_site
+            
+        if isinstance(alleles_per_site, Alleles_per_site):
+            raise NotImplementedException 
+        elif hasattr(alleles_per_site, '__getitem__') and hasattr(alleles_per_site, '__len__'):
+            self.alleles_per_site = alleles_per_site
         
         if alphabet is None:
             from Bio.Alphabet import IUPAC
@@ -158,7 +187,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     
     # these parameters could be used as inputs to LdHatGenerator: 
     >>> ag = HaplotypesGenerator(params[0], params[1], params[2], params[3])
-    >>> print ag.generate()[1]
+    >>> print ag.generate()[1].format('fasta')
     >seq1 
     AAA
     >seq2 
