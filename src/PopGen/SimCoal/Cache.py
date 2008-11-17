@@ -1,5 +1,4 @@
 # Copyright 2007 by Tiago Antao <tiagoantao@gmail.com>.  All rights reserved.
-
 """
 This module allows to cache Simcoal2 results, and return on the fly
 in case the calculation was done.

@@ -1,0 +1,2 @@
+dataDir = './data/'
+simcoalDir = './bin/' 
