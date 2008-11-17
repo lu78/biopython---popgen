@@ -14,6 +14,14 @@ from PopGen.SimCoal.Controller import SimCoalController
 from PopGen import Config
 
 class SimCoalCache:
+    """
+    Cache for simcoal (...)    #TODO complete docstring
+    
+    >>> cache = SimCoalCache('/home/work/werk/consolidator/sc_cache',
+    ... '/home/work/software/simcoal')
+    >>> cache.run_simcoal('.', 'island_snp-50_0.0025_10_0.083_100_60.par', 102)
+    
+    """
     def __init__(self, simcoalDir = None):
         """Initializes the cache.
         
@@ -87,6 +95,6 @@ class SimCoalCache:
 
 
 if __name__ == '__main__':
-  cache = Cache('/home/work/werk/consolidator/sc_cache',
+    cache = Cache('/home/work/werk/consolidator/sc_cache',
       '/home/work/software/simcoal')
-  cache.run_simcoal('.', 'island_snp-50_0.0025_10_0.083_100_60.par', 102)
+    cache.run_simcoal('.', 'island_snp-50_0.0025_10_0.083_100_60.par', 102)

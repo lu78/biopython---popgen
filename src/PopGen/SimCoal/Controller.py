@@ -21,6 +21,7 @@ class SimCoalController:
     >>> simcoalDir = '/usr/bin/'
     >>> sc = SimCoalController(simcoalDir)
     # parfile is a file containing the parameters for simcoal
+    # NOTE: I would rather do that with a make-like tool, e.g. waf
     >>> parfile = file('test/simcoal/parameters/', num_sims = 100)
     
     """
@@ -31,7 +32,7 @@ class SimCoalController:
         
         The initializer checks for existance and executability of binaries.
         """
-        self.simcoal_dir = simcoal_dir + '/' # better be sure it ends with a /
+        self.simcoal_dir = simcoal_dir
         self.os_name = os.name
         if self.os_name == 'nt' or sys.platform == 'cygwin':  # TODO: does this work in dos or other OS?
             self.bin_name = 'simcoal2.exe'
