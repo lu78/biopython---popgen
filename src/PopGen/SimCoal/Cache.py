@@ -7,7 +7,7 @@ in case the calculation was done.
 """
 
 from logging import debug
-from sys import exit
+import sys  # for sys.exit
 import os
 import tarfile
 import tempfile
@@ -20,12 +20,13 @@ class SimCoalCache:
         
         simcoalDir - where the binaries are
 
-        IMPORTANT: The cache only makes sense if the file nameunivically
+        IMPORTANT: The cache only makes sense if the file name univocally
         identifies the model.
           For now use use the model name as key,
           and it will probably stay like that.
         """
-        self.cacheDir = os.sep.join([Config.dataDir, 'SimCoal', 'cache'])
+        self.cacheDir = os.sep.join([Config.dataDir, 'SimCoal', 'cache']) # this is starting to be similar to an automatic build system. Why don't we try to merge the code from waf or other similar projects?    
+         
         if simcoalDir is None:
             self.simcoalDir = Config.simcoalDir
         else:
