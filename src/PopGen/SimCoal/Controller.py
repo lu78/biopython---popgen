@@ -7,11 +7,14 @@ This module allows to control Simcoal2.
 
 import os
 import sys
-import tempfile
-from shutil import copyfile
+#import tempfile
+#from shutil import copyfile
 from logging import debug
 
 class SimCoalController:
+    """
+    SimCoalController
+    """
     def __init__(self, simcoal_dir):
         """Initializes the controller.
         
@@ -31,9 +34,9 @@ class SimCoalController:
         if self.bin_name in dir_contents:
             if not os.access(self.simcoal_dir + os.sep +
                 self.bin_name, os.X_OK):
-                raise IOError, "SimCoal not executable"
+                raise IOError, "SimCoal not executable in path %s" % self.simcoal_dir
         else:
-            raise IOError, "SimCoal not available"
+            raise IOError, "SimCoal not available in path %s" % self.simcoal_dir
 
     def run_simcoal(self, par_file, num_sims, ploydi = '1', par_dir = '.'):
         """Executes SimCoal.
