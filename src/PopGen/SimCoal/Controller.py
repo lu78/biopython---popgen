@@ -14,6 +14,15 @@ from logging import debug
 class SimCoalController:
     """
     SimCoalController
+    
+    Use it to run and control simcoal
+    
+    e.g.:
+    >>> simcoalDir = '/usr/bin/'
+    >>> sc = SimCoalController(simcoalDir)
+    # parfile is a file containing the parameters for simcoal
+    >>> parfile = file('test/simcoal/parameters/', num_sims = 100)
+    
     """
     def __init__(self, simcoal_dir):
         """Initializes the controller.
@@ -22,9 +31,9 @@ class SimCoalController:
         
         The initializer checks for existance and executability of binaries.
         """
-        self.simcoal_dir = simcoal_dir
+        self.simcoal_dir = simcoal_dir + '/' # better be sure it ends with a /
         self.os_name = os.name
-        if self.os_name == 'nt' or sys.platform == 'cygwin':    # does this work in dos or other OS?
+        if self.os_name == 'nt' or sys.platform == 'cygwin':  # TODO: does this work in dos or other OS?
             self.bin_name = 'simcoal2.exe'
             #this is wrong (the exe name), most probably
         else:
