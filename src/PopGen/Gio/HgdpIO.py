@@ -34,9 +34,8 @@ Example:
 ... MitoA15302G    AA    AA    AA    AA    AA    GG    GG    AA    AA    GG
 ... MitoA15759G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... MitoA15908G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
-... MitoA15925G    AA    AA    AA    AA    AA    AA    AA    AA    AG    AA
-... MitoA16163G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
-...
+... rs1112391    TC    CC    CC    CC    CC    CC    CC    CC    CC    CC
+... rs11124185    TC    TT    TT    TT    TT    TT    TT    TT    TT    TT
 ... ''')
 >>> h = HGDPIterator(hgdp_file)     # what HGDP iterator should return?
 >>> 
