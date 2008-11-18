@@ -10,6 +10,7 @@ import sys
 #import tempfile
 #from shutil import copyfile
 from logging import debug
+from PopGen import Config
 
 class SimCoalController:
     """
