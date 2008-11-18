@@ -36,6 +36,21 @@ Example:
 ... MitoA15908G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... MitoA15925G    AA    AA    AA    AA    AA    AA    AA    AA    AG    AA
 ... MitoA16163G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
-
+...
 ... ''')
+>>> h = HGDPIterator(hgdp_file)     # what HGDP iterator should return?
+>>> 
 """
+
+def HGDPIterator(handle, markers_filter = None, samples_filter = None):
+    pass
+
+
+
+
+def _test():
+    import doctest
+    doctest.testmod()
+    
+if __name__ == '__main__':
+    _test()
