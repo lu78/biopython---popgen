@@ -18,9 +18,7 @@
 """
 
 from copy import deepcopy
-from Exceptions import PopulationExistsException, RequiresGenotypeException
-
-
+from PopGen.Exceptions import PopulationExistsException, RequiresGenotypeException
 
 class Structural:
     """'Abstract' Structural class.
@@ -61,6 +59,8 @@ class Structural:
     >>> s.pop_names
     ['Vulcanians', 'Martians']
     >>> s.pop_indivs
+    
+    TODO: test
 """
 
     def __init__(self):
@@ -95,7 +95,7 @@ class Structural:
         count_data = {}
         for indiv in indiv_data:
             for allele in indiv:
-                if allele <> None:
+                if allele is not None:
                     allele_count = count_data.get(str(allele), 0)
                     count_data[str(allele)] = allele_count + 1
         return count_data
@@ -105,6 +105,8 @@ class FstBeaumont(Structural):
     
     This is a variation of Weir and Cockerham, should only be
     used with FDist. A Weir and Cockerham Theta is be implemented.
+    
+    TODO: test
     """
     
     def __init__(self):
@@ -263,6 +265,8 @@ class Fst(Structural):
     """Implements Fst (plus Fis and Fit).
     
     Weir and Cockerham.
+    
+    TODO: test
     """
     
     def __init__(self):
@@ -285,6 +289,8 @@ class Fk(Structural):
     Should only have 2 populations (if more are needed, do pairs)
     This only implements the sum part.
     A full Fk requires all loci Fk averaged by number of alleles.
+    
+    TODO: test
     """
 
     def __init__(self):
