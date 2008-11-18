@@ -16,16 +16,18 @@ depends on your objective). Multi-locus statistics (like the
 ones related to linkage desiquilibrium) will be dealt elsewhere.
 """
 
+from PopGen.Exceptions import *
+
 class Simple:
     """'Abstract' Simple stats class.
 
     Any concrete subclass must implement calc_stat(self).
 
-    Concrete statistics can either used agregatted data (eg,
-    50 counts of allele A, 10 of C) or genotypical data (eg,
+    Concrete statistics can either used aggregated data (e.g.,
+    50 counts of allele A, 10 of C) or genotypical data (e.g.,
     Individual 1 is C/C, ... individual 30 is A/C). Some
-    statistics, like Observed Heterosigosity, REQUIRE genotypical
-    data, other, like Expected Heterosigosity, can live with allele
+    statistics, like Observed Heterozigosity, REQUIRE genotypical
+    data, other, like Expected Heterozigosity, can live with allele
     counts only.
 
     Concrete classes are expected to override __str__ in order to
@@ -40,7 +42,7 @@ class Simple:
     """
 
     def __init__(self):
-        self.counts_acceptable = True
+        self.counts_acceptable = True   # ?
         self.removable = ['000', '00', '0', 'NA']
         self.counts = {}
         self.indiv_data = {}
@@ -61,7 +63,7 @@ class Simple:
         count_data = {}
         for indiv in indiv_data:
             for allele in indiv:
-                if allele <> None:
+                if allele is not None:
                     allele_count = count_data.get(str(allele), 0)
                     count_data[str(allele)] = allele_count + 1
         return count_data
