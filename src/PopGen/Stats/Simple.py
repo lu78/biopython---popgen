@@ -38,6 +38,9 @@ class Simple:
 
     Statistics that require genotypical data must set
     counts_acceptable to False
+    
+    >>> stats = Simple()        # this class should not be used directly
+    >>> stats.set_data(['Ind1', (0 1 0 1)])    # TODO: fix example 
 
     """
 
@@ -77,6 +80,12 @@ class NumberOfAlleles(Simple):
 
     As an example, an SNP, can't have more than 4 alleles, and the
     most typical value is 2.
+        
+    >>> stats = NumberOfAlleles()        # this class should not be used directly
+    >>> stats.set_data(['Ind1', (0 1 0 1)])    # TODO: fix example
+    >>> stats.calc_stats()
+    2 # ????
+     
     """
     def __init__(self):
         Simple.__init__(self)
