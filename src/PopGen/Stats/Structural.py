@@ -18,22 +18,9 @@
 """
 
 from copy import deepcopy
+from Exceptions import PopulationExistsException, RequiresGenotypeException
 
-class GenePopException(Exception):
-    pass
 
-class PopulationExistsException(GenePopException):
-    """A certain population already exists.
-    """
-
-    def __init__(self, pop_name):
-        self.pop_name = pop_name
-
-    def __str__(self):
-        return self.pop_name + ' already exists'
-
-class RequiresGenotypeException(GenePopException):
-    pass
 
 class Structural:
     """'Abstract' Structural class.
