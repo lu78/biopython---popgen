@@ -12,13 +12,11 @@ Example of Genotypes file
 >>> from StringIO import StringIO
 >>> genotypes_file = StringIO('''
 ...   Ind1    Ind2    Ind3    Ind4    Ind5    Ind6    Ind7    Ind8    Ind9    Ind10
-... MitoA10045G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA   
-... MitoA10551G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+... MitoA10045G    AA    GG    AG    AA    AA    AA    AA    AA    AA    AA   
+... rs1112391    TT    TC    CC    CC    CC    CC    CC    CC    CC    CC
 ... MitoA11252G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+... rs11124185    TC    TT    TT    TT    TT    TT    TT    TT    TT    TT
 ... MitoA11468G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
-... MitoA11813G    AA    AA    AA    AA    AG    AA    AA    AA    AA    AA
-... MitoA12309G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
-... MitoA13106G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... MitoA13264G    GG    AA    AA    AA    GG    AG    AA    AA    AA    AA
 ... MitoA13781G    AA    AA    AA    AA    AA    AA    --    AA    AA    AA
 ... MitoA14234G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
@@ -29,8 +27,6 @@ Example of Genotypes file
 ... MitoA15302G    AA    AA    AA    AA    AA    GG    GG    AA    AA    GG
 ... MitoA15759G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... MitoA15908G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
-... rs1112391    TC    CC    CC    CC    CC    CC    CC    CC    CC    CC
-... rs11124185    TC    TT    TT    TT    TT    TT    TT    TT    TT    TT
 ... ''')
 >>> h = hgdp_genotypesIterator(genotypes_file)     # what HGDP iterator should return?
 >>> 
@@ -77,16 +73,23 @@ def hgdp_genotypesIterator(handle, markers_filter = None, samples_filter = None)
     It returns a Marker object for every line of the file  
     #>>> for snp in hgdp_genotypes_iterator(handle):
     #...     print snp
-    snp object at ...
+    <snp object at ...>
     """
     # read the header, containing the Individuals names
-    handle.readline()
+    handle.readline()       # first line is empty??
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
-    logging.debug(header)
     individuals = [Individual(id) for id in header.split()]
-    logging.debug(individuals)
+    
+    for line in handle.readlines():
+        fields = line.split()
+        if fields is None:
+            break
+        for n in range(1, len(fields)):
+            individuals[n-1].markers.append(fields[n])
+            logging.debug(individuals[n-1])
+            logging.debug(individuals[n-1].markers)
 
 
 

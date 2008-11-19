@@ -6,21 +6,19 @@ class Individual(object):
     >>> Einstein = Individual().from_ped_line(["Vulcanians", "Einstein", "0", "0", "1", "2", "C", "T", "C", "C"])
     >>> Einstein
     Mr. Einstein (Vulcanians)
-    """
-    
-    individual_id = ''
-    population = 'unknown population'
-    father = ''
-    mother = ''
-    sex = '0'
-    phenotype = '0'
-    markers = []
+    """    
     
     def __init__(self, id):
         self.individual_id = id
+        self.population = 'unkn. population'
+        self.father = ''
+        self.mother = ''
+        self.sex = '0'
+        self.phenotype = '0'
+        self.markers = []
     
     def __repr__(self):
-        if self.sex == '0' or self.sex == '1':
+        if self.sex in ('0', '1'):
             r = "Mr. %s (%s)" %(self.individual_id, self.population)
         else:
             r = "Mrs. %s (%s)" %(self.individual_id, self.population)
