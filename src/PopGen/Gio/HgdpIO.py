@@ -1,27 +1,17 @@
 #!/usr/bin/env python
 # biopython license
 """
-
-Parses files in HGDP (I don't know how to call it) format.
+Parse files in HGDP (I don't know how its proper name) format.
 
 HGDP results consists in three different file: 
 - one with the genotypes
 - one with gene informations
 - one with individual informations
 
-Example of Genotype file
->>> import StringIO
+Example of Genotypes file
+>>> from StringIO import StringIO
 >>> genotypes_file = StringIO('''
-... [Header]
-... BSGT Version    2.3.41.16318
-... Processing Date    8/20/2006 1:40 PM
-... Content        BDCHP-1X12-HUMANHAP650Y_11226216_A.csv
-... Num SNPs    19
-... Total SNPs    19
-... Num Samples    30
-... Total Samples    159
-... [Data]
-...     Ind1    Ind2    Ind3    Ind4    Ind5    Ind6    Ind7    Ind8    Ind9    Ind10
+...   Ind1    Ind2    Ind3    Ind4    Ind5    Ind6    Ind7    Ind8    Ind9    Ind10
 ... MitoA10045G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA   
 ... MitoA10551G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... MitoA11252G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
@@ -42,7 +32,7 @@ Example of Genotype file
 ... rs1112391    TC    CC    CC    CC    CC    CC    CC    CC    CC    CC
 ... rs11124185    TC    TT    TT    TT    TT    TT    TT    TT    TT    TT
 ... ''')
->>> h = HGDPIterator(genotypes_file)     # what HGDP iterator should return?
+>>> h = hgdp_genotypesIterator(genotypes_file)     # what HGDP iterator should return?
 >>> 
 
 Example of file with SNP annotations
@@ -56,11 +46,6 @@ Example of file with SNP annotations
 ... rs11260588    1    1061582    35    C1orf159    NM_017891    intron    -267    -1    -1    -1    -1
 ... rs9442398    1    1061618    35    C1orf159    NM_017891.2    intron    -303    -1    -1    -1    -1
 ... rs6687776    1    1070489    35    C1orf159    NM_017891    intron    -3083    -1    -1    -1    -1
-... rs9651273    1    1071464    35    C1orf159    NM_017891    intron    -4058    -1    -1    -1    -1
-... rs4970405    1    1088879    35    C1orf159    NM_017891    intron    -2484    -1    -1    -1    -1
-... rs12726255    1    1089874    35    C1orf159    NM_017891    intron    -1489    -1    -1    -1    -1
-... rs7540009    1    1100158    35    C1orf159    NM_017891.2    flanking_5UTR    -8766    -1    -1    -1    -1
-... rs11807848    1    1101090    35    C1orf159    NM_017891    flanking_5UTR    -9698    -1    -1    -1    -1
 ... ''')
 
 Example of file with Individuals annotations
@@ -79,24 +64,32 @@ Example of file with Individuals annotations
 ... 21    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    21    51    Brahui    0.002    0.994    0.001    0.001    0.002    HGDP00021    Brahui    TRUE    CSASIA    TRUE
 ... 23    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    23    51    Brahui    0.004    0.934    0.025    0.008    0.029    HGDP00023    Brahui    TRUE    CSASIA    TRUE
 ... 25    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    25    51    Brahui    0.002    0.867    0.098    0.028    0.004    HGDP00025    Brahui    TRUE    CSASIA    TRUE
-... 27    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    27    51    Brahui    0.01    0.957    0.024    0.004    0.005    HGDP00027    Brahui    TRUE    CSASIA    TRUE
-... 29    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    29    51    Brahui    0.175    0.688    0.049    0.086    0.002    HGDP00029    Brahui    TRUE    CSASIA    TRUE
-... 31    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    31    51    Brahui    0.001    0.975    0.009    0.012    0.003    HGDP00031    Brahui    TRUE    CSASIA    TRUE
-... 33    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    33    51    Brahui    0.001    0.991    0.003    0.002    0.003    HGDP00033    Brahui    TRUE    CSASIA    TRUE
-... 35    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    35    51    Brahui    0.001    0.903    0.085    0.008    0.003    HGDP00035    Brahui    TRUE    CSASIA    TRUE
-... 37    51    Brahui    Pakistan    CENTRAL_SOUTH_ASIA    m    1    1    1    1    1    1    1    0    1    1    37    51    Brahui    0.001    0.95    0.045    0.001    0.003    HGDP00037    Brahui    TRUE    CSASIA    TRUE
 ... ''') 
 """
 
-def HGDPgenotypesIterator(handle, markers_filter = None, samples_filter = None):
-    pass
+import logging
+
+def hgdp_genotypesIterator(handle, markers_filter = None, samples_filter = None):
+    """
+    Parse a genotypes file handler.
+    """
+    # read the header, containing the Individuals names
+    handle.readline()
+    header = handle.readline()
+    if header is None:
+        raise ValueError('Empty file!!')
+    logging.debug(header)
+    individuals = [ind for ind in header.split()]
+    logging.debug(individuals)
 
 
 
 
 def _test():
+    """test the module"""
     import doctest
     doctest.testmod()
     
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     _test()
