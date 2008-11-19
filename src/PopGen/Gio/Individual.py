@@ -8,27 +8,27 @@ class Individual(object):
     Mr. Einstein (Vulcanians)
     """
     
-    population = ''
-    name = ''
+    individual_id = ''
+    population = 'unknown population'
     father = ''
     mother = ''
     sex = '0'
     phenotype = '0'
     markers = []
     
-    def __init__(self):
-        pass
+    def __init__(self, id):
+        self.individual_id = id
     
     def __repr__(self):
         if self.sex == '0' or self.sex == '1':
-            r = "Mr. %s (%s)" %(self.name, self.population)
+            r = "Mr. %s (%s)" %(self.individual_id, self.population)
         else:
-            r = "Mrs. %s (%s)" %(self.name, self.population)
+            r = "Mrs. %s (%s)" %(self.individual_id, self.population)
         return r
     
     def from_ped_line(self, ped_line):
         self.population = ped_line[0]
-        self.name = ped_line[1]
+        self.individual_id = ped_line[1]
         self.father = ped_line[2]
         self.mother = ped_line[3]
         self.sex = ped_line[4]

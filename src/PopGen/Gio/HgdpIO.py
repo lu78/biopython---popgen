@@ -68,10 +68,16 @@ Example of file with Individuals annotations
 """
 
 import logging
+from PopGen.Gio.Individual import Individual
 
 def hgdp_genotypesIterator(handle, markers_filter = None, samples_filter = None):
     """
     Parse a genotypes file handler.
+    
+    It returns a Marker object for every line of the file  
+    #>>> for snp in hgdp_genotypes_iterator(handle):
+    #...     print snp
+    snp object at ...
     """
     # read the header, containing the Individuals names
     handle.readline()
@@ -79,7 +85,7 @@ def hgdp_genotypesIterator(handle, markers_filter = None, samples_filter = None)
     if header is None:
         raise ValueError('Empty file!!')
     logging.debug(header)
-    individuals = [ind for ind in header.split()]
+    individuals = [Individual(id) for id in header.split()]
     logging.debug(individuals)
 
 
