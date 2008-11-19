@@ -12,6 +12,7 @@ class InvalidInputFile(GenericPopGenException):
 class InvalidGenotype(GenericPopGenException):
     pass
 
+class NotImplementedError(GenericPopGenException): pass
 
 class PopulationExistsException(GenericPopGenException):
     """A certain population already exists.

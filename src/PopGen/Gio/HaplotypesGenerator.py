@@ -22,8 +22,7 @@ import logging
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Align.Generic import Alignment
-
-class NotImplementedError(Exception): pass
+from PopGen.Exceptions import NotImplementedError
 
 class Freqs_per_site(object):
     """represents a list of frequencies per site
