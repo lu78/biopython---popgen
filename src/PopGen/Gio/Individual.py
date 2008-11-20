@@ -8,7 +8,7 @@ class Individual(object):
     Mr. Einstein (Vulcanians)
     """    
     
-    def __init__(self, id):
+    def __init__(self, id, population = 'unkn. population', father = None, mother = None, sex = '0', phenotype = None, markers = []):
         self.individual_id = id
         self.population = 'unkn. population'
         self.father = ''
