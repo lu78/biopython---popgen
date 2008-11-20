@@ -72,9 +72,9 @@ def hgdpsamplesfileIterator(handle, ):
     if header is None:
         raise ValueError('Empty file!!')
     
-    individuals_by_population = {}
+#    individuals_by_population = {}
     individuals_by_region = {}
-    individuals_by_continent = {}
+#    individuals_by_continent = {}
     
     for line in handle.readlines(): 
         row = line.split()
@@ -88,14 +88,16 @@ def hgdpsamplesfileIterator(handle, ):
         unit = row[5].replace('"', '')
         Ind = Individual(id, pop, sex = sex)
         
-        individuals_by_population.setdefault(pop, [])
-        individuals_by_population[pop].append(id)
+#        individuals_by_population.setdefault(pop, [])
+#        individuals_by_population[pop].append(id)
         individuals_by_region.setdefault(region, [])
         individuals_by_region[region].append(id)
-        individuals_by_continent.setdefault(continent, [])
-        individuals_by_continent[continent].append(id)
+#        individuals_by_continent.setdefault(continent, [])
+#        individuals_by_continent[continent].append(id)
     logging.debug(individuals_by_region)
-    logging.debug(individuals_by_population)
+#    logging.debug(individuals_by_population)
+    
+    return individuals_by_region
     
 
 def hgdpgenotypesIterator(handle, markers_filter = None, samples_filter = None):
