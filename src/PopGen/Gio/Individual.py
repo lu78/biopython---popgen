@@ -8,7 +8,7 @@ class Individual(object):
     Mr. Einstein (Vulcanians)
     >>> print Einstein + ' Albert'            # Test __add__ method
     Einstein Albert
-    >>> print Einstein in ('Einstein')        # Test __eq__ method
+    >>> print Einstein in ('Einstein', )      # Test __eq__ method
     True
     """    
     
@@ -40,6 +40,9 @@ class Individual(object):
         return str(self.individual_id) + other
     
     def __eq__(self, other):
+        return self.individual_id == other
+    
+    def __ne__(self, other):
         return self.individual_id == other
     
     def from_ped_line(self, ped_line):

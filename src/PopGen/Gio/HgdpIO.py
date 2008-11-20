@@ -86,12 +86,14 @@ def hgdpsamplesfileIterator(handle, ):
         region = row[3].replace('"', '')
         continent = row[4].replace('"', '')
         unit = row[5].replace('"', '')
+        
+        # create an Individual object
         Ind = Individual(id, pop, sex = sex)
         
 #        individuals_by_population.setdefault(pop, [])
 #        individuals_by_population[pop].append(id)
         individuals_by_region.setdefault(region, [])
-        individuals_by_region[region].append(id)
+        individuals_by_region[region].append(Ind)
 #        individuals_by_continent.setdefault(continent, [])
 #        individuals_by_continent[continent].append(id)
     logging.debug(individuals_by_region)
