@@ -6,10 +6,17 @@ class Individual(object):
     >>> Einstein = Individual().from_ped_line(["Vulcanians", "Einstein", "0", "0", "1", "2", "C", "T", "C", "C"])
     >>> Einstein
     Mr. Einstein (Vulcanians)
+    >>> print Einstein + ' Albert'            # Test __add__ method
+    Einstein Albert
+    >>> print Einstein in ('Einstein')        # Test __eq__ method
+    True
     """    
     
-    def __init__(self, id, population = 'unkn. population', father = None, mother = None, sex = '0', phenotype = None, markers = []):
-        self.individual_id = id
+    def __init__(self, id = None, population = 'unkn. population', father = None, mother = None, sex = '0', phenotype = None, markers = []):
+        if id is not None:
+            self.individual_id = id
+        else:
+            self.individual_id = None       # is this ok?
         self.population = 'unkn. population'
         self.father = ''
         self.mother = ''
@@ -24,6 +31,17 @@ class Individual(object):
             r = "Mrs. %s (%s)" %(self.individual_id, self.population)
         return r
     
+    def __str__(self):
+        """
+        """
+        return self.individual_id
+    
+    def __add__(self, other):
+        return str(self.individual_id) + other
+    
+    def __eq__(self, other):
+        return self.individual_id == other
+    
     def from_ped_line(self, ped_line):
         self.population = ped_line[0]
         self.individual_id = ped_line[1]
@@ -34,7 +52,7 @@ class Individual(object):
     
 def _test():
     import doctest
-    doctest.testmod(verbose = True)
+    doctest.testmod(verbose = False)
     
 if __name__ == '__main__':
     _test()
