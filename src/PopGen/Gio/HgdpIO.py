@@ -50,8 +50,6 @@ Example of file with Individuals annotations
 ... "code"  "sex"    "population"    "region"        "continent"     "Unidad"
 ... "HGDP00001"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... "HGDP00003"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
-... "HGDP00005"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
-... "HGDP00007"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... "HGDP01362"    "M"    "French_Basque"    "France"    "Europe"    "Basque"
 ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"
 ... "HGDP00013"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
@@ -65,7 +63,7 @@ from PopGen.Gio.Individual import Individual
 import csv
 import re
 
-def hgdpindividualfileIterator(handle, ):
+def hgdpsamplesfileIterator(handle, ):
     """
     parse a file with descriptions onn Individuals (samples) in hgdp
     """
