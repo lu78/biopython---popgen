@@ -17,7 +17,7 @@ class Individual(object):
             self.individual_id = id
         else:
             self.individual_id = None       # is this ok?
-        self.population = 'unkn. population'
+        self.population = 'unkn. population'    # better a 'population' object?
         self.father = ''
         self.mother = ''
         self.sex = '0'
