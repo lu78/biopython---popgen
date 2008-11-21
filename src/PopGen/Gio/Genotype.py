@@ -8,9 +8,13 @@
 Genotype object
 
 >>> import Individual, Marker
->>> g = Genotype()
+>>> g = Genotype('snr10000')
+>>> g.genotypes = ['AA', 'AC', 'CC', 'AC']
 """
 
 
 class Genotype(object):
-    pass
+    def __init__(self, name):
+        self.genotype_id = name
+        self.genotypes = []
+    

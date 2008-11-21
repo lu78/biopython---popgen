@@ -55,8 +55,8 @@ Example of file with Individuals annotations
 ... "HGDP00013"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... "HGDP00015"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... ''') 
->>> hgdpsamplesfileIterator(samples_file)
-{'Pakistan': [Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani), Mr. HGDP00013 (Brahui), Mr. HGDP00015 (Brahui)], 'France': [Mr. HGDP01362 (French_Basque)]}
+>>> hgdpsamplesfileParser(samples_file)
+[Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP01362 (French_Basque), Mr. HGDP00151 (Makrani), Mr. HGDP00013 (Brahui), Mr. HGDP00015 (Brahui)]
 """
 
 import logging
@@ -64,15 +64,28 @@ from PopGen.Gio.Individual import Individual
 import csv
 import re
 
-def hgdpsamplesfileIterator(handle, ):
+def hgdpsamplesfileParser(handle, ):
     """
-    parse a file with descriptions onn Individuals (samples) in hgdp
+    parse a file with descriptions of Individuals (samples) in hgdp
+    
+    >>> from StringIO import StringIO
+    >>> samples_file = StringIO(
+    ... '''"sample"
+    ... "code"  "sex"    "population"    "region"        "continent"     "Unidad"
+    ... "HGDP00001"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
+    ... "HGDP00003"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
+    ... "HGDP01362"    "M"    "French_Basque"    "France"    "Europe"    "Basque"
+    ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
+    >>> samples = hgdpsamplesfileParser(samples_file)
+    >>> print [sample for sample in samples if sample.region == "Pakistan"]
+    [Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
     """
     handle.readline()   # skip headers
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
     
+    individuals = []
 #    individuals_by_population = {}
     individuals_by_region = {}
 #    individuals_by_continent = {}
@@ -80,17 +93,18 @@ def hgdpsamplesfileIterator(handle, ):
     for line in handle.readlines(): 
         row = line.split()
         if row is None: break   # FIXME: optimize
-        id = row[0].replace('"', '')
+        ind_id = row[0].replace('"', '')
 #        logging.debug(row)
         sex = row[1].replace('"', '')   # TODO: translate this to 1/2 
-        pop = row[2].replace('"', '')
+        pop = row[2].replace('"', '')   # TODO: use Population object
         region = row[3].replace('"', '')
         continent = row[4].replace('"', '')
         unit = row[5].replace('"', '')
         
         # create an Individual object
-        Ind = Individual(id, pop, sex = sex)
-        
+        Ind = Individual(ind_id, pop, region=region, continent=continent, 
+                        working_unit=unit, sex = sex)
+        individuals.append(Ind)
 #        individuals_by_population.setdefault(pop, [])
 #        individuals_by_population[pop].append(id)
         individuals_by_region.setdefault(region, [])
@@ -100,7 +114,7 @@ def hgdpsamplesfileIterator(handle, ):
     logging.debug(individuals_by_region)
 #    logging.debug(individuals_by_population)
     
-    return individuals_by_region
+    return individuals
     
 
 def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
@@ -125,11 +139,20 @@ def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
     
     >>> samples_filter = ['HGDP00001', 'HGDP00004']  
-    >>> individuals = hgdpgenotypesParser(genotypes_file, samples_filter)
-    >>> for ind in individuals:
-    ...     print ind, ind.markers
+    >>> [genotypes, individuals] = hgdpgenotypesParser(genotypes_file, samples_filter)
+    >>> print individuals
+    [HGDP00001, HGDP00004]
+    >>> for gen in genotypes:
+    ...     print gen,
+    AA AA
+    TT CC
+    AA TT
+    TC AA
+    
+    
     HGDP00001 ['AA', 'TT', 'AA', 'TC', 'AA', 'GG', 'AA', 'AA', 'AA', 'GG', 'AA']
-    HGDP00004 ['AA', 'CC', 'AA', 'TT', 'AA', 'AA', 'AA', 'AA', 'AA', 'GG', 'GG']
+    ,  ['AA', 'CC', 'AA', 'TT', 'AA', 'AA', 'AA', 'AA', 'AA', 'GG', 'GG']
+    
     """
     # read the header, containing the Individuals names
 #    handle.readline()       # first line is empty??
@@ -137,6 +160,9 @@ def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
     if header is None:
         raise ValueError('Empty file!!')
     individuals = [Individual(ind_id) for ind_id in header.split()]
+    if samples_filter is None:      # ugly way to handle things when samples_filter 
+                                    #     is not specified
+        samples_filter = [ind.individual_id for ind in individuals]
     
     for line in handle.readlines():
         fields = line.split()
@@ -147,14 +173,15 @@ def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
             if current_individual in samples_filter:
                 current_marker = fields[n]
                 current_individual.markers.append(current_marker) # or append?
-#                logging.debug(current_individual)
+                logging.debug(current_individual)
+                logging.debug(current_individual.markers)
 #                print current_individual
             else:
                 pass
             
         # for every line in the file, return a list of 'Individual' object
-    filtered_individuals = [ind for ind in individuals if ind in samples_filter]
-    return filtered_individuals
+    filtered_genotypes = [ind for ind in individuals if ind in samples_filter]
+    return filtered_genotypes
 
 
 

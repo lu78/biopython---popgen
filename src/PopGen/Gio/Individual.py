@@ -12,12 +12,18 @@ class Individual(object):
     True
     """    
     
-    def __init__(self, id = None, population = 'unkn. population', father = None, mother = None, sex = '0', phenotype = None, markers = []):
+    def __init__(self, id = None, population = 'unkn. population',
+                 region = None, continent = None, area = None, working_unit = None, 
+                 father = None, mother = None, sex = '0', phenotype = None, markers = []):
         if id is not None:
             self.individual_id = id
         else:
             self.individual_id = None       # is this ok?
         self.population = population    # better a 'population' object?
+        self.region = region
+        self.continent = continent
+        self.area = area
+        self.working_unit = working_unit
         self.father = ''
         self.mother = ''
         self.sex = '0'
