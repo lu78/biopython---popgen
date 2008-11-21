@@ -46,6 +46,7 @@ class Individual(object):
         return str(self.individual_id) + other
     
     def __eq__(self, other):
+        # TODO: this takes quite a lot of CPU time. why?
         return self.individual_id == other
     
     def __ne__(self, other):
