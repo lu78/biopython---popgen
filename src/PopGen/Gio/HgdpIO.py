@@ -56,6 +56,7 @@ Example of file with Individuals annotations
 ... "HGDP00015"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... ''') 
 >>> hgdpsamplesfileIterator(samples_file)
+{'Pakistan': [Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani), Mr. HGDP00013 (Brahui), Mr. HGDP00015 (Brahui)], 'France': [Mr. HGDP01362 (French_Basque)]}
 """
 
 import logging
@@ -80,7 +81,7 @@ def hgdpsamplesfileIterator(handle, ):
         row = line.split()
         if row is None: break   # FIXME: optimize
         id = row[0].replace('"', '')
-        logging.debug(row)
+#        logging.debug(row)
         sex = row[1].replace('"', '')   # TODO: translate this to 1/2 
         pop = row[2].replace('"', '')
         region = row[3].replace('"', '')
@@ -102,30 +103,55 @@ def hgdpsamplesfileIterator(handle, ):
     return individuals_by_region
     
 
-def hgdpgenotypesIterator(handle, markers_filter = None, samples_filter = None):
+def hgdpgenotypesIterator(handle, samples_filter = None, markers_filter = None):
     """
     Parse a genotypes file handler.
     
-    It returns a Marker object for every line of the file  
-    #>>> for snp in hgdp_genotypes_iterator(handle):
-    #...     print snp
-    <snp object at ...>
+    It returns a Marker object for every line of the file
+    
+    >>> from StringIO import StringIO
+    >>> genotypes_file = StringIO(
+    ... '''  HGDP00001    HGDP00002    HGDP00003    HGDP00004    HGDP00005    HGDP00006    HGDP00007    HGDP00008    HGDP00009    HGDP000010
+    ... rs1112390    AA    GG    AG    AA    AA    AA    AA    AA    AA    AA   
+    ... rs1112391    TT    TC    CC    CC    CC    CC    CC    CC    CC    CC
+    ... MitoA11252G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... rs11124185    TC    TT    TT    TT    TT    TT    TT    TT    TT    TT
+    ... MitoA13265G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... MitoA13264G    GG    AA    AA    AA    GG    AG    AA    AA    AA    AA
+    ... MitoA13781G    AA    AA    AA    AA    AA    AA    --    AA    AA    AA
+    ... MitoA14234G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... MitoA14583G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
+    ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
+    
+    >>> samples_filter = ['HGDP00001', 'HGDP00004']  
+    >>> for individual in hgdpgenotypesIterator(genotypes_file, samples_filter):
+    ...     print individual
+    Mr. HGDP00001 AA TT AA TC AA GG AA AA AA GG AA
+    Mr. HGDP00004 AA CC AA TT AA AA AA AA AA GG GG
     """
     # read the header, containing the Individuals names
-    handle.readline()       # first line is empty??
+#    handle.readline()       # first line is empty??
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
-    individuals = [Individual(id) for id in header.split()]
+    individuals = [Individual(ind_id) for ind_id in header.split()]
     
     for line in handle.readlines():
         fields = line.split()
         if fields is None:
             break
         for n in range(1, len(fields)):
-            individuals[n-1].markers = [fields[n]]
-            logging.debug(individuals[n-1])
-            logging.debug(individuals[n-1].markers)
+            current_individual = individuals[n-1]
+            print n, current_individual, samples_filter
+            print current_individual in samples_filter
+            if current_individual in samples_filter:
+                current_marker = fields[n]
+                current_individual.markers = current_marker # or append?
+#                logging.debug(current_individual)
+#                print current_individual
+            else:
+                pass
             
         # for every line in the file, return a list of 'Individual' objects
         yield individuals
