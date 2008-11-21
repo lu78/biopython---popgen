@@ -28,7 +28,7 @@ Example of Genotypes file
 ... MitoA15759G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... MitoA15908G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
 ... ''')
->>> h = hgdpgenotypesIterator(genotypes_file)     # what HGDP iterator should return?
+>>> individuals = hgdpgenotypesParser(genotypes_file)     # what HGDP iterator should return?
 >>> 
 
 Example of file with SNP annotations
@@ -103,7 +103,7 @@ def hgdpsamplesfileIterator(handle, ):
     return individuals_by_region
     
 
-def hgdpgenotypesIterator(handle, samples_filter = None, markers_filter = None):
+def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
     """
     Parse a genotypes file handler.
     
@@ -125,10 +125,11 @@ def hgdpgenotypesIterator(handle, samples_filter = None, markers_filter = None):
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
     
     >>> samples_filter = ['HGDP00001', 'HGDP00004']  
-    >>> for individual in hgdpgenotypesIterator(genotypes_file, samples_filter):
-    ...     print individual
-    Mr. HGDP00001 AA TT AA TC AA GG AA AA AA GG AA
-    Mr. HGDP00004 AA CC AA TT AA AA AA AA AA GG GG
+    >>> individuals = hgdpgenotypesParser(genotypes_file, samples_filter)
+    >>> for ind in individuals:
+    ...     print ind, ind.markers
+    HGDP00001 ['AA', 'TT', 'AA', 'TC', 'AA', 'GG', 'AA', 'AA', 'AA', 'GG', 'AA']
+    HGDP00004 ['AA', 'CC', 'AA', 'TT', 'AA', 'AA', 'AA', 'AA', 'AA', 'GG', 'GG']
     """
     # read the header, containing the Individuals names
 #    handle.readline()       # first line is empty??
@@ -143,18 +144,17 @@ def hgdpgenotypesIterator(handle, samples_filter = None, markers_filter = None):
             break
         for n in range(1, len(fields)):
             current_individual = individuals[n-1]
-            print n, current_individual, samples_filter
-            print current_individual in samples_filter
             if current_individual in samples_filter:
                 current_marker = fields[n]
-                current_individual.markers = current_marker # or append?
+                current_individual.markers.append(current_marker) # or append?
 #                logging.debug(current_individual)
 #                print current_individual
             else:
                 pass
             
-        # for every line in the file, return a list of 'Individual' objects
-        yield individuals
+        # for every line in the file, return a list of 'Individual' object
+    filtered_individuals = [ind for ind in individuals if ind in samples_filter]
+    return filtered_individuals
 
 
 
