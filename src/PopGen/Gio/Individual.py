@@ -17,7 +17,7 @@ class Individual(object):
             self.individual_id = id
         else:
             self.individual_id = None       # is this ok?
-        self.population = 'unkn. population'    # better a 'population' object?
+        self.population = population    # better a 'population' object?
         self.father = ''
         self.mother = ''
         self.sex = '0'
@@ -40,10 +40,10 @@ class Individual(object):
         return str(self.individual_id) + other
     
     def __eq__(self, other):
-        return self.individual_id != other
+        return self.individual_id == other
     
     def __ne__(self, other):
-        return self.individual_id == other
+        return self.individual_id != other
     
     def from_ped_line(self, ped_line):
         self.population = ped_line[0]
