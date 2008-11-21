@@ -142,19 +142,21 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
     
     >>> individuals_filter = ['HGDP00001', 'HGDP00004', ]  
     >>> markers = hgdpgenotypesParser(genotypes_file, individuals_filter)
+    >>> print '\t' + '\t'.join(markers[0].individuals)
+     HGDP00001   HGDP00004
     >>> for marker in markers:
-    ...     print marker.name, marker.genotypes
-    AA AA
-    TT CC
-    AA TT
-    TC AA
-    AA AA
-    GG AA
-    AA AA
-    AA AA
-    AA AA
-    GG GG
-    AA AA
+    ...    print marker.to_geno_format()    #doctest: +NORMALIZE_WHITESPACE
+    rs1112390    AA    AA    
+    rs1112391    TT    CC    
+    MitoA11252G    AA    AA    
+    rs11124185    TC    TT    
+    MitoA13265G    AA    AA    
+    MitoA13264G    GG    AA    
+    MitoA13781G    AA    AA    
+    MitoA14234G    AA    AA    
+    MitoA14583G    AA    AA    
+    MitoA14906G    GG    GG    
+    MitoA15219G    AA    GG    
 
     """
     # initialize output var

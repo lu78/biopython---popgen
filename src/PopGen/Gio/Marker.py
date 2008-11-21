@@ -65,6 +65,15 @@ class Marker(object):
     def __repr__(self):
         return "Marker %s, %s individuals" % (self.name, self.individual_count)
 
+    def to_geno_format(self):
+        """
+        Temporary function to print a marker in .geno (e.g. HGDP) format
+        """
+        output = self.name + '\t'
+        for genotype in self.genotypes:
+            output += ''.join(genotype) + '\t'
+#        output += '\n'
+        return output
         
     def add_multiple_genotypes(self, genotypes):
         """
