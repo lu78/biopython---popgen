@@ -9,12 +9,26 @@ Genotype object
 
 >>> import Individual, Marker
 >>> g = Genotype('snr10000')
->>> g.genotypes = ['AA', 'AC', 'CC', 'AC']
+>>> g.samples = ['AA', 'AC', 'CC', 'AC']
 """
 
 
 class Genotype(object):
-    def __init__(self, name):
+    """
+    # TODO: rewrite everything :(
+    >>> g = Genotype('snr10000')
+    >>> g.samples = ['AA', 'AC', 'CC', 'AC']
+    """
+    def __init__(self, name, individuals = None, values = None):   # careful you are messing with synonimous
         self.genotype_id = name
-        self.genotypes = []
+        
+        if values is None:
+            self.values = []
+        else:
+            self.samples = values
+        
+        if individuals is None:
+            individuals = []
+        else:
+            self.individuals = individuals
     
