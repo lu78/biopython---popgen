@@ -76,7 +76,7 @@ def hgdpsamplesfileParser(handle, ):
     ... "code"  "sex"    "population"    "region"        "continent"     "Unidad"
     ... "HGDP00001"    "M"    "Brahui Test"    "Pakistan"      "Asia"  "Brahui"
     ... "HGDP00003"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
-    ... "HGDP01362"    "M"    "French_Basque"    "France"    "Europe"    "Basque"
+    ... "HGDP01362"    "M"    "French Basque"    "France"    "Europe"    "Basque"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = hgdpsamplesfileParser(samples_file)
     >>> print [sample for sample in samples if sample.region == "Pakistan"]
@@ -102,7 +102,7 @@ def hgdpsamplesfileParser(handle, ):
         pop = row[2]    # TODO: use Population object
         region = row[3]
         continent = row[4]
-        unit = row[5]
+        unit = row[5].replace('"', '')
         
         # create an Individual object
         Ind = Individual(ind_id, pop, region=region, continent=continent, 
