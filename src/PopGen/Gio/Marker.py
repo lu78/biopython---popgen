@@ -46,14 +46,15 @@ class Marker(object):
     >>> C10G.populations = {'Vesuvians': (0, 1), 'Martians': (2)}
     '''      
           
-    def __init__(self, name = None):
+    def __init__(self, name = None, individuals = None):
         # should add a check for parameters type (e.g. missing -> should be integer)
         if name is None:
             name = 'Un-named Marker'
         self.name = name
         self.position = ""  # should be a 'position' object. For now, just a description (e.g. chromosome 11 pos 23131)
         self.genotypes = () # list of genotypes object (e.g.: (('A', 'A'), ('G', 'A'))) Should be an object
-        self.populations = {}       # should define populations. which are the positions in self.genotypes which correspond to populations. 
+        self.populations = {}       # should define populations. which are the positions in self.genotypes which correspond to populations.
+        self.individuals = individuals 
         self.individual_count = 0        # Individuals for which the Marker is genotyped
         self.missing_data_count = 0      # Individuals for which data is not available
         self.reference_allele_freq = 0.0 # frequency of the reference allele (the first!)
@@ -80,8 +81,14 @@ class Marker(object):
         use this method when adding a genotype.
         """
         # should check genotype format here
-        
-        self.genotypes = (self.genotypes, genotype)
+        if isinstance(genotype, basestring) and len(genotype) == 2:
+            # genotype is probably a string like 'AA'
+            if self.genotypes == ():  # first genotype added
+                self.genotypes = (genotype[0], genotype[1])
+            else:
+                self.genotypes = (self.genotypes, (genotype[0], genotype[1]))
+        else:        
+            self.genotypes = (self.genotypes, genotype)
         
         self._recalculate_freqs() 
         
