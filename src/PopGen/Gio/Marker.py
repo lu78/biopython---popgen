@@ -52,7 +52,7 @@ class Marker(object):
             name = 'Un-named Marker'
         self.name = name
         self.position = ""  # should be a 'position' object. For now, just a description (e.g. chromosome 11 pos 23131)
-        self.genotypes = () # list of genotypes object (e.g.: (('A', 'A'), ('G', 'A'))) Should be an object
+        self.genotypes = [] # list of genotypes object (e.g.: [('A', 'A'), ('G', 'A')] Should be an object
         self.populations = {}       # should define populations. which are the positions in self.genotypes which correspond to populations.
         self.individuals = individuals 
         self.individual_count = 0        # Individuals for which the Marker is genotyped
@@ -92,10 +92,11 @@ class Marker(object):
         # should check genotype format here
         if isinstance(genotype, basestring) and len(genotype) == 2:
             # genotype is probably a string like 'AA'
-            if self.genotypes == ():  # first genotype added
-                self.genotypes = (genotype[0], genotype[1])
-            else:
-                self.genotypes = (self.genotypes, (genotype[0], genotype[1]))
+            self.genotypes.append((genotype[0], genotype[1]))
+#            if self.genotypes == ():  # first genotype added
+#                self.genotypes = (genotype[0], genotype[1])
+#            else:
+#                self.genotypes = (self.genotypes, (genotype[0], genotype[1]))
         else:        
             self.genotypes = (self.genotypes, genotype)
         
