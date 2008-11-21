@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 # Population object
+class Continent(object):
+    """
+    >>> Europe = Continent("Europe")
+    """
+    def __init__(self, name):
+        self.name = name
 
 class Population(object):
     """
@@ -12,22 +18,32 @@ class Population(object):
     >>> cox2.total_population = 30
     >>> Vulcanians.markers.append(cox2)
     
-    >>> Vulcanians.region = ''
-    >>> Vulcanians.continent = ''
-    
+    >>> pops = (Population("Brahui", "Pakistan", "Asia", "Brahui"), 
+    ...         Population("French_Basque", "France", "Europe", "Basque"),
+    ...          )
+    >>> Europe = Continent("Europe")
+    >>> print [pop for pop in pops if pop == Europe]
+    [French_Basque]
     """
     
-    def __init__(self, name, region = None, continent = None, unit = None):
+    def __init__(self, name, region = None, continent = None, working_unit = None):
         self.name = name
         self.region = region
         self.continent = continent
-        self.unit = unit
+        self.working_unit = working_unit
+        
         self.markers = []       # not sure I will put markers here
         self.individuals = []   # not sure I will use this
         
     def __repr__(self):
         return "%s" % (self.name)
     
+    def __eq__(self, other):
+        if isinstance(other, Continent):
+            return self.continent == other.name
+        # TODO: implement other cases
+        else:
+            return self.name == other
     
 def _test():
     import doctest
