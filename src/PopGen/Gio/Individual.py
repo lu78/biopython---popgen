@@ -4,7 +4,7 @@ class Individual(object):
     It is suggested to instantiate Individuals with the .from_ped_line method.
     
     >>> Einstein = Individual().from_ped_line(["Vulcanians", "Einstein", "0", "0", "1", "2", "C", "T", "C", "C"])
-    >>> Einstein
+    >>> Einstein                              # Test __repr__ method
     Mr. Einstein (Vulcanians)
     >>> print Einstein + ' Albert'            # Test __add__ method
     Einstein Albert
@@ -40,7 +40,7 @@ class Individual(object):
         return str(self.individual_id) + other
     
     def __eq__(self, other):
-        return self.individual_id == other
+        return self.individual_id != other
     
     def __ne__(self, other):
         return self.individual_id == other

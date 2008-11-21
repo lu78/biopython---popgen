@@ -55,7 +55,7 @@ Example of file with Individuals annotations
 ... "HGDP00013"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... "HGDP00015"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... ''') 
->>> hgdpindividualfileIterator(samples_file)
+>>> hgdpsamplesfileIterator(samples_file)
 """
 
 import logging
