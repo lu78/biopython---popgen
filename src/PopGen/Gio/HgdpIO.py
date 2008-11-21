@@ -74,14 +74,15 @@ def hgdpsamplesfileParser(handle, ):
     >>> samples_file = StringIO(
     ... '''"sample"
     ... "code"  "sex"    "population"    "region"        "continent"     "Unidad"
-    ... "HGDP00001"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
+    ... "HGDP00001"    "M"    "Brahui Test"    "Pakistan"      "Asia"  "Brahui"
     ... "HGDP00003"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
     ... "HGDP01362"    "M"    "French_Basque"    "France"    "Europe"    "Basque"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = hgdpsamplesfileParser(samples_file)
     >>> print [sample for sample in samples if sample.region == "Pakistan"]
-    [Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
+    [Mr. HGDP00001 (Brahui Test), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
     """
+    splitter = re.compile('"\s+"')
     handle.readline()   # skip headers
     header = handle.readline()
     if header is None:
@@ -89,19 +90,19 @@ def hgdpsamplesfileParser(handle, ):
     
     individuals = []
 #    individuals_by_population = {}
-    individuals_by_region = {}
+#    individuals_by_region = {}
 #    individuals_by_continent = {}
     
     for line in handle.readlines(): 
-        row = line.split()
+        row = splitter.split(line)
         if row is None: break   # FIXME: optimize
         ind_id = row[0].replace('"', '')
 #        logging.debug(row)
-        sex = row[1].replace('"', '')   # TODO: translate this to 1/2 
-        pop = row[2].replace('"', '')   # TODO: use Population object
-        region = row[3].replace('"', '')
-        continent = row[4].replace('"', '')
-        unit = row[5].replace('"', '')
+        sex = row[1]    # TODO: translate this to 1/2 
+        pop = row[2]    # TODO: use Population object
+        region = row[3]
+        continent = row[4]
+        unit = row[5]
         
         # create an Individual object
         Ind = Individual(ind_id, pop, region=region, continent=continent, 
@@ -109,11 +110,11 @@ def hgdpsamplesfileParser(handle, ):
         individuals.append(Ind)
 #        individuals_by_population.setdefault(pop, [])
 #        individuals_by_population[pop].append(id)
-        individuals_by_region.setdefault(region, [])
-        individuals_by_region[region].append(Ind)
+#        individuals_by_region.setdefault(region, [])
+#        individuals_by_region[region].append(Ind)
 #        individuals_by_continent.setdefault(continent, [])
 #        individuals_by_continent[continent].append(id)
-    logging.debug(individuals_by_region)
+#    logging.debug(individuals_by_region)
 #    logging.debug(individuals_by_population)
     
     return individuals
@@ -171,6 +172,13 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
     if individuals_filter is None:      # TODO: ugly 
         individuals_filter = [ind.individual_id for ind in individuals]
     
+    columns_to_filter = []
+    for ind in header.split():
+        if ind in individuals_filter:
+            columns_to_filter.append(1)
+        else:
+            columns_to_filter.append(0)
+    
     # Read the remaining lines of genotypes file, containin genotypes info.
     for line in handle.readlines():
         fields = line.split()   # TODO: add more rigorous conditions
@@ -182,7 +190,8 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
         
         for n in range(1, len(fields)):
             current_individual = individuals[n-1]
-            if current_individual in individuals_filter:
+            if current_individual in individuals_filter:    #TODO: this consumes CPU time
+#            if columns_to_filter[0] == 1:
                 current_genotype = fields[n]
                 marker.add_genotype(current_genotype)
 #                print current_individual
