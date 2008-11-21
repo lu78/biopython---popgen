@@ -61,6 +61,8 @@ Example of file with Individuals annotations
 
 import logging
 from PopGen.Gio.Individual import Individual
+#from PopGen.Gio.Genotype import Genotype
+from PopGen.Gio.Marker import Marker
 import csv
 import re
 
@@ -117,7 +119,7 @@ def hgdpsamplesfileParser(handle, ):
     return individuals
     
 
-def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
+def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None):
     """
     Parse a genotypes file handler.
     
@@ -138,50 +140,54 @@ def hgdpgenotypesParser(handle, samples_filter = None, markers_filter = None):
     ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
     
-    >>> samples_filter = ['HGDP00001', 'HGDP00004']  
-    >>> [genotypes, individuals] = hgdpgenotypesParser(genotypes_file, samples_filter)
-    >>> print individuals
-    [HGDP00001, HGDP00004]
-    >>> for gen in genotypes:
-    ...     print gen,
+    >>> individuals_filter = ['HGDP00001', 'HGDP00004', ]  
+    >>> markers = hgdpgenotypesParser(genotypes_file, individuals_filter)
+    >>> for marker in markers:
+    ...     print marker.name, marker.genotypes
     AA AA
     TT CC
     AA TT
     TC AA
-    
-    
-    HGDP00001 ['AA', 'TT', 'AA', 'TC', 'AA', 'GG', 'AA', 'AA', 'AA', 'GG', 'AA']
-    ,  ['AA', 'CC', 'AA', 'TT', 'AA', 'AA', 'AA', 'AA', 'AA', 'GG', 'GG']
-    
+    AA AA
+    GG AA
+    AA AA
+    AA AA
+    AA AA
+    GG GG
+    AA AA
+
     """
+    # initialize output var
+    markers = []
+    
     # read the header, containing the Individuals names
 #    handle.readline()       # first line is empty??
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
     individuals = [Individual(ind_id) for ind_id in header.split()]
-    if samples_filter is None:      # ugly way to handle things when samples_filter 
-                                    #     is not specified
-        samples_filter = [ind.individual_id for ind in individuals]
+    if individuals_filter is None:      # TODO: ugly 
+        individuals_filter = [ind.individual_id for ind in individuals]
     
+    # Read the remaining lines of genotypes file, containin genotypes info.
     for line in handle.readlines():
-        fields = line.split()
+        fields = line.split()   # TODO: add more rigorous conditions
         if fields is None:
             break
+        # Initialize a Genotype object 
+        marker = Marker(name = fields[0], individuals = individuals_filter)
+        markers.append(marker)
+        
         for n in range(1, len(fields)):
             current_individual = individuals[n-1]
-            if current_individual in samples_filter:
-                current_marker = fields[n]
-                current_individual.markers.append(current_marker) # or append?
-                logging.debug(current_individual)
-                logging.debug(current_individual.markers)
+            if current_individual in individuals_filter:
+                current_genotype = fields[n]
+                marker.add_genotype(current_genotype)
 #                print current_individual
             else:
                 pass
             
-        # for every line in the file, return a list of 'Individual' object
-    filtered_genotypes = [ind for ind in individuals if ind in samples_filter]
-    return filtered_genotypes
+    return markers
 
 
 
