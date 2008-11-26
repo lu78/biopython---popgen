@@ -25,7 +25,7 @@ class Structural:
 
     A constructor is available. When overriden on subclasses
     one parameter might have to be changed:
-    counts_acceptable - Which is True (the defaultl)
+    counts_acceptable - Which is True (the default)
     if the statistic only needs allele counts (and not genotypical information,
     i.e., which (two) alleles exist per individual)
     
@@ -36,7 +36,7 @@ class Structural:
       [('a','a'), ('a','b'), ('b','a'), ...], with the two
       alleles per individual. If you only have allele counts
       then use add_pop_counts
-
+      
     add_pop_counts(pop_name, counts) - Adds a population,
       counts is a dictionary of allele_name : count.
       For some statistics counts might not be enough, in that
@@ -44,11 +44,9 @@ class Structural:
       
     Each subclass needs to implement:
         
-    calc_stat() - Calculates the statistic
-    
-    __str__
-    
-    acronym        # short name for the test type (Fst, FstB...)
+    - calc_stat() - Calculates the statistic
+    - __str__
+    - acronym        # short name for the test type (Fst, FstB...)
     
     >>> s = Structural()
     >>> Ind1 = ('Ind1', [(1,2),    (3,3), (200,201)])
@@ -64,15 +62,24 @@ class Structural:
 """
 
     def __init__(self):
-        self.counts_acceptable = True
+        self.counts_acceptable = True   # ???
         self.pop_counts = {}
         self.pop_names = []
         self.pop_indivs = {}
-        self.removable = ['000', '00', '0', 'NA']
+        self.removable = ['000', '00', '0', 'NA']   # What does it means?
     
     def add_pop(self, pop_name, indiv_data):
+        """
+        Use this if the statistics needs allele data
+        
+        individual data is formatted as a list of tuples
+        every tuple is a locus        
+        >>> s = Structural()
+        >>> s.add_pop('Martians', [(1,2), (3,3)])
+         
+        """
         if pop_name in self.pop_names:
-            raise PopulationExistsException(pop_name)
+            raise PopulationExistsException(pop_name)   # or maybe append?
 
         self.pop_counts[pop_name] = self._convert_to_counts(indiv_data) #We convert to counts
         if self.counts_acceptable is False: 
@@ -80,6 +87,14 @@ class Structural:
             self.pop_indivs[pop_name] = indiv_data
     
     def add_pop_counts(self, pop_name, counts):
+        """
+        Use this if the statistic only needs allele counts.
+        
+        individual data is formatted as given directly as a count of ??
+        >>> s = Structural()
+        >>> s.add_pop('Martians', [1, 2])    # ???
+        
+        """
         if pop_name in self.pop_names:
             raise PopulationExistsException(pop_name)
         if self.counts_acceptable is False:
@@ -92,6 +107,8 @@ class Structural:
         raise NotImplementedError
 
     def _convert_to_counts(self, indiv_data):
+        """ what are counts?
+        """
         count_data = {}
         for indiv in indiv_data:
             for allele in indiv:
@@ -267,6 +284,18 @@ class Fst(Structural):
     Weir and Cockerham.
     
     TODO: test
+    
+    >>> s = Fst()
+    >>> Ind1 = ('Ind1', [(1,2),    (3,3), (200,201)])
+    >>> Ind2 = ('Ind2', [(2,None), (3,3), (None,None)])
+    >>> Other1 = ('Other1', [(1,1),  (4,3), (200,200)])
+    >>> s.add_pop('Vulcanians', [Ind1, Ind2])
+    >>> s.add_pop('Martians', [Other1])
+    >>> s.pop_names
+    ['Vulcanians', 'Martians']
+    >>> s.pop_indivs
+    >>> print s.calc_stat()
+    
     """
     
     def __init__(self):

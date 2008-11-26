@@ -44,6 +44,12 @@ class Alleles_per_site(object):
     def __len__(self):
         pass
     
+class Parameters(object):
+    """ """
+    def __init__(self):
+        raise NotImplementedError    
+    pass
+    
 
 class HaplotypesGenerator(object):  # TODO: find a better name
     """
@@ -97,7 +103,8 @@ class HaplotypesGenerator(object):  # TODO: find a better name
     """
     
     def __init__(self, nseq = None, seqlen = None, freqs_per_site = None, 
-                 alleles_per_site = None, alphabet = None):
+                 alleles_per_site = None, heterozygotes_per_site = None,
+                 alphabet = None):
         """
         Initialize an AlignmentGenerator object.
     
@@ -114,6 +121,10 @@ class HaplotypesGenerator(object):  # TODO: find a better name
             raise ValueError('must enter the sequences length')
         else:
             self.seqlen = seqlen
+        
+        if alphabet is None:
+            from Bio.Alphabet import IUPAC
+            self.alphabet = IUPAC.IUPACUnambiguousDNA()
             
         # Check freqs_per_site and alleles_per_site to be list-like objects with same length
         if isinstance(freqs_per_site, Freqs_per_site):
@@ -135,10 +146,6 @@ class HaplotypesGenerator(object):  # TODO: find a better name
         if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):    
             raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen)")
 
-        
-        if alphabet is None:
-            from Bio.Alphabet import IUPAC
-            self.alphabet = IUPAC.IUPACUnambiguousDNA()
         
         
     def generate(self, seed = None):
