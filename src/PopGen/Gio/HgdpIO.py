@@ -95,7 +95,11 @@ def hgdpsamplesfileParser(handle, ):
     
     for line in handle.readlines(): 
         row = splitter.split(line)
+        
         if row is None: break   # FIXME: optimize
+        if len(row) != 6:
+            raise ValueError("wrong number of columns in current line")
+        
         ind_id = row[0].replace('"', '')
 #        logging.debug(row)
         sex = row[1]    # TODO: translate this to 1/2 
@@ -106,7 +110,7 @@ def hgdpsamplesfileParser(handle, ):
         
         # create an Individual object
         Ind = Individual(ind_id, pop, region=region, continent=continent, 
-                        working_unit=unit, sex = sex)
+                        working_unit=unit, sex=sex)
         individuals.append(Ind)
 #        individuals_by_population.setdefault(pop, [])
 #        individuals_by_population[pop].append(id)
@@ -199,8 +203,6 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
                 pass
             
     return markers
-
-
 
 
 def _test():

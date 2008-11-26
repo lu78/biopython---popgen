@@ -22,7 +22,7 @@ import logging
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Align.Generic import Alignment
-from PopGen.Exceptions import NotImplementedError
+#from PopGen.Exceptions import NotImplementedError
 
 class Freqs_per_site(object):
     """represents a list of frequencies per site
@@ -49,6 +49,8 @@ class HaplotypesGenerator(object):  # TODO: find a better name
     """
     generates a random biopython Alignment object, 
      containing a set of haplotypes generated randomly.
+     #TODO: it would be good to have a way to select the number of heterozygotes,
+         especially for testing functions like Stats.Fst
     
     parameters:
     o nseq              -> number of sequences
@@ -94,7 +96,8 @@ class HaplotypesGenerator(object):  # TODO: find a better name
     
     """
     
-    def __init__(self, nseq = None, seqlen = None, freqs_per_site = None, alleles_per_site = None, alphabet = None):
+    def __init__(self, nseq = None, seqlen = None, freqs_per_site = None, 
+                 alleles_per_site = None, alphabet = None):
         """
         Initialize an AlignmentGenerator object.
     
@@ -128,8 +131,9 @@ class HaplotypesGenerator(object):  # TODO: find a better name
         else:
             raise ValueError("alleles_per_site parameter is invalid")
         
-        if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):    #TODO: make error message clearer
-            raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen) ")
+        #TODO: make error message clearer
+        if not (len(freqs_per_site) == len(alleles_per_site) == seqlen):    
+            raise ValueError("note that (len(freqs_per_site) != len(allele_per_site) != seqlen)")
 
         
         if alphabet is None:
@@ -149,10 +153,10 @@ class HaplotypesGenerator(object):  # TODO: find a better name
         if seed is not None:
             random.seed(seed)
 
-        records = alignment._records    # hack to add SeqRecord objects to Alignment until # fixed
+        records = alignment._records    # hack to add SeqRecord objects to Alignment
         
         for n in xrange(self.nseq):
-            seqrecord = SeqRecord(Seq(''), id = 'seq%d' % (n+1), description = '')
+            seqrecord = SeqRecord(Seq(''), id='seq%d' % (n+1), description='')
             records.append(seqrecord)
             
             for pos in xrange(self.seqlen):
@@ -171,7 +175,7 @@ class HaplotypesGenerator(object):  # TODO: find a better name
     
         # write output. It could use the alignment._format function when it will
         # support ldhat files.
-        output = '%s %s 1\n' %(self.nseq, self.seqlen)
+        output = '%s %s 1\n' % (self.nseq, self.seqlen)
         for seq in records:
             output += seq.format('fasta')
         
@@ -250,6 +254,7 @@ def paramsGenerator(mode = None, seqlen = 20, nseq = 10):
     
     
 def _test():
+    """ test the module """
     import doctest
     doctest.testmod()
     
