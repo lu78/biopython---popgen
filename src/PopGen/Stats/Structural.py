@@ -318,9 +318,6 @@ class Fst(Structural):
     def calc_stat(self):
         fst, fit, fis = _calcFs(self.pop_indivs, self.pop_counts)
         return fst
-    
-    def add_pop_counts(self, indiv_data):
-        raise RequiresGenotypeException()
 
 class Fk(Structural):
     """Implements Fk.
@@ -340,7 +337,7 @@ class Fk(Structural):
         self.counts_acceptable = True
         
     def __str__(self):
-        return "Fk"
+        return self.acronym
 
     def calc_stat(self):
         p1, p2 = self.pop_counts.keys()
