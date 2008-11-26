@@ -2,7 +2,6 @@
 # This code is part of the Biopython distribution and governed by its
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
-
 """
   Implementation of Statistics dependent on population structure.
   
@@ -19,6 +18,7 @@
 
 from copy import deepcopy
 from PopGen.Exceptions import PopulationExistsException, RequiresGenotypeException
+import logging
 
 class Structural:
     """'Abstract' Structural class.
@@ -48,11 +48,11 @@ class Structural:
     - __str__
     - acronym        # short name for the test type (Fst, FstB...)
     
-    >>> s = Structural()        # Usually this will remain as an abstract class
+    >>> s = Structural()      # Usually this will remain as an abstract class
     >>> s.counts_acceptable = False     
-    >>> Ind1 = ('Ind1', [(1,2),    (3,3), (200,201)])
-    >>> Ind2 = ('Ind2', [(2,None), (3,3), (None,None)])
-    >>> Other1 = ('Other1', [(1,1),  (4,3), (200,200)])
+    >>> Ind1 = (1, 2)         # only one locus per individual
+    >>> Ind2 = (2, None)
+    >>> Other1 = (1, 1)
     >>> s.add_pop('Vulcanians', [Ind1, Ind2])
     >>> s.add_pop('Martians', [Other1])
     >>> s.pop_names
@@ -213,7 +213,8 @@ def _get_all_alleles_pop(pop_counts):
 def _get_allele_freq(pop_count, allele):
     all_alleles = _get_all_alleles_pop(pop_count)
     all_alleles_count = 0.0 # integer, but double for float division
-    for this_allele in all_alleles:
+    logging.debug(all_alleles)
+    for this_allele in all_alleles:        
         all_alleles_count += pop_count[this_allele]
     return 1.0 * pop_count[allele] / all_alleles_count
 
@@ -288,16 +289,18 @@ class Fst(Structural):
     TODO: test
     
     >>> s = Fst()
-    >>> Ind1 = ('Ind1', [(1,2),    (3,3), (200,201)])
-    >>> Ind2 = ('Ind2', [(2,None), (3,3), (None,None)])
-    >>> Other1 = ('Other1', [(1,1),  (4,3), (200,200)])
+    >>> Ind1 = (1, 2)
+    >>> Ind2 = (2, None)
+    >>> Other1 = (1, 2)        # BUG: if fails if there are not heterozygotes 
+                               # in a population (e.g. Other = (1, 1)).
     
     >>> s.add_pop('Vulcanians', [Ind1, Ind2])
-    >>> s.add_pop('Martians', [Other1])
+    >>> s.add_pop('Martians', [Other1, ])
     >>> s.pop_names
     ['Vulcanians', 'Martians']
     >>> s.pop_indivs
     'Ind1', 'Ind2', 'Other1'
+    >>> s.pop_counts
     >>> print s.calc_stat()
     
     """
@@ -313,6 +316,9 @@ class Fst(Structural):
     def calc_stat(self):
         fst, fit, fis = _calcFs(self.pop_indivs, self.pop_counts)
         return fst
+    
+    def add_pop_counts(self, indiv_data):
+        raise RequiresGenotypeException()
 
 class Fk(Structural):
     """Implements Fk.
@@ -349,4 +355,5 @@ def _test():
     doctest.testmod()
     
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     _test()
