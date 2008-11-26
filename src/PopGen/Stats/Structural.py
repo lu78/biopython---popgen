@@ -313,7 +313,7 @@ class Fst(Structural):
         self.counts_acceptable = False
         
     def __str__(self):
-        return "Fst"
+        return self.acronym
 
     def calc_stat(self):
         fst, fit, fis = _calcFs(self.pop_indivs, self.pop_counts)
