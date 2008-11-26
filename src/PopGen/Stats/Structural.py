@@ -52,12 +52,13 @@ class Structural:
     >>> s.counts_acceptable = False     
     >>> Ind1 = (1, 2)         # only one locus per individual
     >>> Ind2 = (2, None)
-    >>> Other1 = (1, 1)
+    >>> Other1 = (1, 2)
     >>> s.add_pop('Vulcanians', [Ind1, Ind2])
     >>> s.add_pop('Martians', [Other1])
     >>> s.pop_names
     ['Vulcanians', 'Martians']
     >>> s.pop_indivs
+    {'Vulcanians': [(1, 2), (2, None)], 'Martians': [(1, 2)]}
     
     TODO: test
 """
@@ -292,15 +293,16 @@ class Fst(Structural):
     >>> Ind1 = (1, 2)
     >>> Ind2 = (2, None)
     >>> Other1 = (1, 2)        # BUG: if fails if there are not heterozygotes 
-                               # in a population (e.g. Other = (1, 1)).
+    ...                        #     in a population (e.g. Other = (1, 1)).
     
     >>> s.add_pop('Vulcanians', [Ind1, Ind2])
     >>> s.add_pop('Martians', [Other1, ])
     >>> s.pop_names
     ['Vulcanians', 'Martians']
     >>> s.pop_indivs
-    'Ind1', 'Ind2', 'Other1'
+    {'Vulcanians': [(1, 2), (2, None)], 'Martians': [(1, 2)]}
     >>> s.pop_counts
+    {'Vulcanians': {'1': 1, '2': 2}, 'Martians': {'1': 1, '2': 1}}
     >>> print s.calc_stat()
     
     """
