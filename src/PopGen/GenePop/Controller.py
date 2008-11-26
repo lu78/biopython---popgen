@@ -2,9 +2,6 @@
 # This code is part of the Biopython distribution and governed by its
 # license.  Please see the LICENSE file that should have been included
 # as part of this package.
-
-
-
 """
 This module allows to control GenePop.
 
@@ -13,6 +10,7 @@ This module allows to control GenePop.
 import os
 import tempfile
 import re
+import logging
 #from sys import platform, maxint
 #from shutil import copyfile
 #from random import randint, random
@@ -24,6 +22,38 @@ class GenepopDoesntExists(Exception):
         print "Genepop is not installed or could not find it in PATH"
 
 class GenePopController:
+    """
+    GenePop Controller.
+    Use this module to configure and call the GenePop program, which you
+    should have installed on your computer.
+    
+    Assuming that GenePop is installed in your computer in /usr/bin/Genepop,
+    and that you are using a Unix-like system (warning, all these tests will fail 
+    if Genepop is not installed)
+    >>> gp = GenePopController('/usr/bin', ext = None)
+    
+    To run GenePop you will also need a genepop input file.
+    Let's create one, to show you how it should look like:
+    >>> from tempfile import NamedTemporaryFile
+    >>> inputfile = NamedTemporaryFile()
+    >>> inputfile.write('''  
+    ... Microsat on Chiracus radioactivus, a pest species 
+    ...      Loc1, Loc2, Loc3, Y-linked, Loc4 
+    ... Pop1 
+    ... AA8, 0405 0711 0304 0000      0505 
+    ... AA9, 0405 0609 0208 0000      0505 
+    ... Pop2
+    ... AF, 0000 0000 0000 0000      0505 
+    ... AF, 0205 0307 0102 0000      0505 
+    ... ''')
+    
+    To calculate the Fst statistics on the populations that are included on this file,
+    use the calc_fst_all method:
+    >>> fsts = gp.calc_fst_all(inputfile.name)
+    
+    """
+    
+    
     def __init__(self, genepop_dir = '', ext = None):
         """Initializes the controller.
         
@@ -32,7 +62,6 @@ class GenePopController:
           none on Unix)
 
         The binary should be called Genepop (capital G)
-        
         """
         self.tmp_idx = 0
         self.genepop_dir = genepop_dir
@@ -52,7 +81,7 @@ class GenePopController:
            Includes path where GenePop can be found plus executable extension.
         """
         if self.genepop_dir == '':      # if genepop_dir is not defined, return what?
-            return app + self.ext       # undefined variable app
+            return self.genepop_dir + 'Genepop' + self.ext
         else:
             return os.sep.join([self.genepop_dir, 'Genepop']) + self.ext
 
@@ -70,7 +99,7 @@ class GenePopController:
         """
         os.system(
             self._get_path() + ' Mode=Batch MenuOptions=6.1 InputFile='+fname +
-            '> /dev/null 2> /dev/null')
+            '> /dev/null 2> /dev/null') 
         f = open(fname+'.FST')
         fsts = []
         l = f.readline()
@@ -146,9 +175,17 @@ class GenePopController:
                     obsHe =  int(l[38:])
                     counts.append((locus, genoCounts, expHo, obsHo, expHe, obsHe))
                     locus = None
-
+                    
             l = f.readline()
         f.close()
         allPopCounts.append(counts)
         return allPopCounts
 
+def _test():
+    """ test the current module """
+    import doctest
+    doctest.testmod()
+    
+if __name__ == '__main__':
+    logging.basicConfig(level = logging.DEBUG)
+    _test()
