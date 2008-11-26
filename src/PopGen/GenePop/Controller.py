@@ -36,8 +36,8 @@ class GenePopController:
     Let's create one, to show you how it should look like:
     >>> from tempfile import NamedTemporaryFile
     >>> inputfile = NamedTemporaryFile()
-    >>> inputfile.write('''  
-    ... Microsat on Chiracus radioactivus, a pest species 
+    >>> inputfile.write(
+    ... '''Microsat on Chiracus radioactivus, a pest species 
     ...      Loc1, Loc2, Loc3, Y-linked, Loc4 
     ... Pop1 
     ... AA8, 0405 0711 0304 0000      0505 
