@@ -105,8 +105,6 @@ def fastphaseoutputIterator(handle, alphabet = None):
         name1 = id1
         name2 = id2
         
-        # TO FIX: if there are blank lines in the file (there shouldn't), 
-        # an error exception should be thrown.
         seqs = []
         while True:
             line = handle.readline()    # re-defining line, but it doesn't matter               

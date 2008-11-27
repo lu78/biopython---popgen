@@ -50,13 +50,13 @@ Example of file with Individuals annotations
 ... "code"  "sex"    "population"    "region"        "continent"     "Unidad"
 ... "HGDP00001"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
 ... "HGDP00003"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
-... "HGDP01362"    "M"    "French_Basque"    "France"    "Europe"    "Basque"
+... "HGDP01362"    "M"    "French Basque"    "France"    "Europe test"    "Basque"
 ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"
-... "HGDP00013"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
-... "HGDP00015"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
+... "HGDP00013"    "M"    "Brahui test"    "Pakistan"      "Asia"  "Brahui"
+... "HGDP00015"    "M"    "Brahui"    "Pakistan test"      "Asia"  "Brahui"
 ... ''') 
 >>> hgdpsamplesfileParser(samples_file)
-[Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP01362 (French_Basque), Mr. HGDP00151 (Makrani), Mr. HGDP00013 (Brahui), Mr. HGDP00015 (Brahui)]
+[Mr. HGDP00001 (Brahui), Mr. HGDP00003 (Brahui), Mr. HGDP01362 (French Basque), Mr. HGDP00151 (Makrani), Mr. HGDP00013 (Brahui test), Mr. HGDP00015 (Brahui)]
 """
 
 import logging
