@@ -112,15 +112,7 @@ def hgdpsamplesfileParser(handle, ):
         Ind = Individual(ind_id, pop, region=region, continent=continent, 
                         working_unit=unit, sex=sex)
         individuals.append(Ind)
-#        individuals_by_population.setdefault(pop, [])
-#        individuals_by_population[pop].append(id)
-#        individuals_by_region.setdefault(region, [])
-#        individuals_by_region[region].append(Ind)
-#        individuals_by_continent.setdefault(continent, [])
-#        individuals_by_continent[continent].append(id)
-#    logging.debug(individuals_by_region)
-#    logging.debug(individuals_by_population)
-    
+
     return individuals
     
 
