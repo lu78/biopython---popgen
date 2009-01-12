@@ -5,3 +5,7 @@
 """
   PopGen: Population Genetics and Genomics library in Python
 """
+
+__all__ = ['Arlequin', 'Async', 'FDist', 'FStat', 
+           'GenePop', 'Gio', 'Hapmap', 'LDNe', 'SimCoal', 
+           'simuPOP', 'Stats', 'TableBrowser']
