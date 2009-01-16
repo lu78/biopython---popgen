@@ -89,11 +89,11 @@ def hgdpsamplesfileParser(handle, ):
         raise ValueError('Empty file!!')
     
     individuals = []
-#    individuals_by_population = {}
-#    individuals_by_region = {}
-#    individuals_by_continent = {}
     
-    for line in handle.readlines(): 
+#    for line in handle.readlines():    
+    line = handle.readline()
+
+    while line: 
         row = splitter.split(line)
         
         if row is None: break   # FIXME: optimize
@@ -112,6 +112,8 @@ def hgdpsamplesfileParser(handle, ):
         Ind = Individual(ind_id, pop, region=region, continent=continent, 
                         working_unit=unit, sex=sex)
         individuals.append(Ind)
+        
+        line = handle.readline()
 
     return individuals
     
