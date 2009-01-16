@@ -199,11 +199,11 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
     return markers
 
 
-def _test():
+def test_doc():
     """test the module"""
     import doctest
     doctest.testmod()
     
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    _test()
+    test_doc()
